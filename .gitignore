@@ -217,3 +217,5 @@ gen
 ant-build
 ant-gen
 bin
+assets
+.settings
