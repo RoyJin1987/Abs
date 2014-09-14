@@ -32,8 +32,8 @@ public class Abs extends CordovaActivity
 //        super.setIntegerProperty("splashscreen",
 //        		R.drawable.splash);
         // Set by <content src="index.html" /> in config.xml
-        //super.loadUrl(Config.getStartUrl());
-        super.loadUrl("file:///android_asset/www/home.html");
+        super.loadUrl(Config.getStartUrl());
+//        super.loadUrl("file:///android_asset/www/home.html");
     }
 }
 

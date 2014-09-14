@@ -1,10 +1,10 @@
+'use strict'
 /*
  * app首页
  */
 var app = {
 	position:null,//当前位置
   map:null,//百度地图对象
-	map:{},
   onLoad:function() {
     	if (!window.device) {
     		$(document).ready(this.onDeviceReady);
@@ -45,11 +45,10 @@ var app = {
     	          'Speed: '             + position.coords.speed             + '\n' +
     	          'Timestamp: '         + position.timestamp                + '\n');
     	   app.position = position;
-         if (this.map) {
+         if (app.map) {
             app.refreshMap();
          } else {
             app.loadMap();
-
          };
          app.addMaker(app.position.coords);
          
@@ -62,8 +61,8 @@ var app = {
     	          'message: ' + error.message + '\n');
     	}
 
-      var option = { maximumAge: 10*60*1000, timeout: 2*60*1000, enableHighAccuracy: false }
-      navigator.geolocation.getCurrentPosition(succ, err, option);
+      // var option = { maximumAge: 10*60*1000, timeout: 2*60*1000, enableHighAccuracy: false }
+      // navigator.geolocation.getCurrentPosition(succ, err, option);
 
     	// Options: throw an error if no update is received every 30 seconds.
     	//
@@ -72,17 +71,28 @@ var app = {
 
  	//加载地图
  	loadMap : function() {
- 		this.map = new BMap.Map("allmap");
+ 		app.map = new BMap.Map("allmap");
 
  		if (app.position) {
- 			  this.map.centerAndZoom(new BMap.Point(app.position.coords.longitude, app.position.coords.latitude), 14);  
+        var gpsPoint = new BMap.Point(app.position.coords.longitude, app.position.coords.latitude);
+        app.map.centerAndZoom(gpsPoint, 14);
+        // var gpsPoint = new BMap.Point(app.position.coords.longitude, app.position.coords.latitude);
+        setTimeout(function(){
+          app.convertCoordsGPStoBaidu(app.position.coords,function(point) {
+          alert(JSON.stringify(point));
+          app.map.centerAndZoom(point, 14); 
+          }); 
+        },2000);
+        
  		} else {
         //test
-        var point = new BMap.Point(31.209,121.595);
-        this.map.centerAndZoom(point,15);                 // 初始化地图,设置中心点坐标和地图级别。
+        var p = {longitude:31.209,latitude:121.595};
+        app.convertCoordsGPStoBaidu(p,function(point) {
+          app.map.centerAndZoom(point, 14); 
+        });                  // 初始化地图,设置中心点坐标和地图级别。
         //this.map.addControl(new BMap.ZoomControl());      //添加地图缩放控件
-        var position = {longitude:31.209,latitude:121.595};
-        this.addMaker(position);
+        //var p = {longitude:31.209,latitude:121.595};
+        app.addMaker(p);
     }
 
  	},
@@ -90,10 +100,13 @@ var app = {
   //刷新地图
   refreshMap:function()
   {
-    if (this.map) {
-      if (this.position) {
-          var point = new BMap.Point(position.coords.longitude, position.coords.latitude);// 创建点坐标
-          this.map.centerAndZoom(point,15);
+    if (app.map) {
+      if (app.position) {
+          // var gpsPoint = new BMap.Point(this.position.coords.longitude, this.position.coords.latitude);
+          app.convertCoordsGPStoBaidu(app.position.coords,function(point) {
+            alert(JSON.stringify(point));
+            app.map.centerAndZoom(point, 14); 
+          }); 
       };
     };
   },
@@ -101,22 +114,52 @@ var app = {
   addMaker:function(coords)
   {
     if (!coords) { return;};
-    if (this.map) {
-      var point = new BMap.Point(coords.longitude, coords.latitude);
-      var marker = new BMap.Marker(point);  //创建标注
-      this.map.addOverlay(marker);    // 将标注添加到地图中
-      var opts = {
-        width : 100,    // 信息窗口宽度
-        height: 60,     // 信息窗口高度
-        title : "我的位置", // 信息窗口标题
-        enableAutoPan : true //自动平移
-      }
-      var infoWindow = new BMap.InfoWindow("我的位置", opts);  // 创建信息窗口对象
-      marker.addEventListener("click", function(){          
-        this.map.openInfoWindow(infoWindow,point); //开启信息窗口
+    if (app.map) {
+      //var gpsPoint = new BMap.Point(coords.longitude, coords.latitude);
+      app.convertCoordsGPStoBaidu(coords,function(point) {
+          //alert('point.x:'+point.lat +'\n' +'point.y:'+point.lng);
+          alert(JSON.stringify(point));
+          var marker = new BMap.Marker(point);  //创建标注
+          app.map.addOverlay(marker);    // 将标注添加到地图中
+          var opts = {
+            width : 100,    // 信息窗口宽度
+            height: 60,     // 信息窗口高度
+            title : "我的位置", // 信息窗口标题
+            enableAutoPan : true //自动平移
+          }
+          var infoWindow = new BMap.InfoWindow("我的位置", opts);  // 创建信息窗口对象
+          marker.addEventListener("click", function(){          
+            app.map.openInfoWindow(infoWindow,point); //开启信息窗口
+          });
       });
-    };
+    }
+  },
 
+  convertCoordsGPStoBaidu : function(coords,callback) {
+    var strCoords = coords.latitude + ',' + coords.longitude;
+    $.ajax({
+      type:'GET',
+      url:'http://api.map.baidu.com/geoconv/v1/',
+      data: { coords:strCoords , ak:"1Gd2L48StdySWNQEgsPAjuwH"},
+      dataType:'jsonp',
+      jsonp:'callback',
+      // jsonpCallback:'done'
+    }).done(function(data) {
+      alert('Convert coords got:'+ JSON.stringify(data));
+      if (data) {
+        if (data.status === 0) {
+          var arrCoords = data.result;
+          if (arrCoords.length >0) {
+            var coordsBaidu =  arrCoords[0];
+            var positionBaidu =  new BMap.Point(coordsBaidu.y,coordsBaidu.x);
+            callback(positionBaidu);
+          }
+        } else {
+          var positionBaidu =  new BMap.Point(coords.longitude,coords.latitude);
+          callback(positionBaidu);
+        }
+
+      };
+    });
   }
-
 };
