@@ -634,6 +634,13 @@ div.ui-mobile-viewport {
 	text-indent: -9999px;
 	white-space: nowrap !important;
 }
+.ui-btn-icon-notextnav {
+	padding: 0;
+	width: 1.75em;
+	height: 1.75em;
+	text-indent: -9999px;
+	white-space: nowrap !important;
+}
 .ui-mini {
 	font-size: 12.5px;
 }
@@ -657,7 +664,6 @@ div.ui-mobile-viewport {
 .ui-header .ui-btn-icon-notext,
 .ui-footer .ui-btn-icon-notext {
 	font-size: 16px;	
-	background-color:none;
 	padding: 0;
 }
 
@@ -4034,9 +4040,7 @@ label.ui-btn {
 -----------------------------------------------------------------------------------------------------------*/
 .ui-btn-icon-left:after,
 .ui-btn-icon-right:after,
-.ui-btn-icon-top:after,
-.ui-btn-icon-bottom:after,
-.ui-btn-icon-notext:after {
+.ui-btn-icon-bottom:after {
 	background-color: 					#666;
 	background-color: 					rgba(0,0,0,.3);
 	background-position: center center;
@@ -4044,6 +4048,17 @@ label.ui-btn {
 	-webkit-border-radius: 1em;
 	border-radius: 1em;
 }
+
+.ui-btn-icon-top:after,
+.ui-btn-icon-notext:after {
+	background-color: 					transparent;
+	background-color: 					transparent;
+	background-position: center center;
+	background-repeat: no-repeat;
+	-webkit-border-radius: 1em;
+	border-radius: 0em;
+}
+
 .ui-btn-icon-mynotext:after {
 	background-color: none;
 	background-position: center center;
