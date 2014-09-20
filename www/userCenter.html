@@ -5,36 +5,44 @@
 <meta charset="UTF-8">  
 <meta name="viewport" content="width=device-width, initial-scale=1">  
 <title>html app</title>  
-  
-    <link rel="stylesheet" href="css/themes/default/jquery.mobile-1.4.3.min.css">
-<script type="text/javascript"  
-    src="js/jquery.min.js"></script>  
-<script type="text/javascript"  
-    src="js/jquery.mobile-1.4.3.min.js"></script>  
+    <link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" />
+	<link href="css/main.css" rel="stylesheet" type="text/css">
+	<script src="js/jquery.js"></script>
+  <script src="js/jquery.mobile-1.4.0-rc.1.js"></script>
 </head>  
 <body>  
 <div data-role="page">  
-  <div data-role="header" data-position="fixed">
-    <a href="#" data-role="button" data-icon="home">返回</a>
-    <h1>欢迎访问我的主页</h1>
+<!--   <div data-role="header" data-position="fixed">
+    <a href="#" data-role="button" data-icon="btn_back">返回</a>
+    <h1></h1>
     <a href="#" data-role="button" data-icon="search">搜索</a>
-  </div>
+  </div> -->
   
-  <div class="ui-grid-b">
-  <div class="ui-block-a"><span>Some Text</span></div>
-  <div class="ui-block-b"><span>Some Text</span></div>
-  <div class="ui-block-c"><span>Some Text</span></div>
-  <div class="ui-block-a"><span>Some Text</span></div>
-  <div class="ui-block-b"><span>Some Text</span></div>
-  <div class="ui-block-a"><span>Some Text</span></div>
-</div>
+  <div data-role="header" data-position="fixed" data-theme="f">
+      <a data-iconpos="left" data-role="button" data-icon="back" title="Home">返回</a>
+      <h1>A</h1>
+    </div>
   
-  <div data-role="footer" data-position="fixed">
+ <nav>
+	<ul>		
+        <li><a data-ajax="false" href="index.html"><img src="img/img01.jpg" alt=""><span>我的车队</span></a></li>
+        <li><a data-ajax="false" href="news.html"><img src="img/img02.jpg" alt=""><span>消息中心</span></a></li>
+        <li><a data-ajax="false" href="news.html"><img src="img/img03.jpg" alt=""><span>我的订单</span></a></li>
+        <li><a data-ajax="false" href="news.html"><img src="img/img04.jpg" alt=""><span>我的运单</span></a></li>
+        <li><a data-ajax="false" href="news.html"><img src="img/img05.jpg" alt=""><span>导航</span></a></li>
+        <li><a data-ajax="false" href="news.html"><img src="img/img06.jpg" alt=""><span>福利</span></a></li>
+        <li><a data-ajax="false" href="news.html"><img src="img/img07.jpg" alt=""><span>周边</span></a></li>
+        <li><a data-ajax="false" href="news.html"><img src="img/img08.jpg" alt=""><span>保险</span></a></li>
+        <li><a data-ajax="false" href="news.html"><img src="img/img09.jpg" alt=""><span>更多</span></a></li>
+	</ul>
+</nav>
+  
+  <div data-role="footer" data-position="fixed" data-theme="f">
     <div data-role="navbar">
       <ul>
         <li><a href="#" data-icon="plus">收藏</a></li>
         <li><a href="#" data-icon="minus">社区</a></li>
-        <li><a href="#" data-icon="delete">设置</a></li>
+        <li><a href="#" data-icon="delete" class="ui-btn-active">设置</a></li>
         <li><a href="#" data-icon="check">应用</a></li>
       </ul>
     </div>

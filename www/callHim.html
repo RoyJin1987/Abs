@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>  
+<html>  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1">  
+<title>html app</title>  
+  
+    <link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" />
+	<link href="css/main.css" rel="stylesheet" type="text/css">
+	<script src="js/jquery.js"></script>
+  <script src="js/jquery.mobile-1.4.0-rc.1.js"></script> 
+</head>  
+<body>  
+<div data-role="page">  
+  <div data-role="header" data-position="fixed"data-theme="f">
+    <a data-iconpos="left" data-role="button" data-icon="back" title="Home">返回</a>
+    <h1>就叫TA</h1>
+    <a href="#" data-role="button" data-icon="search">i</a>
+  </div>
+  
+<div data-role="content">
+<form method="get" action="">
+
+  <div data-role="fieldcontain">
+    <label for="name">发送地址：</label>
+    <input type="text" name="text" id="name" value="">
+    </div>
+    <hr/>
+    <div data-role="fieldcontain">
+    <label for="search">货物类型：</label>
+    <input type="text" name="search" id="search" value=""/>
+  </div>
+  <hr/>
+   <div data-role="fieldcontain">
+        <fieldset data-role="controlgroup" data-theme="c">
+   <legend>温层点选：</legend>
+        <div class="ui-block-a"><label for="mov1" data-inline="true">常温</label>
+   <input type="radio" name="environment" id="mov1" value="male" data-inline="true" data-inline="true"></div>
+        <div class="ui-block-b"><label for="female" data-inline="true">冷藏</label>
+   <input type="radio" name="environment" id="female" value="female" data-inline="true" data-inline="true"> </div>
+   <div class="ui-block-c"><label for="mov3" data-inline="true">冷冻</label>
+   <input type="radio" name="environment" id="mov3" data-inline="true" data-inline="true"/> </div>
+   </fieldset>
+      </div>
+			
+   <div data-role="fieldcontain">
+        <fieldset data-role="controlgroup" data-theme="c">
+   <legend>车型点选：</legend>
+   <div class="ui-block-a">
+   <label for="type1">两轮车</label>
+   <input type="radio" name="carType" id="type1" value="male"></div>
+        <div class="ui-block-b">
+   <label for="type2">小汽车</label>
+   <input type="radio" name="carType" id="type2" value="female"> </div>
+   <div class="ui-block-c">
+   <label for="type3">面包车</label>
+   <input type="radio" name="carType" id="type3" /></div>
+   <div class="ui-block-d">
+   <label for="type4">卡车</label>
+   <input type="radio" name="carType" id="type4" />
+    </div>
+   </fieldset>
+      </div>
+<hr/>
+   <div data-role="fieldcontain">
+    <label for="name">货物重量：</label>
+    <input type="text" name="text" id="name" value="">
+    </div>
+    <hr/>
+    <div data-role="fieldcontain">
+    <label for="search">货物体积：</label>
+    <input type="text" name="search" id="search" value=""/>
+  </div>
+<hr/>
+  <div data-role="fieldcontain">
+    <label for="date">发货日期：</label>
+    <input type="date" name="date" id="date" value="">
+  </div>
+<hr/>
+  <div data-role="fieldcontain">
+    <label for="date">到货日期：</label>
+    <input type="date" name="date" id="date" value="">
+  </div>
+<hr/>
+<div data-role="fieldcontain">
+    <label for="search">送货地址：</label>
+    <input type="text" name="search" id="search" value=""/>
+  </div><hr/>
+  <div data-role="fieldcontain">
+    <label for="search">送货楼层：</label>
+    <input type="text" name="search" id="search" value="" placeholder="需要手工搬运的请填写楼层数"/>
+  </div><hr/>
+  <div data-role="fieldcontain">
+    <label for="search">附加信息：</label>
+    <input type="text" name="search" id="search" value=""/>
+  </div><hr/>
+  
+  <div  align="center">
+  <a data-iconpos="mynotext" href="#panel" data-role="button" data-icon="callHim" ></a>  </div>
+   </form>
+   </div>
+</div><!-- /page -->  
+</body>  
+</html> 
