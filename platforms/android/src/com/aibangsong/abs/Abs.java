@@ -33,7 +33,7 @@ public class Abs extends CordovaActivity
 //        		R.drawable.splash);
         // Set by <content src="index.html" /> in config.xml
         super.loadUrl(Config.getStartUrl());
-//        super.loadUrl("file:///android_asset/www/home.html");
+//        super.loadUrl("file:///android_asset/www/BaiduJSPopMap.html");
     }
 }
 
