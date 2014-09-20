@@ -15,25 +15,19 @@
        KIND, either express or implied.  See the License for the
        specific language governing permissions and limitations
        under the License.
+*/
+
+package org.apache.cordova.geolocation;
+
+
+import android.location.LocationManager;
+
+/**
+ * This class handles requests for GPS location services.
+ *
  */
-
-package com.aibangsong.abs;
-
-import android.os.Bundle;
-import org.apache.cordova.*;
-
-public class Abs extends CordovaActivity 
-{
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        super.init();
-//        super.setIntegerProperty("splashscreen",
-//        		R.drawable.splash);
-        // Set by <content src="index.html" /> in config.xml
-        super.loadUrl(Config.getStartUrl());
-//        super.loadUrl("file:///android_asset/www/BaiduJSPopMap.html");
+public class NetworkListener extends CordovaLocationListener {
+    public NetworkListener(LocationManager locationManager, GeoBroker m) {
+        super(locationManager, m, "[Cordova NetworkListener]");
     }
 }
-
