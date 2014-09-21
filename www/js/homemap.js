@@ -26,8 +26,8 @@ var app = {
   // function, we must explicitly call 'app.receivedEvent(...);'
   onDeviceReady: function() {
     // alert('haha');
-  	app.loadNavigator();
-    //app.loadMap();
+  	//app.loadNavigator();
+    app.loadMap();
   },
 
  	//加载定位

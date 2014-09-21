@@ -223,3 +223,4 @@ classes
 /platforms/android/*.classpath
 /platforms/android/local.properties
 /platforms/android/*.project
+/platforms/android/CordovaLib/local.properties
