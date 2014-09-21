@@ -8,9 +8,12 @@
 * http://jquery.org/license
 *
 */
-
+.ui-icon-myback:after {  
+    background-image: url("../img/myback.png");  
+	background-color: transparent;
+}  
 .ui-icon-callHim:after {  
-    background-image: url("../img/callHim.jpg");  
+    background-image: url("../img/callHim.png");  
     background-color: transparent;
     background-size: 10.5em 10.5em; 
 }  
@@ -566,7 +569,7 @@ div.ui-mobile-viewport {
 }
 .ui-header .ui-title,
 .ui-footer .ui-title {
-	font-size: 1em;
+	font-size: 1.2em;
 	min-height: 1.1em;
 	text-align: center;
 	display: block;
@@ -659,6 +662,11 @@ div.ui-mobile-viewport {
 .ui-header .ui-btn-right {
 	font-size: 12.5px;
 }
+
+.ui-header .ui-btn-myleft{
+	font-size: 12.5px;
+}
+
 .ui-mini.ui-btn-icon-notext,
 .ui-mini .ui-btn-icon-notext,
 .ui-header .ui-btn-icon-notext,
@@ -679,9 +687,11 @@ div.ui-mobile-viewport {
 	vertical-align: middle;
 	margin-right: .625em;
 }
+.ui-btn-icon-myleft,
 .ui-btn-icon-left {
 	padding-left: 2.5em;
 }
+
 .ui-btn-icon-right {
 	padding-right: 2.5em;
 }
@@ -710,6 +720,14 @@ div.ui-mobile-viewport {
 	height: 22px;
 }
 
+.ui-btn-icon-myleft:after{
+	content: "";
+	position: absolute;
+	display: block;
+	width: 22px;
+	height: 22px;
+}
+
 .ui-btn-icon-mynotext:after {
 	content: "";
 	position: absolute;
@@ -717,6 +735,7 @@ div.ui-mobile-viewport {
 	width: 10.5em;
 	height: 10.5em;
 }
+.ui-btn-icon-myleft:after,
 .ui-btn-icon-notext:after,
 .ui-btn-icon-left:after,
 .ui-btn-icon-right:after {
@@ -727,15 +746,17 @@ div.ui-mobile-viewport {
 	top: 0%;
 	margin-top: 0px;
 }
-
+.ui-btn-icon-myleft:after
 .ui-btn-icon-left:after {
 	left: .5625em;
 }
 .ui-btn-icon-right:after {
 	right: .5625em;
 }
+.ui-mini.ui-btn-icon-myleft:after,
 .ui-mini.ui-btn-icon-left:after,
 .ui-mini .ui-btn-icon-left:after,
+.ui-header .ui-btn-icon-myleft:after,
 .ui-header .ui-btn-icon-left:after,
 .ui-footer .ui-btn-icon-left:after {
 	left: .37em;
@@ -766,12 +787,24 @@ div.ui-mobile-viewport {
 .ui-btn-right > [class*="ui-"] {
 	margin: 0;
 }
+.ui-header .ui-btn-myleft,
+.ui-btn-myleft > [class*="ui-"] {
+	margin: 0;
+}
+
 .ui-btn-left,
 .ui-btn-right {
 	position: absolute;
 	top: .24em;
 }
+.ui-btn-myleft {
+	position: absolute;
+	top: .24em;
+}
 .ui-btn-left {
+	left: .4em;
+}
+.ui-btn-myleft {
 	left: .4em;
 }
 .ui-btn-right {
@@ -1774,8 +1807,14 @@ li.ui-block-e {
 .ui-header-fixed .ui-btn-right {
 	margin-top: 1px;
 }
+.ui-header-fixed .ui-btn-myleft {
+	margin-top: 1px;
+}
 .ui-header-fixed.ui-fixed-hidden .ui-btn-left,
 .ui-header-fixed.ui-fixed-hidden .ui-btn-right {
+	margin-top: 0;
+}
+.ui-header-fixed.ui-fixed-hidden .ui-btn-myleft {
 	margin-top: 0;
 }
 .ui-footer-fixed {
@@ -4049,6 +4088,15 @@ label.ui-btn {
 	border-radius: 1em;
 }
 
+.ui-btn-icon-myleft:after{
+	background-color: 					#666;
+	background-color: 					transparent;
+	background-position: center center;
+	background-repeat: no-repeat;
+	-webkit-border-radius: 1em;
+	border-radius: 1em;
+}
+
 .ui-btn-icon-top:after,
 .ui-btn-icon-notext:after {
 	background-color: 					transparent;
@@ -4060,7 +4108,7 @@ label.ui-btn {
 }
 
 .ui-btn-icon-mynotext:after {
-	background-color: none;
+	background-color: transparent;
 	background-position: center center;
 	background-repeat: no-repeat;
 	-webkit-border-radius: 0px;
