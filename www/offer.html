@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>  
+<html>  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1">  
+<title>html app</title>  
+    <link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" />
+	<link href="css/main.css" rel="stylesheet" type="text/css">
+	<script src="js/jquery.js"></script>
+	<script src="js/jquery.mobile-1.4.0-rc.1.js"></script> 
+</head>  
+<body>  
+	<div data-role="page" data-theme="f">  
+		<div data-role="header" data-position="fixed">
+			<a data-iconpos="left" data-role="button" data-icon="back" title="Home">返回</a>
+			<h1>出价页</h1>
+			<a href="#" data-role="button" data-iconpos="notext" data-icon="search"></a>
+		</div>
+	<div data-role="content">
+		<form method="get" action="">
+			<div >
+				<table>
+					<tr>
+						<td style="width:30%"><label>收货人姓名：</label></td>
+						<td style="width:69%"><label id="receiver">张三</label></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div >
+				<table>
+					<tr>
+						<td style="width:30%"><label>联系电话：</label></td>
+						<td style="width:69%"><label id="tel">13817154043</label></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div >
+				<table>
+					<tr>
+						<td style="width:30%"><label>发货地址：</label></td>
+						<td style="width:69%"><label id="address">浦东新区郭守敬路498号</label></td>
+					</tr>
+				</table>
+			</div>
+			<div >
+				<table>
+					<tr>
+						<td style="width:30%"><label for="deliveryAddress">送货地址：</label></td>
+						<td style="width:69%"><label id="deliveryAddress">浦东新区郭守敬路428号</label></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div >
+				<table>
+					<tr>
+						<td style="width:30%"><label>总计里程数：</label></td>
+						<td style="width:69%"><label id="mileage">1500米</label></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div >
+				<table>
+					<tr>
+						<td style="width:30%"><label>车辆类型：</label></td>
+						<td style="width:69%"><label id="carType">面包车</label></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div >
+				<table>
+					<tr>
+						<td style="width:45%"><label>平台推荐运输费用：</label></td>
+						<td style="width:55%"><label id="carType">50元</label></td>
+					</tr>
+				</table>
+				<table>
+					<tr>
+						<td style="width:25%"><label>调整运费： </label></td>
+						<td style="width:75%"><input type="range" name="slider" value="50" min="0" max="100" data-highlight="true" /></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div >
+				<table>
+					<tr>
+						<td style="width:45%"><label>平台推荐搬运费用：</label></td>
+						<td style="width:44%"><label id="carType">50元</label></td>
+					</tr>
+				</table>
+				<table>
+					<tr>
+						<td style="width:29%"><label>调整搬运费：</label></td>
+						<td style="width:71%"><input type="range" name="slider" value="50" min="0" max="100" data-highlight="true" /></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div >
+				<table>
+					<tr>
+						<td style="width:25%"><label>附加小费：</label></td>
+						<td style="width:69%"><label id="carType">50元</label></td>
+					</tr>
+					<tr>
+						<td style="width:25%"><label>调整小费：</label></td>
+						<td style="width:75%"><input type="range" name="slider" value="50" min="0" max="100" data-highlight="true" /></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div >
+				<table>
+					<tr>
+						<td style="width:25%"><label>费用总计：</label></td>
+						<td style="width:69%"><label id="carType">120元</label></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div  align="center">
+				<button>发送</button>
+			</div>
+		</form>
+   </div>
+</div><!-- /page -->  
+</body>  
+</html> 
