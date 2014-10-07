@@ -15,9 +15,24 @@
 .ui-icon-callHim:after {  
     background-image: url("../img/callHim.png");  
     background-color: transparent;
-    background-size: 10.5em 10.5em; 
+    background-size: 8.5em 8.5em; 
 }  
 
+.ui-icon-modify:after {  
+    background-image: url("../img/callHim.png");  
+    background-color: transparent;
+    background-size: 5.5em 5.5em; 
+}
+.ui-icon-cancel:after {  
+    background-image: url("../img/callHim.png");  
+    background-color: transparent;
+    background-size: 5.5em 5.5em; 
+}
+.ui-icon-trail:after {  
+    background-image: url("../img/callHim.png");  
+    background-color: transparent;
+    background-size: 5.5em 5.5em; 
+}
 .ui-icon-btn_back:after {  
            background-image: url("../img/btn_back.png");  
 }  
@@ -632,11 +647,19 @@ div.ui-mobile-viewport {
 }
 .ui-btn-icon-mynotext {
 	padding: 0;
-	width: 10.5em;
-	height: 10.5em;
+	width: 8.5em;
+	height: 8.5em;
 	text-indent: -9999px;
 	white-space: nowrap !important;
 }
+
+.ui-btn-icon-mynotext-m {
+	padding: 0;
+	width: 5.5em;
+	height: 5.5em;
+	text-indent: -9999px;
+	white-space: nowrap !important;
+} 
 .ui-btn-icon-notextnav {
 	padding: 0;
 	width: 1.75em;
@@ -732,8 +755,15 @@ div.ui-mobile-viewport {
 	content: "";
 	position: absolute;
 	display: block;
-	width: 10.5em;
-	height: 10.5em;
+	width: 8.5em;
+	height: 8.5em;
+}
+.ui-btn-icon-mynotext-m:after {
+	content: "";
+	position: absolute;
+	display: block;
+	width: 5.5em;
+	height: 5.5em;
 }
 .ui-btn-icon-myleft:after,
 .ui-btn-icon-notext:after,
@@ -743,6 +773,10 @@ div.ui-mobile-viewport {
 	margin-top: -11px;
 }
 .ui-btn-icon-mynotext:after {
+	top: 0%;
+	margin-top: 0px;
+}
+.ui-btn-icon-mynotext-m:after {
 	top: 0%;
 	margin-top: 0px;
 }
@@ -2787,7 +2821,7 @@ fieldset.ui-controlgroup {
 .ui-listview > .ui-li-static,
 .ui-listview > .ui-li-divider,
 .ui-listview > li > a.ui-btn {
-	margin: 0;
+	margin: 10;
 	display: block;
 	position: relative;
 	text-align: left;
@@ -4061,6 +4095,13 @@ label.ui-btn {
 	border-color:#FFFFFF;
 	border-style:none;
 }
+.ui-btn-icon-mynotext-m.ui-btn-corner-all,
+.ui-btn-icon-mynotext-m.ui-corner-all {
+	-webkit-border-radius: 1em;
+	border-radius: 4em;
+	border-color:#FFFFFF;
+	border-style:none;
+}
 /* Radius clip workaround for cleaning up corner trapping */
 .ui-btn-corner-all,
 .ui-corner-all {
@@ -4108,6 +4149,13 @@ label.ui-btn {
 }
 
 .ui-btn-icon-mynotext:after {
+	background-color: transparent;
+	background-position: center center;
+	background-repeat: no-repeat;
+	-webkit-border-radius: 0px;
+	border-radius: 0px;
+}
+.ui-btn-icon-mynotext-m:after {
 	background-color: transparent;
 	background-position: center center;
 	background-repeat: no-repeat;
