@@ -27,18 +27,20 @@
   	<script src="js/jquery.mobile-1.4.4.js"></script>
   	<script src="js/jquery.tmpl.min.js"></script> 
   	<script src="js/knockout-3.2.0.js"></script> 
+  	<script src="js/json2.js"></script>
+  	<script type="text/javascript" src="js/common.js"></script>
   	<script type="text/javascript" src="js/mywaybill.js"></script>
 	<script type="text/html" id="waybill-template" >
 		<div class="order-info-block">
 			<div class="brief">
 		    	<div class="order-info-content">
-		    		<div class="order-info-brief-icon ">
+		    		<div class="order-info-brief-icon">
 						<a href="#" data-role="button" data-icon="carat-d" data-iconpos="notext" onclick="app.showDetails(this)"></a>
 					</div>
-		    		<div style="margin-top:5px">订单编号: <span data-bind="text:code"></span></div>
-		    		<div>日期: <span data-bind="text:shipdate"></span></div>
+		    		<div style="margin-top:5px">订单编号: <span data-bind="text:orderId"></span></div>
+		    		<div>日期: <span data-bind="text:orderDate"></span></div>
 		    		<div>发货人: <span data-bind="text:consignor"></span></div>
-		    		<div>从 <span data-bind="text:fromcity"></span> 到 <span data-bind="text:tocity"></span></div>
+		    		<div>从 <span data-bind="text:send_address.city"></span> 到 <span data-bind="text:shipping_address.city"></span></div>
 		    	</div>
 			</div>
 			<div class="details" style="display:none">
@@ -46,15 +48,15 @@
 					<div class="order-info-details-icon">
 						<a href="#" data-role="button" data-icon="carat-u" data-iconpos="notext" onclick="app.hideDetails(this)"></a>
 					</div>
-		    		<div class="blue-strong-head">订单编号: <span data-bind="text:code">BX8739473</span></div>
+		    		<div class="blue-strong-head">订单编号: <span data-bind="text:orderId">BX8739473</span></div>
 		    		<div>发货人姓名: <span data-bind="text:consignor"></span></div>
-		    		<div>货物类型: <span data-bind="text:cargotype"></span></div>
-		    		<div>发货时间: <span data-bind="text:shipdate"></span></div>
-		    		<div>到货时间: <span data-bind="text:deliverydate"></span></div>
+		    		<div>货物类型: <span data-bind="text:type"></span></div>
+		    		<div>发货时间: <span data-bind="text:ship_date"></span></div>
+		    		<div>到货时间: <span data-bind="text:arrival_date"></span></div>
 		    		<div>货物重量: <span data-bind="text:weight"></span>kg</div>
 		    		<div>发货体积: <span data-bind="text:volume"></span>立方</div>
-		    		<div>发货地址: <span data-bind="text:shippingaddress"></span></div>
-		    		<div>送货地址: <span data-bind="text:deliveryaddress"></span></div>
+		    		<div>发货地址: <span data-bind="text:send_address.city+send_address.address"></span></div>
+		    		<div>送货地址: <span data-bind="text:shipping_address.city+shipping_address.address"></span></div>
 		    	</div>
 		    	<div class="ui-grid-b">
 		    		<div class="ui-block-a">
@@ -84,9 +86,9 @@
 					<img style="width:35px;height:35px" src="" alt=""></img>
 				</div>
 				<div style="float:left;margin-left:15px">
-					<div><strong>车牌号: </strong> <span data-bind="text:platenum"></span></div>
-					<div><strong>驾驶员: </strong> <span data-bind="text:driver"></span></div>
-					<div style="color:#FF6A6A">价格: <span data-bind="text:price">500</span>元</div>
+					<div><strong>车牌号: </strong> <span data-bind="text:license_plate_number"></span></div>
+					<div><strong>驾驶员: </strong> <span data-bind="text:name"></span></div>
+					<div style="color:#FF6A6A">价格: <span data-bind="text:name">500</span>元</div>
 				</div>
 				<div style="float:right;width=120px"></div>
 				<div style="clear:both"></div>
