@@ -17,20 +17,11 @@
  * under the License.
  */
  var waybills = {
-            pushedOrders:[],
-            submitOrders:[],
-            confirmOrders:[],
-            completeOrders:[]
+            pushedOrders:ko.observableArray([]),
+            submitOrders:ko.observableArray([]),
+            confirmOrders:ko.observableArray([]),
+            completeOrders:ko.observableArray([])
         };
-
-var viewModel = function(pushed, submited,confirm,complete){
-                
-        this.pushedOrders= ko.observableArray(pushed);
-        this.submitOrders= ko.observableArray(submited);
-        this.confirmOrders= ko.observableArray(confirm);
-        this.completeOrders= ko.observableArray(complete);
-
-    };
 
 var app = {
   onLoad:function() {
@@ -64,16 +55,41 @@ var app = {
          
         var jsonStr = '{"Action":"OrderItems","status":0,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
         var url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
-        
         commonJS.get(url,function(text){        
             waybills.pushedOrders = text.items;
-            for(var i in waybills.pushedOrders)
-            {
-                var order = waybills.pushedOrders[i];
-                order.responsers = ko.observableArray();
-            }
         });
-        alert(JSON.stringify(waybills.pushedOrders));
+
+        jsonStr = '{"Action":"OrderItems","status":1,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
+        url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
+        commonJS.get(url,function(text){        
+            waybills.submitOrders = text.items;
+        });
+
+        jsonStr = '{"Action":"OrderItems","status":2,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
+        url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
+        commonJS.get(url,function(text){        
+            waybills.confirmOrders = text.items;
+        });
+
+        jsonStr = '{"Action":"OrderItems","status":3,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
+        url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;  
+        commonJS.get(url,function(text){        
+            waybills.completeOrders = text.items;
+        });
+
+        for(var i in waybills.pushedOrders){
+       
+            var order = waybills.pushedOrders[i];
+            order.responsers = ko.observableArray();
+            jsonStr= {"Action":"HMList","Token":"07b27a882cc721a9207250f1b6bd2868","parameter":{"orderId":order.orderId,"page":1}};
+            url = "http://112.124.122.107/Applications/web/?data=" + JSON.stringify(jsonStr);
+            commonJS.get(url,function(text){  
+                if (text.items!=null){
+                    waybills.pushedOrders[i].responsers = text.items;
+                }
+            });
+        }
+            
         ko.applyBindings(waybills);
         $('body').trigger("create");
 
@@ -81,28 +97,8 @@ var app = {
 
     showDetails:function(btn){
         var $orderblk = $(btn).parents(".order-info-block");
-        var orderId = 1;
-        alert(orderId);
-        var jsonStr= {"Action":"HMList","Token":"07b27a882cc721a9207250f1b6bd2868","parameter":{"orderId":orderId,"page":1}};
-        var url = "http://112.124.122.107/Applications/web/?data=" + JSON.stringify(jsonStr);
-        commonJS.get(url,function(text){  
-            alert(".length");
-            if (text.items!=null){
-                for(var i=0; i<waybills.pushedOrders.length; i++){  
-                    if (waybills.pushedOrders[i].orderId == orderId) {
-                        alert(waybills.pushedOrders.length);
-                        waybills.pushedOrders[i].responsers.removeAll();
-                        for(var i in text.items)
-                        {
-                            waybills.pushedOrders[i].responsers.push(text.items[i]);
-                        }
-                    }
-                }      
-            }
-            viewModel(waybills.pushedOrders);
-            $orderblk.find(".brief").hide();
-            $orderblk.find(".details").show();
-        });
+        $orderblk.find(".brief").hide();
+        $orderblk.find(".details").show();     
     },
 
     // Update DOM on a Received Event

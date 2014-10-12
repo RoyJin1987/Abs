@@ -16,8 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+ var waybills = {
+            pushedOrders:ko.observableArray([]),
+            cancelOrders:ko.observableArray([]),
+            confirmOrders:ko.observableArray([]),
+            completeOrders:ko.observableArray([])
+        };
+
 var app = {
-  onLoad:function() {
+    onLoad:function() {
 
         if (!window.device) {
             $(document).ready(this.onDeviceReady);
@@ -25,7 +32,16 @@ var app = {
             document.addEventListener('deviceready', this.onDeviceReady, false);
         }
 
-  },
+    },
+
+    // Application Constructor
+    test: function(btn) {
+        // var $orderblk = $(btn).parents(".order-info-block");
+        // $orderblk.find(".brief").show();
+        // $orderblk.find(".details").hide();
+        // alert(orderId.id);
+    },
+
     // Application Constructor
     initialize: function() {
         this.bindEvents();
@@ -37,6 +53,7 @@ var app = {
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
+
     // deviceready Event Handler
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
@@ -44,227 +61,63 @@ var app = {
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
         //some test data
-        var orders = {
-            pushedOrders:[{
-                code:"BX79873934",
-                consignor:"张三",
-                cargotype:"食品",
-                fromcity:"上海",
-                tocity:"苏州",
-                shipdate:"2014/10/04",
-                deliverydate:"2014/10/06",
-                weight:"500",
-                volume:"1.5",
-                shippingaddress:"上海外高桥保税区",
-                deliveryaddress:"苏州科技园",
-                responsers:[{
-                    platenum:"苏ES7873",
-                    driver:"Roy",
-                    price:"500",
-                    level:"4.5",
-                    img:""
-                },{
-                    platenum:"沪A78979",
-                    driver:"Kevin",
-                    price:"480",
-                    level:"3.5",
-                    img:""
-                }]
-            },{
-                code:"BX79873935",
-                consignor:"张三",
-                cargotype:"食品",
-                fromcity:"上海",
-                tocity:"苏州",
-                shipdate:"2014/10/04",
-                deliverydate:"2014/10/06",
-                weight:"500",
-                volume:"1.5",
-                shippingaddress:"上海外高桥保税区",
-                deliveryaddress:"苏州科技园",
-                responsers:[{
-                    platenum:"苏ES7873",
-                    driver:"Roy",
-                    price:"500",
-                    level:"4.5",
-                    img:""
-                },{
-                    platenum:"沪A78979",
-                    driver:"Kevin",
-                    price:"480",
-                    level:"3.5",
-                    img:""
-                }]
-            }],
-            cancelOrders:[{
-                code:"BX79873934",
-                consignor:"张三",
-                cargotype:"食品",
-                fromcity:"无锡",
-                tocity:"苏州",
-                shipdate:"2014/10/04",
-                deliverydate:"2014/10/06",
-                weight:"500",
-                volume:"1.5",
-                shippingaddress:"上海外高桥保税区",
-                deliveryaddress:"苏州科技园",
-                responsers:[{
-                    platenum:"苏ES7873",
-                    driver:"Roy",
-                    price:"500",
-                    level:"4.5",
-                    img:""
-                },{
-                    platenum:"沪A78979",
-                    driver:"Kevin",
-                    price:"480",
-                    level:"3.5",
-                    img:""
-                }]
-            },{
-                code:"BX79873935",
-                consignor:"张三",
-                cargotype:"食品",
-                fromcity:"杭州",
-                tocity:"苏州",
-                shipdate:"2014/10/04",
-                deliverydate:"2014/10/06",
-                weight:"500",
-                volume:"1.5",
-                shippingaddress:"上海外高桥保税区",
-                deliveryaddress:"苏州科技园",
-                responsers:[{
-                    platenum:"苏ES7873",
-                    driver:"Roy",
-                    price:"500",
-                    level:"4.5",
-                    img:""
-                },{
-                    platenum:"沪A78979",
-                    driver:"Kevin",
-                    price:"480",
-                    level:"3.5",
-                    img:""
-                }]
-            }],
-            confirmOrders:[{
-                code:"BX79873934",
-                consignor:"张三",
-                cargotype:"食品",
-                fromcity:"上海",
-                tocity:"苏州",
-                shipdate:"2014/10/04",
-                deliverydate:"2014/10/06",
-                weight:"500",
-                volume:"1.5",
-                shippingaddress:"上海外高桥保税区",
-                deliveryaddress:"苏州科技园",
-                responsers:[{
-                    platenum:"苏ES7873",
-                    driver:"Roy",
-                    price:"500",
-                    level:"4.5",
-                    img:""
-                },{
-                    platenum:"沪A78979",
-                    driver:"Kevin",
-                    price:"480",
-                    level:"3.5",
-                    img:""
-                }]
-            },{
-                code:"BX79873935",
-                consignor:"张三",
-                cargotype:"食品",
-                fromcity:"上海",
-                tocity:"苏州",
-                shipdate:"2014/10/04",
-                deliverydate:"2014/10/06",
-                weight:"500",
-                volume:"1.5",
-                shippingaddress:"上海外高桥保税区",
-                deliveryaddress:"苏州科技园",
-                responsers:[{
-                    platenum:"苏ES7873",
-                    driver:"Roy",
-                    price:"500",
-                    level:"4.5",
-                    img:""
-                },{
-                    platenum:"沪A78979",
-                    driver:"Kevin",
-                    price:"480",
-                    level:"3.5",
-                    img:""
-                }]
-            }],
-            completeOrders:[{
-                code:"BX79873934",
-                consignor:"张三",
-                cargotype:"食品",
-                fromcity:"上海",
-                tocity:"苏州",
-                shipdate:"2014/10/04",
-                deliverydate:"2014/10/06",
-                weight:"500",
-                volume:"1.5",
-                shippingaddress:"上海外高桥保税区",
-                deliveryaddress:"苏州科技园",
-                responsers:[{
-                    platenum:"苏ES7873",
-                    driver:"Roy",
-                    price:"500",
-                    level:"4.5",
-                    img:""
-                },{
-                    platenum:"沪A78979",
-                    driver:"Kevin",
-                    price:"480",
-                    level:"3.5",
-                    img:""
-                }]
-            },{
-                code:"BX79873935",
-                consignor:"张三",
-                cargotype:"食品",
-                fromcity:"上海",
-                tocity:"苏州",
-                shipdate:"2014/10/04",
-                deliverydate:"2014/10/06",
-                weight:"500",
-                volume:"1.5",
-                shippingaddress:"上海外高桥保税区",
-                deliveryaddress:"苏州科技园",
-                responsers:[{
-                    platenum:"苏ES7873",
-                    driver:"Roy",
-                    price:"500",
-                    level:"4.5",
-                    img:""
-                },{
-                    platenum:"沪A78979",
-                    driver:"Kevin",
-                    price:"480",
-                    level:"3.5",
-                    img:""
-                }]
-            }]
-        };
-        ko.applyBindings(orders);
+         
+        var jsonStr = '{"Action":"OrderItems","status":0,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
+        var url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
+        commonJS.get(url,function(text){        
+            waybills.pushedOrders = text.items;
+        });
+
+        jsonStr = '{"Action":"OrderItems","status":1,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
+        url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
+        commonJS.get(url,function(text){        
+            waybills.cancelOrders = text.items;
+        });
+
+        jsonStr = '{"Action":"OrderItems","status":2,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
+        url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
+        commonJS.get(url,function(text){        
+            waybills.confirmOrders = text.items;
+        });
+
+        jsonStr = '{"Action":"OrderItems","status":3,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
+        url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;  
+        commonJS.get(url,function(text){        
+            waybills.completeOrders = text.items;
+        });
+
+        for(var i in waybills.pushedOrders){
+       
+            var order = waybills.pushedOrders[i];
+            order.responsers = ko.observableArray();
+            jsonStr= {"Action":"HMList","Token":"07b27a882cc721a9207250f1b6bd2868","parameter":{"orderId":order.orderId,"page":1}};
+            url = "http://112.124.122.107/Applications/web/?data=" + JSON.stringify(jsonStr);
+            commonJS.get(url,function(text){  
+                if (text.items!=null){
+                    waybills.pushedOrders[i].responsers = text.items; 
+                    waybills.pushedOrders[i].showModify = false;
+                    waybills.pushedOrders[i].showCancel = true;
+                }
+            });
+        }
+            
+        ko.applyBindings(waybills);
         $('body').trigger("create");
 
     },
+
+    showDetails:function(btn){
+        var $orderblk = $(btn).parents(".order-info-block");
+        $orderblk.find(".brief").hide();
+        $orderblk.find(".details").show();     
+    },
+
     // Update DOM on a Received Event
     receivedEvent: function(id) {
 
         console.log('Received Event: ' + id);
     },
-    showDetails:function(btn){
-        var $orderblk = $(btn).parents(".order-info-block");
-        $orderblk.find(".brief").hide();
-        $orderblk.find(".details").show();
-
-    },
+    
     hideDetails:function(btn){
         var $orderblk = $(btn).parents(".order-info-block");
         $orderblk.find(".brief").show();
