@@ -232,7 +232,7 @@ var commonJS = {
 		                callbacks(result);
 		            },
 		            error: function (request, error) {
-		                alert(error);
+		                //alert(error.);
 		            }
 		        });
 				
