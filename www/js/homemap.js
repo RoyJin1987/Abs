@@ -3,6 +3,9 @@
  * app首页
  */
 var app = {
+  serverUrl: "http://112.124.122.107/Applications/web/?data=",
+  models:[],
+  currentModel:"",
 	position:null,//当前位置
   map:null,//百度地图对象
   onLoad:function() {
@@ -28,6 +31,7 @@ var app = {
     // alert('haha');
   	//app.loadNavigator();
     app.loadMap();
+    app.getModels();
   },
 
  	//加载定位
@@ -51,8 +55,7 @@ var app = {
          } else {
             app.loadMap();
          };
-         app.addMaker(app.position.coords,true);
-         
+         app.addMaker(app.position.coords,true);    
       }
 
     	// onError Callback receives a PositionError object
@@ -61,7 +64,6 @@ var app = {
     	    alert('code: '    + error.code    + '\n' +
     	          'message: ' + error.message + '\n');
     	}
-
       // var option = { maximumAge: 10*60*1000, timeout: 2*60*1000, enableHighAccuracy: false }
       // navigator.geolocation.getCurrentPosition(succ, err, option);
 
@@ -112,8 +114,7 @@ var app = {
     };
   },
 
-  addMaker:function(coords,isAnimated)
-  {
+  addMaker:function(coords,isAnimated)  {
     if (!coords) { return;};
     if (app.map) {
       //var gpsPoint = new BMap.Point(coords.longitude, coords.latitude);
@@ -138,35 +139,33 @@ var app = {
       });
     }
   },
-
   convertCoordsGPStoBaidu : function(coords,callback) {
-    // var strCoords = coords.latitude + ',' + coords.longitude;
-    // $.ajax({
-    //   type:'GET',
-    //   url:'http://api.map.baidu.com/geoconv/v1/',
-    //   data: { coords:strCoords , ak:"1Gd2L48StdySWNQEgsPAjuwH"},
-    //   dataType:'jsonp',
-    //   jsonp:'callback',
-    //   // jsonpCallback:'done'
-    // }).done(function(data) {
-    //   alert('Convert coords got:'+ JSON.stringify(data));
-    //   if (data) {
-    //     if (data.status === 0) {
-    //       var arrCoords = data.result;
-    //       if (arrCoords.length >0) {
-    //         var coordsBaidu =  arrCoords[0];
-    //         var positionBaidu =  new BMap.Point(coordsBaidu.y,coordsBaidu.x);
-    //         callback(positionBaidu);
-    //       }
-    //     } else {
-    //       var positionBaidu =  new BMap.Point(coords.longitude,coords.latitude);
-    //       callback(positionBaidu);
-    //     }
-
-    //   };
-    // });
     var gpsPoint =  new BMap.Point(coords.longitude,coords.latitude);
     BMap.Convertor.translate(gpsPoint,0,callback); 
      
-  }
+  },
+
+  //获取车型
+  getModels:function()  {
+    var jsonStr = '{"Action":"getModels"}';
+    var self = this;
+    var url =  self.serverUrl + jsonStr;
+    commonJS.get(url,function(data){ 
+      alert(JSON.stringify(data));
+      if(data.items)
+      {
+        for(var i in data.items)
+        {
+          var model = data.items[i];
+          model.select = function()
+          {
+            var self = this;
+            app.currentModel = self.id;
+          }
+        }
+      }
+      self.models = data.items;
+      ko.applyBindings(self.models);
+    });
+  },
 };

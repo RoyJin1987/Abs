@@ -18,32 +18,36 @@
 	<script type="text/javascript" src="http://api.map.baidu.com/api?ak=tUoYt61wcnunrkdGksApMwQt&v=2.0"></script>
 	<script type="text/javascript" src="js/homemap.js"></script> 
 	<script type="text/javascript" src="js/baidu-map-convert.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
 </head>  
 <body onload="app.onLoad()">  
 	<div data-role="page">  
-	  <div data-role="header" data-position="fixed" class="header-extra-height">
-	    <a href="#" data-icon="home" data-iconpos="center" class="big"></a>
-	    <h1>欢迎访问我的主页</h1>
+	  <div data-role="header" data-position="fixed" data-tap-toggle="false" class="header-extra-height">
+	    <a href="#" data-icon="home" data-iconpos="notext"></a>
+	    <h1>首页</h1>
 	  </div>
 	  
-	  <div data-role="content" id="allmap" style="height:800px">
-<!-- 	  	<div id="allmap" style="height:600px">
-	  	</div> -->
+	  <div data-role="content" id="allmap" style="height:800px" style="position:relative">
 	  </div>
-	  <div data-role="footer" data-position="fixed">
+	  <div style="position:fixed;bottom:60px;left:0;right:0;top:auto;margin:0 auto;text-align:center"> &nbsp;
+	  		<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" data-bind="foreach: app.models">
+			    <input type="radio" name="radio-choice-h-6" id="radio-choice-h-6a" checked="checked" data-bind="value:id,click:select" >
+			    <label for="radio-choice-h-6a" data-bind="text:name"></label>
+<!-- 			    <input type="radio" name="radio-choice-h-6" id="radio-choice-h-6b" value="off">
+			    <label for="radio-choice-h-6b">货的类</label>
+			    <input type="radio" name="radio-choice-h-6" id="radio-choice-h-6c" value="other">
+			    <label for="radio-choice-h-6c">卡车类</label> -->
+			</fieldset>
+	  </div>
+
+	  <div data-role="footer" data-position="fixed" data-tap-toggle="false">
 	  	<div data-role="navbar">
 		   <ul>
-	        <li><a data-ajax="false" href="#" data-icon="info">帮我送</a></li>
-	        <li><a data-ajax="false" href="#" data-icon="info">消息</a></li>
-	        <li><a data-ajax="false" href="#" data-icon="info">我要送</a></li>
+	        <li><a data-ajax="false" href="#" data-icon="info" data-iconpos="left">帮我送</a></li>
+	        <li><a data-ajax="false" href="#" data-icon="info" data-iconpos="notext">消息</a></li>
+	        <li><a data-ajax="false" href="#" data-icon="info" data-iconpos="right">我要送</a></li>
 	      </ul>
 	     </div>
-<!-- 	     <div class="ui-grid-b">
-	     	<div class="ui-block-a"><a data-ajax="false" href="#" class="big">帮我送</a></div>
-	     	<div class="ui-block-b"><a data-ajax="false" href="#" data-theme='a' class="big">info</a></div>
-	     	<div class="ui-block-c"><a data-ajax="false" href="#" class="big">我要送</a></div>
-	  </div> -->
-	  
 	</div><!-- /page -->  
 </body>  
 </html>
