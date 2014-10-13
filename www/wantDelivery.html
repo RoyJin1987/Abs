@@ -1,0 +1,160 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<style type="text/css">
+		body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;}
+		#golist {display: none;}
+		@media (max-device-width: 780px){#golist{display: block !important;}}
+		.order-info-block {border: 1px solid #66CCFF; border-radius:5px; margin:10px 10px 0 0; padding:5px 10px;}
+		.brief{height: 90px;}
+		.order-info-content {padding-right: 40px;position: relative;}
+		.order-info-brief-icon {width: 30px;height:30px;right: 5px;top:20px; position: absolute;}
+		.details{}
+		.order-info-details-content {}
+		.order-info-details-icon {width: 30px;height:30px;right: 2px;top:-5px; position: absolute;}
+		.responser-list{}
+		.responser-list-item{border-radius:5px;background-color:#E8E8E8;margin-bottom: 10px;padding: 3px}
+		.blue-strong-head{color: #00BFFF; font-size: 1.2em;}
+		.hide{display: none;}
+	</style>
+	<title>html app</title>
+	<link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" />
+<!-- 	<link href="css/main.css" rel="stylesheet" type="text/css"> -->
+	<link href="css/buttons.css" rel="stylesheet" type="text/css">
+	<script src="js/jquery.js"></script>
+  	<script src="js/jquery.mobile-1.4.4.js"></script>
+  	<script src="js/jquery.tmpl.min.js"></script> 
+  	<script src="js/knockout-3.2.0.js"></script> 
+  	<script src="js/json2.js"></script>
+  	<script type="text/javascript" src="js/common.js"></script>
+  	<script type="text/javascript" src="js/wantDelivery.js"></script>
+	<script type="text/html" id="orders-template" >
+		<div class="order-info-block">
+			<div class="brief">
+		    	<div class="order-info-content">
+		    		<div class="order-info-brief-icon">
+						<a href="#" data-role="button" data-icon="carat-d" data-iconpos="notext" onclick="app.showDetails(this)"></a>
+					</div>
+		    		<div style="margin-top:5px">订单编号: <span data-bind="text:orderId"></span></div>
+		    		<div>日期: <span data-bind="text:orderDate"></span></div>
+		    		<div>发货人: <span data-bind="text:consignor"></span></div>
+		    		<div>从 <span data-bind="text:send_address.city"></span> 到 <span data-bind="text:shipping_address.city"></span></div>
+		    	</div>
+			</div>
+			<div class="details" style="display:none">
+				<div class="order-info-content">
+					<div class="order-info-details-icon">
+						<a href="#" data-role="button" data-icon="carat-u" data-iconpos="notext" onclick="app.hideDetails(this)"></a>
+					</div>
+		    		<div class="blue-strong-head">订单编号: <span data-bind="text:orderId">BX8739473</span></div>
+		    		<div>发货人姓名: <span data-bind="text:consignor"></span></div>
+		    		<div>货物类型: <span data-bind="text:type"></span></div>
+		    		<div>车辆温层: <span data-bind="text:wenceng"></span></div>
+		    		<div>发货时间: <span data-bind="text:ship_date"></span></div>
+		    		<div>到货时间: <span data-bind="text:arrival_date"></span></div>
+		    		<div>货物重量: <span data-bind="text:weight"></span>kg</div>
+		    		<div>发货体积: <span data-bind="text:volume"></span>立方</div>
+		    		<div>发货地址: <span data-bind="text:send_address.city+send_address.address"></span></div>
+		    		<div>送货地址: <span data-bind="text:shipping_address.city+shipping_address.address"></span></div>
+		    		<div style="color:#FF6A6A">合计运费: <span data-bind="text:bid_item.city+bid_item.address">0</span>元</div>
+		    		<div>（运输费 <span data-bind="text:bid_item.freight"></span> ，搬运费 <span data-bind="text:bid_item.truckage"></span> ，小费 <span data-bind="text:bid_item.tipping"></span>）</div>
+		    		<div>附加信息: <span data-bind="text:additional_information"></span></div>
+		    		<div>语音留言: <a data-role="button" data-icon="flat-volume" data-iconpos="notext"></a></div>
+		    	</div>
+		    	
+		    	<hr style="background-color:#D3D3D3;border:0;height:1px;">
+		    	<div class="ui-grid-b">
+		    		<div class="ui-block-a"></div>
+		    		<div class="ui-block-b">
+		    			<a data-role="button" data-bind="click:app.grabOrder(orderId)">立即抢单</a>
+		    		</div>
+		    	</div>
+			</div>
+		</div>
+	</script>
+	<script type="text/html" id="intercityOrders-template" >
+		<div class="order-info-block">
+			<div class="brief">
+		    	<div class="order-info-content">
+		    		<div class="order-info-brief-icon">
+						<a href="#" data-role="button" data-icon="carat-d" data-iconpos="notext" onclick="app.showDetails(this)"></a>
+					</div>
+		    		<div style="margin-top:5px">订单编号: <span data-bind="text:orderId"></span></div>
+		    		<div>日期: <span data-bind="text:orderDate"></span></div>
+		    		<div>发货人: <span data-bind="text:consignor"></span></div>
+		    		<div>从 <span data-bind="text:send_address.city"></span> 到 <span data-bind="text:shipping_address.city"></span></div>
+		    	</div>
+			</div>
+			<div class="details" style="display:none">
+				<div class="order-info-content">
+					<div class="order-info-details-icon">
+						<a href="#" data-role="button" data-icon="carat-u" data-iconpos="notext" onclick="app.hideDetails(this)"></a>
+					</div>
+		    		<div class="blue-strong-head">订单编号: <span data-bind="text:orderId">BX8739473</span></div>
+		    		<div>发货人姓名: <span data-bind="text:consignor"></span></div>
+		    		<div>货物类型: <span data-bind="text:type"></span></div>
+		    		<div>车辆温层: <span data-bind="text:wenceng"></span></div>
+		    		<div>发货时间: <span data-bind="text:ship_date"></span></div>
+		    		<div>到货时间: <span data-bind="text:arrival_date"></span></div>
+		    		<div>货物重量: <span data-bind="text:weight"></span>kg</div>
+		    		<div>发货体积: <span data-bind="text:volume"></span>立方</div>
+		    		<div>发货地址: <span data-bind="text:send_address.city+send_address.address"></span></div>
+		    		<div>送货地址: <span data-bind="text:shipping_address.city+shipping_address.address"></span></div>
+		    		<div>附加信息: <span data-bind="text:additional_information"></span></div>
+		    		<div>语音留言: <a data-role="button" data-icon="flat-volume" data-iconpos="notext"></a></div>
+		    	</div>
+		    	<hr style="background-color:#D3D3D3;border:0;height:1px;">
+		    	<div class="ui-grid-b">
+		    		<div class="ui-block-a"></div>
+		    		<div class="ui-block-b">
+		    			<a data-role="button" href="modifyOrder.html" data-ajax="false" data-bind="click:app.grabintercityOrder(orderId)">电话抢单</a>
+		    		</div>
+		    	</div>
+		    	</div>
+		    	
+			</div>
+		</div>
+	</script>
+	<script type="text/javascript" src="cordova.js"></script>
+</head>  
+<body onload="app.onLoad()">
+	<div data-role="page" data-theme="f">  
+	  <div data-role="header" data-position="fixed" class="header-extra-height">
+	    <a href="userCenter.html" data-role="button" data-ajax="false" data-icon="back">返回</a>
+	    <h1>我来送</h1>
+	    <a href="#" data-role="button" data-icon="info" data-iconpos="notext">  </a>
+	  </div>	  
+	  <div data-role="content">
+	  	<div data-role="tabs">
+		  	
+
+			<table style="width:100%">
+				<tr>
+					<td style="width:60%">
+						<div data-role="navbar">
+		      				<ul>
+		        				<li><a href="#push" class="ui-btn-active" data-ajax="true" >同城送</a></li>
+		        				<li><a href="#cancel" data-ajax="true">城际送</a></li>
+		      				</ul>
+		    			</div>
+		    		</td>
+		    		<td style="width:10%" ></td>
+					<td style="width:30%" >
+        				<div>
+         					 <a href="#" data-icon="flat-volume" data-iconpos="right" data-theme="b" data-role="button">开始播放</a>
+        				</div>
+      				</td>
+				</tr>
+			</table>
+		    <div id="push" class="ui-content" data-bind="template: { name: 'orders-template', foreach: orders, as: 'order' }">
+		    </div>
+		    <div id="cancel" class="ui-content" data-bind="template: { name: 'intercityOrders-template', foreach: intercityOrders, as: 'order' }">
+		    </div>
+		</div>
+	</div>
+</div>
+</body>  
+</html>
+
