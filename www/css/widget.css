@@ -1,0 +1,20 @@
+
+/*我的车队*/
+.no-border-block {border: none; margin: 10px 5px; position: relative;padding-left: 70px;padding-right:155px}
+.right-button-group-block{float: right;width: 160px;position: absolute;right: -10px;top:-15px;}
+.right-button-group-block > div{padding-right: 3px}
+.right-button-group-block a,.right-button-group-block button{font-size: .7em}
+
+
+/*我的运单/订单*/
+.order-info-block {border: 1px solid #66CCFF; border-radius:5px; margin:10px 10px 0 0; padding:5px 10px;}
+.brief{height: 90px;}
+.order-info-content {padding-right: 40px;position: relative;}
+.order-info-brief-icon {width: 30px;height:30px;right: 5px;top:20px; position: absolute;}
+.details{}
+.order-info-details-content {}
+.order-info-details-icon {width: 30px;height:30px;right: 2px;top:-5px; position: absolute;}
+.responser-list{}
+.responser-list-item{border-radius:5px;background-color:#E8E8E8;margin-bottom: 10px;padding: 3px}
+.blue-strong-head{color: #00BFFF; font-size: 1.2em;}
+.hide{display: none;}

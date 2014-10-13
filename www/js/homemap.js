@@ -4,9 +4,11 @@
  */
 var app = {
   serverUrl: "http://112.124.122.107/Applications/web/?data=",
-  models:[],
+  models:[],//车型
+  nVehicles:[],//附近车辆
   currentModel:"",
-	position:null,//当前位置
+	position:null,//当前Gps位置
+  baiduPosition:null,//当前百度坐标
   map:null,//百度地图对象
   onLoad:function() {
     	if (!window.device) {
@@ -32,6 +34,7 @@ var app = {
   	//app.loadNavigator();
     app.loadMap();
     app.getModels();
+    app.getNVehicles(6);//默认获取两轮车
   },
 
  	//加载定位
@@ -55,7 +58,7 @@ var app = {
          } else {
             app.loadMap();
          };
-         app.addMaker(app.position.coords,true);    
+         app.addMaker(app.position.coords,true,null,"我的位置");    
       }
 
     	// onError Callback receives a PositionError object
@@ -95,7 +98,7 @@ var app = {
         });                  // 初始化地图,设置中心点坐标和地图级别。
         //this.map.addControl(new BMap.ZoomControl());      //添加地图缩放控件
         //var p = {longitude:31.209,latitude:121.595};
-        app.addMaker(p);
+        app.addMaker(p,true,null,"我的位置");  
     }
 
  	},
@@ -114,7 +117,8 @@ var app = {
     };
   },
 
-  addMaker:function(coords,isAnimated)  {
+
+  addMaker:function(coords,isAnimated,opts,title)  {
     if (!coords) { return;};
     if (app.map) {
       //var gpsPoint = new BMap.Point(coords.longitude, coords.latitude);
@@ -123,13 +127,16 @@ var app = {
           alert(JSON.stringify(point));
           var marker = new BMap.Marker(point);  //创建标注
           app.map.addOverlay(marker);    // 将标注添加到地图中
-          var opts = {
-            width : 100,    // 信息窗口宽度
-            height: 60,     // 信息窗口高度
-            title : "我的位置", // 信息窗口标题
-            enableAutoPan : true //自动平移
-          }
-          var infoWindow = new BMap.InfoWindow("我的位置", opts);  // 创建信息窗口对象
+          if (!opts) {
+              opts = {
+              width : 100,    // 信息窗口宽度
+              height: 60,     // 信息窗口高度
+              title : title?title:"车辆位置", // 信息窗口标题
+              enableAutoPan : true //自动平移
+            }
+
+          };
+          var infoWindow = new BMap.InfoWindow(title?title:"车辆位置", opts);  // 创建信息窗口对象
           marker.addEventListener("click", function(){          
             app.map.openInfoWindow(infoWindow,point); //开启信息窗口
           });
@@ -166,6 +173,48 @@ var app = {
       }
       self.models = data.items;
       ko.applyBindings(self.models);
+      $("body").trigger("create");
     });
   },
+
+  getNVehicles:function(model) {
+    if (!app.baiduPosition) return;
+    var param = {
+      Action:"NVehicles",
+      models:model,
+      parameter:{
+        latitude:app.baiduPosition.latitude,
+        longitude:app.baiduPosition.latitude,
+        page:1
+      }
+    }
+    var jsonStr = JSON.stringify(param);
+    var self = this;
+    var url =  self.serverUrl + jsonStr;
+    commonJS.get(url,function(data){ 
+      alert(JSON.stringify(data));
+      self.nVehicles = data.items;
+      for(var i in self.nVehicles)
+      {
+        var vehicle = self.nVehicles[i];
+        var opts = {
+              width : 100,    // 信息窗口宽度
+              height: 60,     // 信息窗口高度
+              title : "车牌号："+vehicle.license_plate_number, // 信息窗口标题
+              enableAutoPan : true //自动平移
+            };
+         //车辆位置为0,随机取一点
+          var bounds = app.map.getBounds();
+          var sw = bounds.getSouthWest();
+          var ne = bounds.getNorthEast();
+          var lngSpan = Math.abs(sw.lng - ne.lng);
+          var latSpan = Math.abs(ne.lat - sw.lat);
+          var point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
+          app.addMaker(point,false,opts,vehicle.name);  
+              
+      }
+      // $("body").trigger("create");
+    });
+
+  }
 };
