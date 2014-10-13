@@ -16,6 +16,13 @@
 	<script src="js/jquery.js"></script>
 	<script src="js/jquery.mobile-1.4.0-rc.1.js"></script> 
 	<script src="js/common.js"></script>
+	<style type="text/css">
+    .ui-listview.ui-icon-arrow-r {
+    background: transparent url(images/arrow_right.png) center center no-repeat !important;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;}
+    </style>
 	<script >  
 		/**  
 		这里为listview的ul标签事先设置一个模板，然后与后台的数据key相对应  
@@ -33,14 +40,14 @@
 			var viewObj=$("#messageList");  
 
 			/*2、循环遍历数据，并克隆模板，将数据插入到模板dbField相对应的节点中，然后增加到listview上*/  
-			for(var i=0; i<5; i++){  
-				var messageId= 1;
+			// for(var i=0; i<5; i++){  
+			// 	var messageId= 1;
 				
-				innerHtml=innerHtml
-				+"<li><a href='' messageId='"+messageId+"'><h2>加入车队</h2><p>XXX邀请您加入他的车队</p></a></li>";
-			}  
-			alert(innerHtml);
-			viewObj.append(innerHtml);
+			// 	innerHtml=innerHtml
+			// 	+"<li style=list-style:none;background:none;><a href='' messageId='"+messageId+"'><h2>加入车队</h2><p>XXX邀请您加入他的车队</p></a></li>";
+			// }  
+			
+			// viewObj.append(innerHtml);
 			//3、刷新 以上二种都可以刷新数据  
 			viewObj.listview("refresh");  
 		}
@@ -94,8 +101,12 @@
 			<h1>消息中心</h1>
 			<a href="#" data-role="button" data-iconpos="notext" data-icon="search"></a>
 		</div>
-		<div data-role="content">
-			<ul data-role='listview' data-inset="true" id="messageList" data-theme="c">  
+		<div class="uilist" data-role="content">
+			<ul data-role='listview' data-inset="true" id="messageList" class="ui-listview" data-theme="c">  
+				<li style="list-style:none;background:none;">
+					<a href='' messageId='dsfad'>
+						<h2>加入车队</h2>
+						<p>XXX邀请您加入他的车队</p></a></li>
             </ul>  
 		</div>
 	</div>
