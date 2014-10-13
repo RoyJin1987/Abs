@@ -1,0 +1,166 @@
+
+<!DOCTYPE html>  
+<html>  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1">  
+<title>html app</title>  
+    <link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" />
+	<link href="css/main.css" rel="stylesheet" type="text/css">
+	<script src="js/jquery.js"></script>
+	<script src="js/jquery.mobile-1.4.0-rc.1.js"></script> 
+	<script type="text/javascript">
+
+$(document).live('pageshow', function(event, ui){
+
+alert("第二个界面的参数：" + sessionStorage.id);
+
+});
+	onLoad:function() {
+
+       alert("第二个界面的参数：" + orderId);
+
+
+
+};
+
+</script>
+</head>  
+<body onload="onLoad()">  
+	<div data-role="page">  
+		<div data-role="header" data-position="fixed" data-theme="f">
+			<a data-iconpos="left" data-role="button" data-icon="back" data-rel="back" title="Home">返回</a>
+			<h1>订单修改</h1>
+			<a href="#" data-role="button" data-iconpos="notext" data-icon="search"></a>
+		</div>
+	<div data-role="content">
+		<form method="get" action="">
+			<div >
+				<table>
+					<tr>
+						<td style="width:25%"><label for="address">发货地址：</label></td>
+						<td style="width:69%"><input type="text" name="address" id="address" value=""/></td>
+						<td style="width:6%"><a href="#" data-role="button" data-iconpos="notext" data-icon="flat-location" data-theme="f"></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div >
+				<table>
+					<tr>
+						<td style="width:25%"><label for="goodsType">货物类型：</label></td>
+						<td style="width:69%"><input type="text" name="goodsType" id="goodsType" value=""/></td>
+						<td style="width:6%"></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div >
+				<fieldset data-role="controlgroup" data-theme="c">
+					<table>
+						<tr>
+							<td style="width:25%"><label>温层选择：</label></td>
+							<td style="width:69%">
+							
+								<select name="select-choice" id="temperature" data-native-menu="false" data-theme="c">
+									<option value="standard">常温</option>
+									<option value="refrigerate">冷藏</option>
+									<option value="frozen">冷冻</option>
+								</select>
+					
+							</td><td style="width:6%"></td>
+						</tr>
+					</table>
+				</fieldset>
+			</div>
+			<div >
+				<fieldset data-role="controlgroup" data-theme="c">
+					<table>
+						<tr>
+							<td style="width:25%"><label>车型选择：</label></td>
+							<td style="width:69%">
+								<select name="select-choice" id="carType" data-native-menu="false" data-theme="c">
+									<option value="motocar">两轮车</option>
+									<option value="car">小汽车</option>
+									<option value="minibus">面包车</option>
+									<option value="truck">卡车</option>
+								</select>
+							</td><td style="width:6%"></td>
+						</tr>
+					</table>
+				</fieldset>
+			</div>
+			<hr/>
+			<div >
+				<table>
+					<tr>
+						<td style="width:25%"><label for="weight" data-inline="true">货物重量：</label></td>
+						<td style="width:69%"><input type="text" name="weight" id="weight" value="" data-inline="true"></td><td style="width:6%"></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div >
+				<table>
+					<tr>
+						<td style="width:25%"><label for="volume">货物体积：</label></td>
+						<td style="width:69%"><input type="text" name="volume" id="volume" value=""/></td><td style="width:6%"></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div >
+				<table>
+					<tr>
+						<td style="width:25%"><label for="deliveryDate">发货日期：</label></td>
+						<td style="width:69%"><input type="date" name="deliveryDate" id="deliveryDate" value=""/></td><td style="width:6%"></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div >
+				<table>
+					<tr>
+						<td style="width:25%"><label for="receiveDate">到货日期：</label></td>
+						<td style="width:69%"><input type="date" name="receiveDate" id="receiveDate" value=""/></td><td style="width:6%"></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div >
+				<table>
+					<tr>
+						<td style="width:25%"><label for="deliveryAddress">送货地址：</label></td>
+						<td style="width:69%"><input type="text" name="deliveryAddress" id="deliveryAddress" value=""/></td>
+						<td style="width:6%"><a href="#" data-role="button" data-iconpos="notext" data-icon="flat-location" data-theme="f"></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div >
+				<table>
+					<tr>
+						<td style="width:25%"><label for="floor">送货楼层：</label></td>
+						<td style="width:69%"><input type="text" name="floor" id="floor" value=""/></td><td style="width:6%"></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div >
+				<table>
+					<tr>
+						<td style="width:25%"><label for="remark">附加信息：</label></td>
+						<td style="width:69%"><input type="text" name="remark" id="remark" value=""/></td>
+						<td style="width:6%"><a href="#" data-role="button" data-iconpos="notext" data-icon="flat-volume" data-theme="f"></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div  align="center">
+				<a href="#panel" data-role="button" data-theme="f">确认</a>  
+			</div>
+		</form>
+   </div>
+</div><!-- /page -->  
+</body>  
+</html> 

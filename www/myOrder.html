@@ -3,273 +3,217 @@
 <head>  
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-	<meta http-equiv="Access-Control-Allow-Origin" content="*">
 	<style type="text/css">
 		body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;}
 		#golist {display: none;}
 		@media (max-device-width: 780px){#golist{display: block !important;}}
+		.order-info-block {border: 1px solid #66CCFF; border-radius:5px; margin:10px 10px 0 0; padding:5px 10px;}
+		.brief{height: 90px;}
+		.order-info-content {padding-right: 40px;position: relative;}
+		.order-info-brief-icon {width: 30px;height:30px;right: 5px;top:20px; position: absolute;}
+		.details{}
+		.order-info-details-content {}
+		.order-info-details-icon {width: 30px;height:30px;right: 2px;top:-5px; position: absolute;}
+		.responser-list{}
+		.responser-list-item{border-radius:5px;background-color:#E8E8E8;margin-bottom: 10px;padding: 3px}
+		.blue-strong-head{color: #00BFFF; font-size: 1.2em;}
+		.hide{display: none;}
 	</style>
 	<title>html app</title>
-	<link href="css/buttons.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" />
-	<link href="css/main.css" rel="stylesheet" type="text/css">
+<!-- 	<link href="css/main.css" rel="stylesheet" type="text/css"> -->
+	<link href="css/buttons.css" rel="stylesheet" type="text/css">
 	<script src="js/jquery.js"></script>
-	<script src="js/jquery.mobile-1.4.0-rc.1.js"></script> 
-	<script src="javascript/js/jquery.mobile-1.4.0.min.js"></script>
-	<script src="js/common.js"></script>
-	<script >  
-		/**  
-		这里为listview的ul标签事先设置一个模板，然后与后台的数据key相对应  
-		*/  
-		$(function(){  
-			var jsonStr = '{"Action":"OrderItems","status":0,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
-			var url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
-			var viewObj=$("#pushOrderList");  
-			
-			showList(url,viewObj);
-			  
-		});  
-		
-		function showList(url,viewObj){
-			var innerHtml = "";
-			commonJS.get(url,function(text){		
-				ordersInfo.items = text.items;
-	
-				viewObj.empty();
-				/*2、循环遍历数据，并克隆模板，将数据插入到模板dbField相对应的节点中，然后增加到listview上*/  
-				for(var i=0; i<text.items.length; i++){  
-					var orderId= text.items[i].orderId;
-					
-					innerHtml=innerHtml
-					+"<li><a href='' orderId='"+orderId+"'><p>订单编号："
-					+orderId+"</p><p>日期："+text.items[i].orderDate+"</p><p> 发货人:"
-					+text.items[i].consignor+"</p><p>从"+text.items[i].send_address.city+" 到 " + text.items[i].shipping_address.city +"</p></a></li>";
-				}  
-				viewObj.append(innerHtml);
-				//3、刷新 以上二种都可以刷新数据  
-				viewObj.listview("refresh");  
-			});
-		}
-		
-		var ordersInfo = {
-			id: null,
-			items: null
-		}
-			
-		function urnAction(obj){
-			var jsonStr = '{"Action":"OrderItems","status":0,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
-			var viewObj=$("#pushOrderList");  
-			if (obj.id=="btn_cancel"){
-				jsonStr = '{"Action":"OrderItems","status":1,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
-				viewObj=$("#canceledOrderList");  
-			}else if (obj.id=="btn_confirm"){
-				jsonStr = '{"Action":"OrderItems","status":2,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
-				viewObj=$("#confirmedOrderList");  
-			}else if (obj.id=="btn_completed"){
-				jsonStr = '{"Action":"OrderItems","status":3,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
-				viewObj=$("#completedOrderList");  
-			}
-			var url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
-			showList(url,viewObj);
-		}
-		
-		$(document).on('vclick', '#pushOrderList li a', function () {
-		        ordersInfo.id = $(this).attr('orderId');
-		        $.mobile.changePage("#pushDetail", { transition: "slide", changeHash: false });
-				
-		    });
-			
-			$(document).on('pagebeforeshow', '#pushDetail', function () {
-		        $.each(ordersInfo.items, function (i, row) {
-		            if (row.orderId == ordersInfo.id) {
-					
-		                for(var key in row){  
-                            $("[dbField='"+key+"']").html(row[key]);  
-                        }       
-						$("[dbField='send_city_address']").html(row.send_address.city + row.send_address.address);
-						$("[dbField='shipping_city_address']").html(row.shipping_address.city + row.shipping_address.address);
-		            }
-		        });
-		    });
-        </script>  
-</head>  
-<body>  
-	<div data-role="page" id="push" >  
-		<div data-role="header" data-position="fixed" data-theme="f">
-			<a data-iconpos="myleft" data-role="button" data-icon="myback" title="Home"  data-direction="reverse">返回</a>
-			<h1>我的订单</h1>
-			<a href="#" data-role="button" data-iconpos="notext" data-icon="search"></a>
-		</div>
-		<div data-role="content">
-			<div data-role="navbar"  >
-				<ul>
-				<li><a href="#push" class="ui-btn-active" data-role="button"  data-theme="f">推送</a></li>
-				<li><a href="#cancel" onclick="javascript:urnAction(this);" data-role="button" id="btn_cancel"  data-theme="c">撤销</a></li>
-				<li><a href="#confirm" onclick="javascript:urnAction(this);" data-role="button" id="btn_confirm"  data-theme="c">确认</a></li>
-				<li><a href="#completed" onclick="javascript:urnAction(this);" data-role="button" id="btn_completed"  data-theme="c" >完成</a></li>
-				</ul>
-			</div>
-			<ul data-role='listview' data-inset="true" id="pushOrderList" data-theme="c">  
-            </ul>  
-		</div>
-	</div>
-	<div data-role="page" id="cancel" >  
-		<div data-role="header" data-position="fixed" data-theme="f">
-			<a data-iconpos="myleft" data-role="button" data-icon="myback" title="Home"  data-direction="reverse">返回</a>
-			<h1>我的订单</h1>
-			<a href="#" data-role="button" data-iconpos="notext" data-icon="search"></a>
-		</div>
-		<div data-role="content">
-			<div data-role="navbar"  >
-				<ul>
-				<li><a href="#push" class="ui-btn-active" data-role="button"  data-theme="c">推送</a></li>
-				<li><a href="#cancel" onclick="javascript:urnAction(this);" data-role="button" id="btn_cancel"  data-theme="f">撤销</a></li>
-				<li><a href="#confirm" onclick="javascript:urnAction(this);" data-role="button" id="btn_confirm"  data-theme="c">确认</a></li>
-				<li><a href="#completed" onclick="javascript:urnAction(this);" data-role="button" id="btn_completed"  data-theme="c" >完成</a></li>
-				</ul>
-			</div>
-			<ul data-role='listview' data-inset="true" id="canceledOrderList" data-theme="c">  
-            </ul>  
-		</div>
-	</div>
-	<div data-role="page" id="confirm" >  
-		<div data-role="header" data-position="fixed" data-theme="f">
-			<a data-iconpos="myleft" data-role="button" data-icon="myback" title="Home"  data-direction="reverse">返回</a>
-			<h1>我的订单</h1>
-			<a href="#" data-role="button" data-iconpos="notext" data-icon="search"></a>
-		</div>
-		<div data-role="content">
-			<div data-role="navbar"  >
-				<ul>
-				<ul>
-				<li><a href="#push" class="ui-btn-active" data-role="button"  data-theme="c">推送</a></li>
-				<li><a href="#cancel" onclick="javascript:urnAction(this);" data-role="button" id="btn_cancel"  data-theme="c">撤销</a></li>
-				<li><a href="#confirm" onclick="javascript:urnAction(this);" data-role="button" id="btn_confirm"  data-theme="f">确认</a></li>
-				<li><a href="#completed" onclick="javascript:urnAction(this);" data-role="button" id="btn_completed"  data-theme="c" >完成</a></li>
-				</ul>
-				</ul>
-			</div>
-			<ul data-role='listview' data-inset="true" id="confirmedOrderList" data-theme="c">  
-            </ul>  
-		</div>
-	</div>
-	<div data-role="page" id="completed" >  
-		<div data-role="header" data-position="fixed" data-theme="f">
-			<a data-iconpos="myleft" data-role="button" data-icon="myback" title="Home"  data-direction="reverse">返回</a>
-			<h1>我的订单</h1>
-			<a href="#" data-role="button" data-iconpos="notext" data-icon="search"></a>
-		</div>
-		<div data-role="content">
-			<div data-role="navbar"  >
-				<ul>
-				<ul>
-				<li><a href="#push" class="ui-btn-active" data-role="button"  data-theme="c">推送</a></li>
-				<li><a href="#cancel" onclick="javascript:urnAction(this);" data-role="button" id="btn_cancel"  data-theme="c">撤销</a></li>
-				<li><a href="#confirm" onclick="javascript:urnAction(this);" data-role="button" id="btn_confirm"  data-theme="c">确认</a></li>
-				<li><a href="#completed" onclick="javascript:urnAction(this);" data-role="button" id="btn_completed"  data-theme="f" >完成</a></li>
-				</ul>
-				</ul>
-			</div>
-			<ul data-role='listview' data-inset="true" id="completedOrderList" data-theme="c">  
-            </ul>  
-		</div>
-	</div>
-	<div data-role="page" id="pushDetail">
-	<div data-role="header" data-position="fixed" data-theme="f">
-			<a  href="#push" data-iconpos="myleft" data-role="button" data-icon="myback" title="Home" data-direction="reverse">返回</a>
-			<h1>我的订单</h1>
-			<a href="#" data-role="button" data-iconpos="notext" data-icon="search"></a>
-		</div>
-		<div data-role="content">
-			<div data-role="navbar"  >
-				<ul>
-				<ul>
-				<li><a href="#push" class="ui-btn-active" data-role="button"  data-theme="f">推送</a></li>
-				<li><a href="#cancel" onclick="javascript:urnAction(this);" data-role="button" id="btn_cancel"  data-theme="c">撤销</a></li>
-				<li><a href="#confirm" onclick="javascript:urnAction(this);" data-role="button" id="btn_confirm"  data-theme="c">确认</a></li>
-				<li><a href="#completed" onclick="javascript:urnAction(this);" data-role="button" id="btn_completed"  data-theme="c" >完成</a></li>
-				</ul>
-				</ul>
-			</div>
-			<div style="margin-top:20px;border:1px solid #F00;border-radius:5px">
-			<div style="margin:10px">
-			<div class="ui-grid-a">
-		    			<div class="ui-block-a"><h2>订单编号:<span class="order-id" dbField='orderId'>BX0000057</span></h2></div>
-						<div class="ui-block-b" align="right"><a href="#push" data-iconpos="notext" data-role="button" data-icon="myback" title="Home"  data-direction="reverse">返回</a></div>
-		    			<div>发货人姓名: <span class="order-owner-name" dbField='consignor'><span></div>
-		    			<div>货物类型:<span class="order-goods-type" dbField='type'><span></div>
-						<div>发货时间:<span class="order-depart-date" dbField='ship_date'><span></div>
-						<div>到货时间:<span class="order-arrival-date" dbField='arrival_date'><span></div>
-						<div>货物重量:<span class="order-goods-weight" dbField='weight'><span></div>
-						<div>发货地址:<span class="order-sender-address" dbField='send_city_address'><span></div>
-						<div>收货地址:<span class="order-receiver-address" dbField='shipping_city_address'><span></div>
-						<div class="ui-grid-b">
-							<div class="ui-block-a" align="center"><a data-iconpos="mynotext-m" href="#panel" data-role="button" data-icon="modify" ></a>  </div>
-							<div class="ui-block-b" align="center">
-							<a data-iconpos="mynotext-m" href="#panel" data-role="button" data-icon="cancel" ></a>  
-							</div>
-							<div class="ui-block-c" align="center">
-								<a data-iconpos="mynotext-m" href="#panel" data-role="button" data-icon="trail" ></a>  
-							</div>
-		    			</div>
-						</div>
-		    			<hr/>
-		    			<div data-role="collapsible" style="margin-bottom:10px;border-radius:5px"  data-iconpos="right" >
-		    				<h6>抢单者列表</h6>
-		    				<ul data-role="list-view">
-		    					<li>
-		    						<div class="ui-grid-solo" style="display: block;">
-		    							<div style="width:10%;float:left">
-		    								<img src="img/around.jpg" style="width:30px;height:30px"></img>
-		    							</div>
-		    							<div style="width:85%;float:right">
-		    								<div class="ui-grid-a">
-		    									<div class="ui-block-a">
-		    										<strong>
-		    											车牌号:
-		    										</strong>
-		    										<span>苏ES570X</span>
-		    									</div>
-		    									<div class="ui-block-b">
-		    									</div>
-		    									<div class="ui-block-a">
-		    										<strong>
-		    											驾驶员:
-		    										</strong>
-		    										<span>超人</span>
-		    									</div>
-		    									<div class="ui-block-b">
-		    									</div>
-		    									<div class="ui-block-a" style="color:red">
-		    										<strong>
-		    											价格:
-		    										</strong>
-		    										<strong>500元</strong>
-		    									</div>
-		    								</div>
-		    							</div>
-		    							
-		    						</div>
-									<div class="ui-grid-c" style="font-size:.8em;float:clear">
-		    								<div class="ui-block-a">
-		    									<a href="#" data-role="button">确认</a>
-		    								</div>
-		    								<div class="ui-block-b">
-		    									<a href="#" data-role="button">打给他</a>
-		    								</div>
-		    								<div class="ui-block-c">
-		    									<a href="#" data-role="button">评价</a>
-		    								</div>
-		    								<div class="ui-block-d">
-		    									<a href="#" data-role="button">完成送货</a>
-		    								</div>
-		    							</div>
-		    					</li>
-		    				</ul>
-		    			</div>
-		    		</div>
+  	<script src="js/jquery.mobile-1.4.4.js"></script>
+  	<script src="js/jquery.tmpl.min.js"></script> 
+  	<script src="js/knockout-3.2.0.js"></script> 
+  	<script src="js/json2.js"></script>
+  	<script type="text/javascript" src="js/common.js"></script>
+  	<script type="text/javascript" src="js/myorder.js"></script>
+	<script type="text/html" id="pushed-template" >
+		<div class="order-info-block">
+			<div class="brief">
+		    	<div class="order-info-content">
+		    		<div class="order-info-brief-icon">
+						<a href="#" data-role="button" data-icon="carat-d" data-iconpos="notext" onclick="app.showDetails(this)"></a>
 					</div>
+		    		<div style="margin-top:5px">订单编号: <span data-bind="text:orderId"></span></div>
+		    		<div>日期: <span data-bind="text:orderDate"></span></div>
+		    		<div>发货人: <span data-bind="text:consignor"></span></div>
+		    		<div>从 <span data-bind="text:send_address.city"></span> 到 <span data-bind="text:shipping_address.city"></span></div>
+		    	</div>
+			</div>
+			<div class="details" style="display:none">
+				<div class="order-info-content">
+					<div class="order-info-details-icon">
+						<a href="#" data-role="button" data-icon="carat-u" data-iconpos="notext" onclick="app.hideDetails(this)"></a>
+					</div>
+		    		<div class="blue-strong-head">订单编号: <span data-bind="text:orderId">BX8739473</span></div>
+		    		<div>发货人姓名: <span data-bind="text:consignor"></span></div>
+		    		<div>货物类型: <span data-bind="text:type"></span></div>
+		    		<div>发货时间: <span data-bind="text:ship_date"></span></div>
+		    		<div>到货时间: <span data-bind="text:arrival_date"></span></div>
+		    		<div>货物重量: <span data-bind="text:weight"></span>kg</div>
+		    		<div>发货体积: <span data-bind="text:volume"></span>立方</div>
+		    		<div>发货地址: <span data-bind="text:send_address.city+send_address.address"></span></div>
+		    		<div>送货地址: <span data-bind="text:shipping_address.city+shipping_address.address"></span></div>
+		    	</div>
+		    	<div class="ui-grid-b">
+		    		<div class="ui-block-a"></div>
+		    		<div class="ui-block-b">
+		    			<a data-role="button" href="#">撤销</a>
+		    		</div>
+		    	</div>
+		    	<hr style="background-color:#D3D3D3;border:0;height:1px;">
+		    	<div class="order-info-content" style="margin-bottom:15px">
+					<div class="blue-strong-head">抢单者列表</div>
+					<div class="order-info-details-icon">
+						<a href="#" data-role="button" data-icon="carat-u" data-iconpos="notext" onclick="app.toggleResponselist(this)"></a>
+					</div>
+		    	</div>
+		    	<div class="responser-list" data-bind="template: { name: 'responser-template', foreach: order.responsers, as: 'responser' }">
+		    	</div>
+			</div>
+		</div>
+	</script>
+	<script type="text/html" id="cancel-template" >
+		<div class="order-info-block">
+			<div class="brief">
+		    	<div class="order-info-content">
+		    		<div class="order-info-brief-icon">
+						<a href="#" data-role="button" data-icon="carat-d" data-iconpos="notext" onclick="app.showDetails(this)"></a>
+					</div>
+		    		<div style="margin-top:5px">订单编号: <span data-bind="text:orderId"></span></div>
+		    		<div>日期: <span data-bind="text:orderDate"></span></div>
+		    		<div>发货人: <span data-bind="text:consignor"></span></div>
+		    		<div>从 <span data-bind="text:send_address.city"></span> 到 <span data-bind="text:shipping_address.city"></span></div>
+		    	</div>
+			</div>
+			<div class="details" style="display:none">
+				<div class="order-info-content">
+					<div class="order-info-details-icon">
+						<a href="#" data-role="button" data-icon="carat-u" data-iconpos="notext" onclick="app.hideDetails(this)"></a>
+					</div>
+		    		<div class="blue-strong-head">订单编号: <span data-bind="text:orderId">BX8739473</span></div>
+		    		<div>发货人姓名: <span data-bind="text:consignor"></span></div>
+		    		<div>货物类型: <span data-bind="text:type"></span></div>
+		    		<div>发货时间: <span data-bind="text:ship_date"></span></div>
+		    		<div>到货时间: <span data-bind="text:arrival_date"></span></div>
+		    		<div>货物重量: <span data-bind="text:weight"></span>kg</div>
+		    		<div>发货体积: <span data-bind="text:volume"></span>立方</div>
+		    		<div>发货地址: <span data-bind="text:send_address.city+send_address.address"></span></div>
+		    		<div>送货地址: <span data-bind="text:shipping_address.city+shipping_address.address"></span></div>
+		    	</div>
+		    	<div class="ui-grid-b">
+		    		<div class="ui-block-a"></div>
+		    		<div class="ui-block-b">
+		    			<a data-role="button" data-ajax="false" href="modifyOrder.html" rel="external">修改</a>
+		    		</div>
+		    	</div>
+			</div>
+		</div>
+	</script>
+	<script type="text/html" id="waybill-template" >
+		<div class="order-info-block">
+			<div class="brief">
+		    	<div class="order-info-content">
+		    		<div class="order-info-brief-icon">
+						<a href="#" data-role="button" data-icon="carat-d" data-iconpos="notext" onclick="app.showDetails(this)"></a>
+					</div>
+		    		<div style="margin-top:5px">订单编号: <span data-bind="text:orderId"></span></div>
+		    		<div>日期: <span data-bind="text:orderDate"></span></div>
+		    		<div>发货人: <span data-bind="text:consignor"></span></div>
+		    		<div>从 <span data-bind="text:send_address.city"></span> 到 <span data-bind="text:shipping_address.city"></span></div>
+		    	</div>
+			</div>
+			<div class="details" style="display:none">
+				<div class="order-info-content">
+					<div class="order-info-details-icon">
+						<a href="#" data-role="button" data-icon="carat-u" data-iconpos="notext" onclick="app.hideDetails(this)"></a>
+					</div>
+		    		<div class="blue-strong-head">订单编号: <span data-bind="text:orderId">BX8739473</span></div>
+		    		<div>发货人姓名: <span data-bind="text:consignor"></span></div>
+		    		<div>货物类型: <span data-bind="text:type"></span></div>
+		    		<div>发货时间: <span data-bind="text:ship_date"></span></div>
+		    		<div>到货时间: <span data-bind="text:arrival_date"></span></div>
+		    		<div>货物重量: <span data-bind="text:weight"></span>kg</div>
+		    		<div>发货体积: <span data-bind="text:volume"></span>立方</div>
+		    		<div>发货地址: <span data-bind="text:send_address.city+send_address.address"></span></div>
+		    		<div>送货地址: <span data-bind="text:shipping_address.city+shipping_address.address"></span></div>
+		    	</div>
+		    	<hr style="background-color:#D3D3D3;border:0;height:1px;">
+		    	<div class="order-info-content" style="margin-bottom:15px">
+					<div class="blue-strong-head">运输方信息</div>
+					<div class="ui-grid-b">
+				<div class="ui-block-a">
+					<a data-role="button" href="#">打给他</a>
+				</div>
+				<div class="ui-block-b">
+					<a data-role="button" href="#">评价</a>		    			
+				</div>
+				<div class="ui-block-c">
+					<a data-role="button" href="#">加入我的车队</a>
+				</div>
+			</div>
+			</div>
+		</div>
+	</script>
+	<script type="text/html" id="responser-template" >
+		<div class="responser-list-item">
+			<div>
+				<div style="float:left;">
+					<img style="width:35px;height:35px" src="" alt=""></img>
+				</div>
+				<div style="float:left;margin-left:15px">
+					<div><strong>车牌号: </strong> <span data-bind="text:license_plate_number"></span></div>
+					<div><strong>驾驶员: </strong> <span data-bind="text:name"></span></div>
+					<div style="color:#FF6A6A">价格: <span>0</span>元</div>
+				</div>
+				<div style="float:right;width=120px"></div>
+				<div style="clear:both"></div>
+			</div>
+			<div class="ui-grid-b">
+				<div class="ui-block-a">
+					<a data-role="button" href="#">确认</a>
+				</div>
+				<div class="ui-block-b">
+					<a data-role="button" href="#">打给他</a>
+				</div>
+				<div class="ui-block-c">
+					<a data-role="button" href="#">评价</a>		    			
+				</div>
+			</div>
+		</div>
+	</script> 
+	<script type="text/javascript" src="cordova.js"></script>
+</head>  
+<body onload="app.onLoad()">
+	<div data-role="page" data-theme="f">  
+	  <div data-role="header" data-position="fixed" class="header-extra-height">
+	    <a href="userCenter.html" data-role="button" data-ajax="false" data-icon="back">返回</a>
+	    <h1>我的订单</h1>
+	    <a href="#" data-role="button" data-icon="info" data-iconpos="notext">  </a>
+	  </div>	  
+	  <div data-role="content">
+	  	<div data-role="tabs">
+		  	<div data-role="navbar">
+		      <ul>
+		        <li><a href="#push" class="ui-btn-active" data-ajax="true" >推送</a></li>
+		        <li><a href="#cancel" data-ajax="true">撤销</a></li>
+		        <li><a href="#confirm" data-ajax="true">确认</a></li>
+		        <li><a href="#completed" data-ajax="true">完成</a></li>
+		      </ul>
+		    </div>
+		    <div id="push" class="ui-content" data-bind="template: { name: 'pushed-template', foreach: pushedOrders, as: 'order' }">
+		    </div>
+		    <div id="cancel" class="ui-content" data-bind="template: { name: 'cancel-template', foreach: cancelOrders, as: 'order' }">
+		    </div>
+		    <div id="confirm" class="ui-content" data-bind="template: { name: 'waybill-template', foreach: confirmOrders, as: 'order' }">
+		    </div>
+		    <div id="completed" class="ui-content" data-bind="template: { name: 'waybill-template', foreach: completeOrders, as: 'order' }">
+		    </div>
+		</div>
+	</div>
 </body>  
 </html>
-
 
