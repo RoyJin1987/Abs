@@ -68,7 +68,7 @@
 		    	<div class="ui-grid-b">
 		    		<div class="ui-block-a"></div>
 		    		<div class="ui-block-b">
-		    			<a data-role="button" data-bind="click:app.grabOrder(orderId)">立即抢单</a>
+		    			<a data-role="button" data-bind="click:grab">立即抢单</a>
 		    		</div>
 		    	</div>
 			</div>
@@ -109,7 +109,7 @@
 		    	<div class="ui-grid-b">
 		    		<div class="ui-block-a"></div>
 		    		<div class="ui-block-b">
-		    			<a data-role="button" href="modifyOrder.html" data-ajax="false" data-bind="click:app.grabintercityOrder(orderId)">电话抢单</a>
+		    			<a data-role="button" href="tel:10086" data-ajax="false" data-bind="click:grabIntercity">电话抢单</a>
 		    		</div>
 		    	</div>
 		    	</div>
@@ -128,8 +128,6 @@
 	  </div>	  
 	  <div data-role="content">
 	  	<div data-role="tabs">
-		  	
-
 			<table style="width:100%">
 				<tr>
 					<td style="width:60%">

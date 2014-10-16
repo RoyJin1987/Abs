@@ -22,6 +22,7 @@
         };
 
 var app = {
+    serverUrl:"http://112.124.122.107/Applications/web/?data=",
     onLoad:function() {
 
         if (!window.device) {
@@ -33,13 +34,13 @@ var app = {
     },
 
 
-    grabOrder: function(orderId) {
-        alert(orderId);
-    },
+    // grabOrder: function(orderId) {
+    //     alert(orderId);
+    // },
 
-    grabintercityOrder: function(orderId) {
-        alert(orderId);
-    },
+    // grabintercityOrder: function(orderId) {
+    //     alert(orderId);
+    // },
 
     // Application Constructor
     initialize: function() {
@@ -65,12 +66,54 @@ var app = {
         var url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
         commonJS.get(url,function(text){        
             waybills.intercityOrders = text.items;
+            for(var i in waybills.intercityOrders)
+            {
+                var order = waybills.intercityOrders[i];
+                order.grabIntercity = function()
+                {
+                    //跳到修改运单
+                    setTimeout(function(){
+                        window.location("modifyWaybill.html?orderId="+order.orderId);
+                    },1000);
+
+                }
+
+            }
         });
 
         jsonStr = '{"Action":"PushItems","Token":"07b27a882cc721a9207250f1b6bd2868","parameter":{"pushType":0,"page":1}}';
         url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
-        commonJS.get(url,function(text){        
+        commonJS.get(url,function(text){ 
+            JSON.stringify(text);       
             waybills.orders = text.items;
+            for(var i in waybills.orders)
+            {
+                var order = waybills.orders[i];
+                order.grab = function()
+                {
+                    var request = {
+                        Action:"OrderGrab",
+                        confirmType:0,
+                        Token:"07b27a882cc721a9207250f1b6bd2868",
+                        parameter:{
+                            orderId:order.orderId
+                        }
+                    };
+                    var url = app.serverUrl + JSON.stringify(request);
+                    commonJS.get(url,function(data){ 
+                        // 
+                        if (data.status === 0 ) {
+                            //删除该单
+                            waybills.orders.splice(i,1);
+
+                            //提示用户
+                            alert("您已经抢到运单"+order.orderId);
+
+                        };
+                    });
+
+                }
+            }
         });
             
         ko.applyBindings(waybills);
