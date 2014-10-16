@@ -9,8 +9,12 @@
 	<link href="css/main.css" rel="stylesheet" type="text/css">
 	<script src="js/jquery.js"></script>
 	<script src="js/jquery.mobile-1.4.0-rc.1.js"></script> 
+	<script src="js/knockout-3.2.0.js"></script> 
+  	<script src="js/json2.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/requestDelivery.js"></script>
 </head>  
-<body>  
+<body onload="app.onLoad()">  
 	<div data-role="page">  
 		<div data-role="header" data-position="fixed" data-theme="f">
 			<a data-iconpos="left" data-role="button" data-icon="back" data-rel="back"  title="Home">返回</a>
@@ -23,7 +27,7 @@
 				<table>
 					<tr>
 						<td style="width:25%"><label for="address">发货地址：</label></td>
-						<td style="width:69%"><input type="text" name="address" id="address" value=""/></td>
+						<td style="width:69%"><input type="text" name="address" id="address" data-bind="value: send_address"/></td>
 						<td style="width:6%"><a href="#" data-role="button" data-iconpos="notext" data-icon="flat-location" data-theme="f"></td>
 					</tr>
 				</table>
@@ -33,7 +37,7 @@
 				<table>
 					<tr>
 						<td style="width:25%"><label for="goodsType">货物类型：</label></td>
-						<td style="width:69%"><input type="text" name="goodsType" id="goodsType" value=""/></td>
+						<td style="width:69%"><input type="text" name="goodsType" id="goodsType" data-bind="value:goodsType"/></td>
 						<td style="width:6%"></td>
 					</tr>
 				</table>
@@ -46,10 +50,7 @@
 							<td style="width:25%"><label>温层选择：</label></td>
 							<td style="width:69%">
 							
-								<select name="select-choice" id="temperature" data-native-menu="false" data-theme="c">
-									<option value="standard">常温</option>
-									<option value="refrigerate">冷藏</option>
-									<option value="frozen">冷冻</option>
+								<select name="select-choice" data-bind="options: wenCeng, optionsValue: 'id', optionsText: 'name', value: selectedWenCeng" data-theme="c">
 								</select>
 					
 							</td><td style="width:6%"></td>
@@ -63,11 +64,7 @@
 						<tr>
 							<td style="width:25%"><label>车型选择：</label></td>
 							<td style="width:69%">
-								<select name="select-choice" id="carType" data-native-menu="false" data-theme="c">
-									<option value="motocar">两轮车</option>
-									<option value="car">小汽车</option>
-									<option value="minibus">面包车</option>
-									<option value="truck">卡车</option>
+								<select data-bind="options: models, optionsValue: 'id', optionsText: 'name', value: selectedModel"  data-native-menu="false" data-theme="c">
 								</select>
 							</td><td style="width:6%"></td>
 						</tr>
@@ -79,7 +76,7 @@
 				<table>
 					<tr>
 						<td style="width:25%"><label for="weight" data-inline="true">货物重量：</label></td>
-						<td style="width:69%"><input type="text" name="weight" id="weight" value="" data-inline="true"></td><td style="width:6%"></td>
+						<td style="width:69%"><input type="text" name="weight" id="weight" data-bind="value: weight" data-inline="true"></td><td style="width:6%"></td>
 					</tr>
 				</table>
 			</div>
@@ -88,7 +85,7 @@
 				<table>
 					<tr>
 						<td style="width:25%"><label for="volume">货物体积：</label></td>
-						<td style="width:69%"><input type="text" name="volume" id="volume" value=""/></td><td style="width:6%"></td>
+						<td style="width:69%"><input type="text" name="volume" id="volume" data-bind="value: volume"/></td><td style="width:6%"></td>
 					</tr>
 				</table>
 			</div>
@@ -97,7 +94,7 @@
 				<table>
 					<tr>
 						<td style="width:25%"><label for="deliveryDate">发货日期：</label></td>
-						<td style="width:69%"><input type="date" name="deliveryDate" id="deliveryDate" value=""/></td><td style="width:6%"></td>
+						<td style="width:69%"><input type="date" name="deliveryDate" id="deliveryDate" data-bind="value: ship_date"/></td><td style="width:6%"></td>
 					</tr>
 				</table>
 			</div>
@@ -106,7 +103,7 @@
 				<table>
 					<tr>
 						<td style="width:25%"><label for="receiveDate">到货日期：</label></td>
-						<td style="width:69%"><input type="date" name="receiveDate" id="receiveDate" value=""/></td><td style="width:6%"></td>
+						<td style="width:69%"><input type="date" name="receiveDate" id="receiveDate" data-bind="value: arrival_date"/></td><td style="width:6%"></td>
 					</tr>
 				</table>
 			</div>
@@ -115,7 +112,7 @@
 				<table>
 					<tr>
 						<td style="width:25%"><label for="deliveryAddress">送货地址：</label></td>
-						<td style="width:69%"><input type="text" name="deliveryAddress" id="deliveryAddress" value=""/></td>
+						<td style="width:69%"><input type="text" name="deliveryAddress" id="deliveryAddress" data-bind="value: shipping_address"/></td>
 						<td style="width:6%"><a href="#" data-role="button" data-iconpos="notext" data-icon="flat-location" data-theme="f"></td>
 					</tr>
 				</table>
@@ -125,7 +122,7 @@
 				<table>
 					<tr>
 						<td style="width:25%"><label for="floor">送货楼层：</label></td>
-						<td style="width:69%"><input type="text" name="floor" id="floor" value=""/></td><td style="width:6%"></td>
+						<td style="width:69%"><input type="text" name="floor" id="floor" data-bind="value: delivery_floor"/></td><td style="width:6%"></td>
 					</tr>
 				</table>
 			</div>
@@ -134,14 +131,14 @@
 				<table>
 					<tr>
 						<td style="width:25%"><label for="remark">附加信息：</label></td>
-						<td style="width:69%"><input type="text" name="remark" id="remark" value=""/></td>
+						<td style="width:69%"><input type="text" name="remark" id="remark" data-bind="value: additional_information"/></td>
 						<td style="width:6%"><a href="#" data-role="button" data-iconpos="notext" data-icon="flat-volume" data-theme="f"></td>
 					</tr>
 				</table>
 			</div>
 			<hr/>
 			<div  align="center">
-				<a href="offer.html" data-role="button" data-theme="f">帮我送</a>  
+				<a onclick="app.sendClick()" data-role="button" data-theme="f">帮我送</a>  
 			</div>
 		</form>
    </div>

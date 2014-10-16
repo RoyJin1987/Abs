@@ -53,25 +53,25 @@ var app = {
         app.receivedEvent('deviceready');
         //some test data
          
-        var jsonStr = '{"Action":"OrderItems","status":0,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
+        var jsonStr = '{"Action":"WaybillItems","status":0,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
         var url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
         commonJS.get(url,function(text){        
             waybills.pushedOrders = text.items;
         });
 
-        jsonStr = '{"Action":"OrderItems","status":1,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
+        jsonStr = '{"Action":"WaybillItems","status":1,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
         url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
         commonJS.get(url,function(text){        
             waybills.submitOrders = text.items;
         });
 
-        jsonStr = '{"Action":"OrderItems","status":2,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
+        jsonStr = '{"Action":"WaybillItems","status":2,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
         url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
         commonJS.get(url,function(text){        
             waybills.confirmOrders = text.items;
         });
 
-        jsonStr = '{"Action":"OrderItems","status":3,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
+        jsonStr = '{"Action":"WaybillItems","status":3,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
         url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;  
         commonJS.get(url,function(text){        
             waybills.completeOrders = text.items;
