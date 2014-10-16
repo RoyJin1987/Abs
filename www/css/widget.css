@@ -1,9 +1,9 @@
 
 /*我的车队*/
-.no-border-block {border: none; margin: 10px 5px; position: relative;padding-left: 70px;padding-right:155px}
-.right-button-group-block{float: right;width: 160px;position: absolute;right: -10px;top:-15px;}
+.no-border-block {border: none; margin: 20px 5px; position: relative;padding-left: 50px;padding-right:105px}
+.right-button-group-block{float: right;width: 110px;position: absolute;right: -20px;top:-15px;}
 .right-button-group-block > div{padding-right: 3px}
-.right-button-group-block a,.right-button-group-block button{font-size: .7em}
+.right-button-group-block a,.right-button-group-block button{font-size: .6em}
 
 
 /*我的运单/订单*/

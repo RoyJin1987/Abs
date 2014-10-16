@@ -71,7 +71,7 @@ var app = {
                 var order = waybills.intercityOrders[i];
                 order.grabIntercity = function()
                 {
-                    //è·³åˆ°ä¿®æ”¹è¿å•
+                    //Ìøµ½ĞŞ¸ÄÔËµ¥
                     setTimeout(function(){
                         window.location("modifyWaybill.html?orderId="+order.orderId);
                     },1000);
@@ -103,11 +103,11 @@ var app = {
                     commonJS.get(url,function(data){ 
                         // 
                         if (data.status === 0 ) {
-                            //åˆ é™¤è¯¥å•
+                            //É¾³ı¸Ãµ¥
                             waybills.orders.splice(i,1);
 
-                            //æç¤ºç”¨æˆ·
-                            alert("æ‚¨å·²ç»æŠ¢åˆ°è¿å•"+order.orderId);
+                            //ÌáÊ¾ÓÃ»§
+                            alert("ÄúÒÑ¾­ÇÀµ½ÔËµ¥"+order.orderId);
 
                         };
                     });

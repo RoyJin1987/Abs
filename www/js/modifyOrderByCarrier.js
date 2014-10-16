@@ -16,15 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+ var waybills = {
+            intercityOrders:ko.observableArray([]),
+            orders:ko.observableArray([])
+        };
 
 var app = {
-    viewModel: {
-            cars1:ko.observableArray([]),
-            cars2:ko.observableArray([]),
-            cars3:ko.observableArray([]),
-            
-        },
-
     onLoad:function() {
 
         if (!window.device) {
@@ -35,12 +32,13 @@ var app = {
 
     },
 
-    // Application Constructor
-    test: function(btn) {
-        // var $orderblk = $(btn).parents(".order-info-block");
-        // $orderblk.find(".brief").show();
-        // $orderblk.find(".details").hide();
-        // alert(orderId.id);
+
+    grabOrder: function(orderId) {
+        
+    },
+
+    grabintercityOrder: function(orderId) {
+        
     },
 
     // Application Constructor
@@ -62,16 +60,20 @@ var app = {
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
         //some test data
-        var jsonStr = '{"Action":"getPilots","Token":"07b27a882cc721a9207250f1b6bd2868"}';
+         
+        var jsonStr = '{"Action":"PushItems","Token":"07b27a882cc721a9207250f1b6bd2868","parameter":{"pushType":1,"page":1}}';
         var url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
-        commonJS.get(url,function(data){
-                  
-           app.viewModel.cars1 = data.items;
-           app.viewModel.cars2 = data.items;
-           app.viewModel.cars3 = data.items;
+        commonJS.get(url,function(text){        
+            waybills.intercityOrders = text.items;
+        });
+
+        jsonStr = '{"Action":"PushItems","Token":"07b27a882cc721a9207250f1b6bd2868","parameter":{"pushType":0,"page":1}}';
+        url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
+        commonJS.get(url,function(text){        
+            waybills.orders = text.items;
         });
             
-        ko.applyBindings(app.viewModel);
+        ko.applyBindings(waybills);
         $('body').trigger("create");
 
     },
@@ -87,4 +89,22 @@ var app = {
 
         console.log('Received Event: ' + id);
     },
+    
+    hideDetails:function(btn){
+        var $orderblk = $(btn).parents(".order-info-block");
+        $orderblk.find(".brief").show();
+        $orderblk.find(".details").hide();
+
+    },
+    toggleResponselist:function(btn){
+        var $list = $(btn).parents(".details").find(".responser-list");
+        if($list.find(".responser-list-item:visible").length>0) {
+            $(btn).removeClass("ui-icon-carat-u").addClass("ui-icon-carat-d");
+            $list.find(".responser-list-item:visible").hide();
+        } else {
+            $(btn).removeClass("ui-icon-carat-d").addClass("ui-icon-carat-u");
+            $list.find(".responser-list-item").show();
+        }  
+
+    }
 };
