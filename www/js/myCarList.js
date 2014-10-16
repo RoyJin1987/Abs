@@ -65,7 +65,7 @@ var app = {
         var jsonStr = '{"Action":"getPilots","Token":"07b27a882cc721a9207250f1b6bd2868"}';
         var url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
         commonJS.get(url,function(data){
-            alert(JSON.stringify(data));        
+                  
            app.viewModel.cars1 = data.items;
            app.viewModel.cars2 = data.items;
            app.viewModel.cars3 = data.items;

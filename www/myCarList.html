@@ -23,17 +23,17 @@
 	
 	<script type="text/html" id="my-car-template" >
 		<div class="no-border-block">
-    		<div style="position:absolute;left:0px">
+    		<div style="position:absolute;left:-20px;top:-12px">
 				<img style="width:65px;height:65px" src="img/noPhoto.png" alt=""></img>
 			</div>
-			<div style="float:left;">
+			<div style="float:left;font-size:.8em;">
 				<div><strong>姓名: </strong> <span data-bind="text:name"></span></div>
 				<div><strong>车牌号: </strong> <span data-bind="text:identity"></span></div>
 				<div><strong>状态: </strong> <span data-bind="text:status"></span></div>
 			</div>
 			<div class="right-button-group-block ui-grid-a">
 				<div class="ui-block-a">
-					<button data-theme="g">就叫TA</button>
+					<button href="callHim.html" data-theme="g">就叫TA</button>
 				</div>
 				<div class="ui-block-b">
 					<button data-theme="g">打给他</button>
@@ -46,7 +46,7 @@
 				</div>
 			</div>
 		</div>
-		<div style="clear:both"></div>
+		<div style="clear:both;"></div>
 		<hr style="background-color:#D3D3D3;border:0;height:1px;">
 	</script>
 	<script type="text/javascript" src="cordova.js"></script>
