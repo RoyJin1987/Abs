@@ -59,7 +59,7 @@ var app = {
         app.receivedEvent('deviceready');
         //请求正在修改运单
         var orderId = app.getUrlParam("orderId");
-        debugger;
+        // debugger;
         if (orderId) {
            var request = {
                 Action:"getOrderById",
@@ -67,17 +67,49 @@ var app = {
                 Token:app.token
             };
             var url = app.serverUrl + JSON.stringify(request);
-            debugger;
+            // debugger;
             commonJS.get(url,function(data){
-                alert(JSON.stringify(data));
+                // alert(JSON.stringify(data));
                 app.viewModel = data.item;
+                app.viewModel.confirm = function (){
+                    var request = {
+                        Action:"OrderGrab",
+                        confirmType:1,
+                        Token:app.token,
+                        param:{
+                            orderId:app.viewModel.orderId,
+                            freight: app.viewModel.bid_item.freight, 
+                            pilot_uid:app.viewModel.selectedPilot.identity 
+                        }
+                    };
+                    var url = app.serverUrl + JSON.stringify(request);
+                    commonJS.get(url,function(data_){
+                        // debugger;
+                        if (data_.status===0) {
+
+                            //删除该单
+                            waybills.orders.splice(i,1);
+
+                            //提示用户
+                            alert("您已经抢到运单"+app.viewModel.orderId);
+
+                        }
+                        else
+                        {
+                             //提示用户
+                            alert(data_.message);
+                        }
+                    });
+
+
+                };
                 var request = {
                     Action:"getPilots",
                     Token:app.token
                 };
                 var url = app.serverUrl + JSON.stringify(request);
                 commonJS.get(url,function(data_){
-                    alert(JSON.stringify(data_));
+                    // alert(JSON.stringify(data_));
                     app.viewModel.pilots = data_.items
                     app.viewModel.selectedPilot = {};
                     ko.applyBindings(app.viewModel);
