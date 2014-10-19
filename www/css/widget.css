@@ -19,3 +19,41 @@
 .blue-strong-head{color: #00BFFF; font-size: 1.2em;}
 .red-strong{color:#FF6A6A;font-size:1.2em;}
 .hide{display: none;}
+
+/*帮我送注册页 textfiedld*/
+.txt-container
+{
+	width:100%;
+	margin: 0 auto;
+	height:80px;
+	border:1px solid #E1E1E1;
+	background-color:white;
+	position:relative;
+}
+.txt-left-color-block
+{
+	position:absolute;
+	left:0;
+	width:5px;
+	height:100%;
+}
+.txt-label-field
+{
+	position:absolute;
+	left:5px;
+	margin:auto 10px;
+	line-height:80px
+}
+.txt-input-field
+{
+	line-height:80px;
+}
+.txt-input-field > input
+{
+	height:78px;
+	width:100%;
+	border:0px;
+	margin:0;
+	padding:0;
+}
+

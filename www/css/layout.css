@@ -7,3 +7,20 @@ div.header-extra-height
 div.footer{
 	height:60px;
 }
+
+div.container{
+	margin: 0 auto;
+}
+
+div.container-line{
+	margin: 5px 0;
+}
+
+.center-align{
+	margin: 0 auto;
+	text-align: center;
+	padding:0 2px;
+	position: relative;
+	overflow: hidden;
+	min-height: 50px
+}
