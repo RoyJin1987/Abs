@@ -13,9 +13,10 @@
   	<script src="js/json2.js"></script>
 	<script type="text/javascript" src="js/common.js"></script>
 	<script type="text/javascript" src="js/requestDelivery.js"></script>
+	<script type="text/javascript" src="js/myorder.js"></script>
 </head>  
 <body onload="app.onLoad()">  
-	<div data-role="page">  
+	<div data-role="page" id="requestDelivery">  
 		<div data-role="header" data-position="fixed" data-theme="f">
 			<a data-iconpos="left" data-role="button" data-icon="back" data-rel="back"  title="Home">返回</a>
 			<h1>帮我送</h1>
@@ -27,7 +28,7 @@
 				<table>
 					<tr>
 						<td style="width:25%"><label for="address">发货地址：</label></td>
-						<td style="width:69%"><input type="text" name="address" id="address" data-bind="value: send_address"/></td>
+						<td style="width:69%"><input type="text" name="address" id="address" data-bind="value: send_address" required="required"/></td>
 						<td style="width:6%"><a href="#" data-role="button" data-iconpos="notext" data-icon="flat-location" data-theme="f"></td>
 					</tr>
 				</table>
@@ -37,7 +38,7 @@
 				<table>
 					<tr>
 						<td style="width:25%"><label for="goodsType">货物类型：</label></td>
-						<td style="width:69%"><input type="text" name="goodsType" id="goodsType" data-bind="value:goodsType"/></td>
+						<td style="width:69%"><input type="text" name="goodsType" id="goodsType" data-bind="value:orderInfo.type"/></td>
 						<td style="width:6%"></td>
 					</tr>
 				</table>
@@ -50,7 +51,7 @@
 							<td style="width:25%"><label>温层选择：</label></td>
 							<td style="width:69%">
 							
-								<select name="select-choice" data-bind="options: wenCeng, optionsValue: 'id', optionsText: 'name', value: selectedWenCeng" data-theme="c">
+								<select name="select-choice" data-bind="options: wenCengList, optionsValue: 'name', value: selectedWenCeng" data-theme="c">
 								</select>
 					
 							</td><td style="width:6%"></td>
@@ -64,7 +65,7 @@
 						<tr>
 							<td style="width:25%"><label>车型选择：</label></td>
 							<td style="width:69%">
-								<select data-bind="options: models, optionsValue: 'id', optionsText: 'name', value: selectedModel"  data-native-menu="false" data-theme="c">
+								<select data-bind="options: modelsList, optionsValue: 'name', value: selectedModels"  data-native-menu="false" data-theme="c">
 								</select>
 							</td><td style="width:6%"></td>
 						</tr>
@@ -76,7 +77,7 @@
 				<table>
 					<tr>
 						<td style="width:25%"><label for="weight" data-inline="true">货物重量：</label></td>
-						<td style="width:69%"><input type="text" name="weight" id="weight" data-bind="value: weight" data-inline="true"></td><td style="width:6%"></td>
+						<td style="width:69%"><input type="text" name="weight" id="weight" data-bind="value: orderInfo.weight" data-inline="true"></td><td style="width:6%"></td>
 					</tr>
 				</table>
 			</div>
@@ -85,7 +86,7 @@
 				<table>
 					<tr>
 						<td style="width:25%"><label for="volume">货物体积：</label></td>
-						<td style="width:69%"><input type="text" name="volume" id="volume" data-bind="value: volume"/></td><td style="width:6%"></td>
+						<td style="width:69%"><input type="text" name="volume" id="volume" data-bind="value: orderInfo.volume"/></td><td style="width:6%"></td>
 					</tr>
 				</table>
 			</div>
@@ -94,7 +95,7 @@
 				<table>
 					<tr>
 						<td style="width:25%"><label for="deliveryDate">发货日期：</label></td>
-						<td style="width:69%"><input type="date" name="deliveryDate" id="deliveryDate" data-bind="value: ship_date"/></td><td style="width:6%"></td>
+						<td style="width:69%"><input type="date" name="deliveryDate" id="deliveryDate" data-bind="value: orderInfo.ship_date"/></td><td style="width:6%"></td>
 					</tr>
 				</table>
 			</div>
@@ -103,7 +104,25 @@
 				<table>
 					<tr>
 						<td style="width:25%"><label for="receiveDate">到货日期：</label></td>
-						<td style="width:69%"><input type="date" name="receiveDate" id="receiveDate" data-bind="value: arrival_date"/></td><td style="width:6%"></td>
+						<td style="width:69%"><input type="date" name="receiveDate" id="receiveDate" data-bind="value: orderInfo.arrival_date"/></td><td style="width:6%"></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div >
+				<table>
+					<tr>
+						<td style="width:30%"><label>收货人姓名：</label></td>
+						<td style="width:69%"><input id="receiver" data-bind="value: consignee_name"></input></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div >
+				<table>
+					<tr>
+						<td style="width:30%"><label>联系电话：</label></td>
+						<td style="width:69%"><input id="tel" data-bind="value: consignee_phone"></input></td>
 					</tr>
 				</table>
 			</div>
@@ -122,7 +141,7 @@
 				<table>
 					<tr>
 						<td style="width:25%"><label for="floor">送货楼层：</label></td>
-						<td style="width:69%"><input type="text" name="floor" id="floor" data-bind="value: delivery_floor"/></td><td style="width:6%"></td>
+						<td style="width:69%"><input type="text" name="floor" id="floor" data-bind="value: orderInfo.delivery_floor"/></td><td style="width:6%"></td>
 					</tr>
 				</table>
 			</div>
@@ -131,17 +150,135 @@
 				<table>
 					<tr>
 						<td style="width:25%"><label for="remark">附加信息：</label></td>
-						<td style="width:69%"><input type="text" name="remark" id="remark" data-bind="value: additional_information"/></td>
+						<td style="width:69%"><input type="text" name="remark" id="remark" data-bind="value: orderInfo.additional_information"/></td>
 						<td style="width:6%"><a href="#" data-role="button" data-iconpos="notext" data-icon="flat-volume" data-theme="f"></td>
 					</tr>
 				</table>
 			</div>
 			<hr/>
 			<div  align="center">
-				<a onclick="app.sendClick()" data-role="button" data-theme="f">帮我送</a>  
+				<a onclick="app.sendClick()" type="submit" data-ajax="false" data-role="button" data-theme="f">帮我送</a>  
 			</div>
 		</form>
    </div>
 </div><!-- /page -->  
+<div data-role="page" id="offer" data-theme="f">  
+		<div data-role="header" data-position="fixed">
+			<a data-iconpos="left" data-role="button" data-icon="back" data-rel="back" title="Home">返回</a>
+			<h1>出价页</h1>
+			<a href="#" data-role="button" data-iconpos="notext" data-icon="search"></a>
+		</div>
+	<div data-role="content">
+		<form method="get" action="">
+			<div >
+				<table>
+					<tr>
+						<td style="width:30%"><label>收货人姓名：</label></td> <td style="width:69%"><label data-bind="text:consignee_name"></label></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div >
+				<table>
+					<tr>
+						<td style="width:30%"><label>联系电话：</label></td>
+						<td style="width:69%"><label id="tel" data-bind="text: consignee_phone"></label></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div >
+				<table>
+					<tr>
+						<td style="width:30%"><label>发货地址：</label></td>
+						<td style="width:69%"><label id="address" data-bind="text: send_address"></label></td>
+					</tr>
+				</table>
+			</div>
+			<div >
+				<table>
+					<tr>
+						<td style="width:30%"><label for="deliveryAddress">送货地址：</label></td>
+						<td style="width:69%"><label id="deliveryAddress" data-bind="text: shipping_address"></label></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div >
+				<table>
+					<tr>
+						<td style="width:30%"><label>总计里程数：</label></td>
+						<td style="width:69%"><label id="mileage">1500米</label></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div >
+				<table>
+					<tr>
+						<td style="width:30%"><label>车辆类型：</label></td>
+						<td style="width:69%"><label id="carType" data-bind="text: selectedModels"></label></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div >
+				<table>
+					<tr>
+						<td style="width:45%"><label>平台推荐运输费用：</label></td>
+						<td style="width:55%"><label id="carType" data-bind="text: orderInfo.bid_item.freight"></label></td>
+					</tr>
+				</table>
+				<table>
+					<tr>
+						<td style="width:25%"><label>调整运费： </label></td>
+						<td style="width:75%"><input type="range" name="slider" data-bind="value: orderInfo.bid_item.freight" min="0" max="100" data-highlight="true" /></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div >
+				<table>
+					<tr>
+						<td style="width:45%"><label>平台推荐搬运费用：</label></td>
+						<td style="width:44%"><label id="carType">50元</label></td>
+					</tr>
+				</table>
+				<table>
+					<tr>
+						<td style="width:29%"><label>调整搬运费：</label></td>
+						<td style="width:71%"><input type="range" name="slider" data-bind="value: orderInfo.bid_item.truckage" min="0" max="100" data-highlight="true" /></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div >
+				<table>
+					<tr>
+						<td style="width:25%"><label>附加小费：</label></td>
+						<td style="width:69%"><label id="carType">20元</label></td>
+					</tr>
+					<tr>
+						<td style="width:25%"><label>调整小费：</label></td>
+						<td style="width:75%"><input type="range" name="slider" data-bind="value: orderInfo.bid_item.tipping" min="0" max="20" data-highlight="true" /></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div >
+				<table>
+					<tr>
+						<td style="width:25%"><label>费用总计：</label></td>
+						<td style="width:69%"><label id="carType">120元</label></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div  align="center">
+				<a onclick="app.sendOrderClick()" data-role="button" data-ajax="false" data-theme="f">发送</a>  
+			</div>
+		</form>
+   </div>
+</div>
 </body>  
 </html> 

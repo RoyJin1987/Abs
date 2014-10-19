@@ -25,7 +25,7 @@
 			<div class="brief">
 		    	<div class="order-info-content">
 		    		<div class="order-info-brief-icon">
-						<a href="#" data-role="button" data-icon="carat-d" data-iconpos="notext" onclick="app.showDetails(this)"></a>
+						<a href="#" data-role="button" data-icon="carat-d" data-iconpos="notext" onclick="appMyOrder.showDetails(this)"></a>
 					</div>
 		    		<div style="margin-top:5px">订单编号: <span data-bind="text:orderId"></span></div>
 		    		<div>日期: <span data-bind="text:orderDate"></span></div>
@@ -36,7 +36,7 @@
 			<div class="details" style="display:none">
 				<div class="order-info-content">
 					<div class="order-info-details-icon">
-						<a href="#" data-role="button" data-icon="carat-u" data-iconpos="notext" onclick="app.hideDetails(this)"></a>
+						<a href="#" data-role="button" data-icon="carat-u" data-iconpos="notext" onclick="appMyOrder.hideDetails(this)"></a>
 					</div>
 		    		<div class="blue-strong-head">订单编号: <span data-bind="text:orderId">BX8739473</span></div>
 		    		<div>发货人姓名: <span data-bind="text:consignor"></span></div>
@@ -58,7 +58,7 @@
 		    	<div class="order-info-content" style="margin-bottom:15px">
 					<div class="blue-strong-head">抢单者列表</div>
 					<div class="order-info-details-icon">
-						<a href="#" data-role="button" data-icon="carat-u" data-iconpos="notext" onclick="app.toggleResponselist(this)"></a>
+						<a href="#" data-role="button" data-icon="carat-u" data-iconpos="notext" onclick="appMyOrder.toggleResponselist(this)"></a>
 					</div>
 		    	</div>
 		    	<div class="responser-list" data-bind="template: { name: 'responser-template', foreach: order.responsers, as: 'responser' }">
@@ -71,7 +71,7 @@
 			<div class="brief">
 		    	<div class="order-info-content">
 		    		<div class="order-info-brief-icon">
-						<a href="#" data-role="button" data-icon="carat-d" data-iconpos="notext" onclick="app.showDetails(this)"></a>
+						<a href="#" data-role="button" data-icon="carat-d" data-iconpos="notext" onclick="appMyOrder.showDetails(this)"></a>
 					</div>
 		    		<div style="margin-top:5px">订单编号: <span data-bind="text:orderId"></span></div>
 		    		<div>日期: <span data-bind="text:orderDate"></span></div>
@@ -82,7 +82,7 @@
 			<div class="details" style="display:none">
 				<div class="order-info-content">
 					<div class="order-info-details-icon">
-						<a href="#" data-role="button" data-icon="carat-u" data-iconpos="notext" onclick="app.hideDetails(this)"></a>
+						<a href="#" data-role="button" data-icon="carat-u" data-iconpos="notext" onclick="appMyOrder.hideDetails(this)"></a>
 					</div>
 		    		<div class="blue-strong-head">订单编号: <span data-bind="text:orderId">BX8739473</span></div>
 		    		<div>发货人姓名: <span data-bind="text:consignor"></span></div>
@@ -108,7 +108,7 @@
 			<div class="brief">
 		    	<div class="order-info-content">
 		    		<div class="order-info-brief-icon">
-						<a href="#" data-role="button" data-icon="carat-d" data-iconpos="notext" onclick="app.showDetails(this)"></a>
+						<a href="#" data-role="button" data-icon="carat-d" data-iconpos="notext" onclick="appMyOrder.showDetails(this)"></a>
 					</div>
 		    		<div style="margin-top:5px">订单编号: <span data-bind="text:orderId"></span></div>
 		    		<div>日期: <span data-bind="text:orderDate"></span></div>
@@ -119,7 +119,7 @@
 			<div class="details" style="display:none">
 				<div class="order-info-content">
 					<div class="order-info-details-icon">
-						<a href="#" data-role="button" data-icon="carat-u" data-iconpos="notext" onclick="app.hideDetails(this)"></a>
+						<a href="#" data-role="button" data-icon="carat-u" data-iconpos="notext" onclick="appMyOrder.hideDetails(this)"></a>
 					</div>
 		    		<div class="blue-strong-head">订单编号: <span data-bind="text:orderId">BX8739473</span></div>
 		    		<div>发货人姓名: <span data-bind="text:consignor"></span></div>
@@ -177,7 +177,7 @@
 	</script> 
 	<script type="text/javascript" src="cordova.js"></script>
 </head>  
-<body onload="app.onLoad()">
+<body onload="appMyOrder.onLoad()">
 	<div data-role="page" data-theme="f">  
 	  <div data-role="header" data-position="fixed" class="header-extra-height">
 	    <a href="userCenter.html" data-role="button" data-ajax="false" data-rel="back" data-icon="back">返回</a>
