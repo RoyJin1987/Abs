@@ -23,7 +23,7 @@
             completeOrders:ko.observableArray([])
         };
 
-var app = {
+var appMyOrder = {
     onLoad:function() {
 
         if (!window.device) {
@@ -59,7 +59,7 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        app.receivedEvent('deviceready');
+        appMyOrder.receivedEvent('deviceready');
         //some test data
          
         var jsonStr = '{"Action":"OrderItems","status":0,"Token":"07b27a882cc721a9207250f1b6bd2868"}';

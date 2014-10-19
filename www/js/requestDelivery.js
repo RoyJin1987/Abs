@@ -17,51 +17,112 @@
  * under the License.
  */
 
-  var viewModel = {
-         wenCeng : ko.observableArray([]),
-         models: ko.observableArray([]),
-         send_address:ko.observable(''),
-         goodsType:ko.observable(''),
-         weight: ko.observable(''),
-         volume: ko.observable(''),
-         ship_date: ko.observable(''),
-         arrival_date: ko.observable(''),
-         shipping_address: ko.observable(''),
-         delivery_floor: ko.observable(''),
-         additional_information: ko.observable(''),
-         selectedWenCeng:ko.observable(),
-         selectedModel:ko.observable(''),
-    };
 
 var app = {
-    onLoad:function() {
+  serverUrl:"http://112.124.122.107/Applications/web/?data=",
+  token:"07b27a882cc721a9207250f1b6bd2868",
+  viewModel :{
+    orderInfo:{
+      send_address:{
+        longitude:"经度",
+        latitude:"纬度",
+        city:"城市1",
+        address:'123',
+      },
+      consignor:"测试人",
+      type:'',
+      weight: '',
+      volume: '',
+      ship_date: '',
+      arrival_date: '',
+      shipping_address:{
+        longitude:"经度",
+        latitude:"纬度",
+        city:"城市2",
+        address:'',
+      },
+      delivery_floor: '',  
+      additional_information: '',
+      consignee_name:"",
+      consignee_phone:"",  
+      stars :"星级要求",
+      bid_item:{ // 出价项 车型选择非卡车时才有
+            freight:12,
+            truckage:"13" ,
+            tipping:"14"
+      },
+    },
+    wenCengList :[],
+    modelsList: [],
+    selectedWenCeng:ko.observable(''),
+    selectedModels:ko.observable(''),
+    consignee_name:ko.observable(""),
+    consignee_phone:ko.observable(""),  
+    shipping_address:ko.observable(""),
+    send_address:ko.observable(""),  
+  },
 
-        if (!window.device) {
-            $(document).ready(this.onDeviceReady);
-        } else {
-            document.addEventListener('deviceready', this.onDeviceReady, false);
+  onLoad:function() {
+
+      if (!window.device) {
+          $(document).ready(this.onDeviceReady);
+      } else {
+          document.addEventListener('deviceready', this.onDeviceReady, false);
+      }
+
+  },
+
+    sendClick:function() {
+    
+        app.viewModel.orderInfo.wenCeng = app.viewModel.selectedWenCeng();
+        app.viewModel.orderInfo.models = app.viewModel.selectedModels();
+        app.viewModel.orderInfo.consignee_name =app.viewModel.consignee_name();
+        app.viewModel.orderInfo.consignee_phone =app.viewModel.consignee_phone();
+
+        if (app.viewModel.selectedModels() == '卡车'){
+          
+          var request = {
+            Action:"HMSend",
+            Token:app.token,
+            parameter:app.viewModel.orderInfo
+          };
+          var url = app.serverUrl + JSON.stringify(request);
+          commonJS.get(url,function(data_){
+            if (data_.status===0) {
+              //提示用户
+              alert("订单提交成功！");
+              window.location.href="myOrder.html";
+            }
+            else{
+              //提示用户
+              alert(data_.message);
+            }
+          });
+            
+        }else{
+          $.mobile.changePage("#offer");
         }
 
     },
 
-    sendClick:function() {
-
-        if (viewModel.selectedModel() == '8'){
-            // 提交
-            var jsonStr= {"Action":"HMSend","Token":"07b27a882cc721a9207250f1b6bd2868","parameter":{"send_address":{"address":viewModel.send_address()}，
-            "consignor":"小王","type":viewModel.goodsType(),"wenceng":viewModel.selectedWenCeng(),"weight":models.weight(),
-            "volume":viewModel.volume(),"ship_date":viewModel.ship_date(),"arrival_date":viewModel.arrival_date(),"shipping_address":{"address":viewModel.shipping_address()}，
-            "delivery_floor":viewModel.delivery_floor(),"additional_information":viewModel.additional_information()}};
-            var url = "http://112.124.122.107/Applications/web/?data=" + JSON.stringify(jsonStr);
-            commonJS.get(url,function(text){  
-                
-                    alert(JSON.stringify(text));
-                
-            });
-        }else{
-            // 出价页
-        }
-
+    sendOrderClick:function() {
+          var request = {
+            Action:"HMSend",
+            Token:app.token,
+            parameter:app.viewModel.orderInfo
+          };
+          var url = app.serverUrl + JSON.stringify(request);
+          commonJS.get(url,function(data_){
+            if (data_.status===0) {
+              //提示用户
+              alert(JSON.stringify(data_));
+            }
+            else{
+               //提示用户
+              alert(data_.message);
+            }
+          });
+            
     },
     // Application Constructor
     initialize: function() {
@@ -82,20 +143,18 @@ var app = {
     onDeviceReady: function() {
         
         var jsonStr = '{"Action":"getWenceng"}';
-        var url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
+        var url = app.serverUrl +  jsonStr;
         commonJS.get(url,function(text){ 
-            viewModel.wenCeng = text.items;
+          app.viewModel.wenCengList = text.items;
         });
 
         jsonStr = '{"Action":"getModels"}';
-        url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
-        commonJS.get(url,function(text){       
-            for(var i in text.items){
-                viewModel.models = text.items;
-            }
+        url = app.serverUrl + jsonStr;
+        commonJS.get(url,function(text){      
+          app.viewModel.modelsList = text.items;
         });
-            
-        ko.applyBindings(viewModel);
+   
+        ko.applyBindings(app.viewModel);
         $('body').trigger("create");
 
     },
