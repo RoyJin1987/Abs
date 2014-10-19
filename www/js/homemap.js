@@ -33,8 +33,10 @@ var app = {
     // alert('haha');
   	//app.loadNavigator();
     app.loadMap();
-    app.getModels();
-    app.getNVehicles("6");//默认获取两轮车
+    // app.getModels();
+    if ($.cookie("usrToken")) {
+      alert("current user:"+$.cookie("usrToken"));
+    };
   },
 
  	//加载定位
@@ -58,7 +60,7 @@ var app = {
          } else {
             app.loadMap();
          };
-         app.addMaker(app.position.coords,true,null,"我的位置");    
+         // app.addMaker(app.position.coords,true,null,"我的位置");    
       }
 
     	// onError Callback receives a PositionError object
@@ -85,20 +87,25 @@ var app = {
         // var gpsPoint = new BMap.Point(app.position.coords.longitude, app.position.coords.latitude);
         setTimeout(function(){
           app.convertCoordsGPStoBaidu(app.position.coords,function(point) {
-          alert(JSON.stringify(point));
-          app.map.centerAndZoom(point, 14); 
+            alert(JSON.stringify(point));
+            app.map.centerAndZoom(point, 14); 
+            app.baiduPosition = point;
+            app.addMaker(point,true,null,"我的位置"); 
           }); 
-        },2000);
+        },1000);
         
  		} else {
         //test
         var p = {longitude:31.2093913,latitude:121.5946826};
         app.convertCoordsGPStoBaidu(p,function(point) {
           app.map.centerAndZoom(point, 14); 
+          app.baiduPosition = point;
+          app.addMaker(point,true,null,"我的位置");
+          app.getNVehicles("6");//默认获取两轮车  
         });                  // 初始化地图,设置中心点坐标和地图级别。
         //this.map.addControl(new BMap.ZoomControl());      //添加地图缩放控件
         //var p = {longitude:31.209,latitude:121.595};
-        app.addMaker(p,true,null,"我的位置");  
+        
     }
 
  	},
@@ -111,21 +118,19 @@ var app = {
           // var gpsPoint = new BMap.Point(this.position.coords.longitude, this.position.coords.latitude);
           app.convertCoordsGPStoBaidu(app.position.coords,function(point) {
             alert(JSON.stringify(point));
-            app.map.centerAndZoom(point, 14); 
+            app.map.centerAndZoom(point, 14);
+            app.baiduPosition = point; 
+            app.getNVehicles("6");//默认获取两轮车
           }); 
       };
     };
   },
 
 
-  addMaker:function(coords,isAnimated,opts,title)  {
-    if (!coords) { return;};
+  addMaker:function(BMapPoint,isAnimated,opts,title)  {
+    if (!BMapPoint) { return;};
     if (app.map) {
-      //var gpsPoint = new BMap.Point(coords.longitude, coords.latitude);
-      app.convertCoordsGPStoBaidu(coords,function(point) {
-          //alert('point.x:'+point.lat +'\n' +'point.y:'+point.lng);
-          alert(JSON.stringify(point));
-          var marker = new BMap.Marker(point);  //创建标注
+       var marker = new BMap.Marker(BMapPoint);  //创建标注
           app.map.addOverlay(marker);    // 将标注添加到地图中
           if (!opts) {
               opts = {
@@ -138,12 +143,34 @@ var app = {
           };
           var infoWindow = new BMap.InfoWindow(title?title:"车辆位置", opts);  // 创建信息窗口对象
           marker.addEventListener("click", function(){          
-            app.map.openInfoWindow(infoWindow,point); //开启信息窗口
+            app.map.openInfoWindow(infoWindow,BMapPoint); //开启信息窗口
           });
           if (isAnimated) {
             marker.setAnimation(BMAP_ANIMATION_BOUNCE); 
           };
-      });
+      //var gpsPoint = new BMap.Point(coords.longitude, coords.latitude);
+      // app.convertCoordsGPStoBaidu(coords,function(point) {
+      //     //alert('point.x:'+point.lat +'\n' +'point.y:'+point.lng);
+      //     alert(JSON.stringify(point));
+      //     var marker = new BMap.Marker(point);  //创建标注
+      //     app.map.addOverlay(marker);    // 将标注添加到地图中
+      //     if (!opts) {
+      //         opts = {
+      //         width : 100,    // 信息窗口宽度
+      //         height: 60,     // 信息窗口高度
+      //         title : title?title:"车辆位置", // 信息窗口标题
+      //         enableAutoPan : true //自动平移
+      //       }
+
+      //     };
+      //     var infoWindow = new BMap.InfoWindow(title?title:"车辆位置", opts);  // 创建信息窗口对象
+      //     marker.addEventListener("click", function(){          
+      //       app.map.openInfoWindow(infoWindow,point); //开启信息窗口
+      //     });
+      //     if (isAnimated) {
+      //       marker.setAnimation(BMAP_ANIMATION_BOUNCE); 
+      //     };
+      // });
     }
   },
   convertCoordsGPStoBaidu : function(coords,callback) {
@@ -191,7 +218,7 @@ var app = {
     var jsonStr = JSON.stringify(param);
     var self = this;
     var url =  self.serverUrl + jsonStr;
-    debugger();
+    debugger;
     commonJS.get(url,function(data){ 
       alert(JSON.stringify(data));
       self.nVehicles = data.items;
