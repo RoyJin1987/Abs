@@ -91,12 +91,14 @@ var app = {
         });
     },
     login:function(){
+
         var usr = app.loginUser;
         var deviceId ="";
         if (window.device) {
             deviceId = window.device.uuid;
 
         };
+
         var request = {
             Action:"login",
             type:1,
@@ -108,11 +110,13 @@ var app = {
         }
         var url = ABSApplication.ABSServer.url + JSON.stringify(request);
         commonJS.get(url,function(data){
-            // alert(JSON.stringify(data));
+            
            if (data.status === 0) {
                $.cookie('usrToken', data.Token, { expires: 7, path: '/' });
                alert("恭喜您，登陆成功！");
                window.location.href="homemap.html";
+           }else{
+            alert(JSON.stringify(data.message));
            };
         });
 

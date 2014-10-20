@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
- var waybills = {
+ var orders = {
             pushedOrders:ko.observableArray([]),
             cancelOrders:ko.observableArray([]),
             confirmOrders:ko.observableArray([]),
@@ -65,43 +65,53 @@ var appMyOrder = {
         var jsonStr = '{"Action":"OrderItems","status":0,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
         var url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
         commonJS.get(url,function(text){        
-            waybills.pushedOrders = text.items;
+            orders.pushedOrders = text.items;
+            for(var i in orders.pushedOrders)
+            {
+                var order = orders.pushedOrders[i];
+                order.editOrder = function()
+                {
+                    var self = this;
+                    window.location.href="editOrder.html?orderId="+self.orderId;
+                    
+                }
+            }
         });
 
         jsonStr = '{"Action":"OrderItems","status":1,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
         url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
         commonJS.get(url,function(text){        
-            waybills.cancelOrders = text.items;
+            orders.cancelOrders = text.items;
         });
 
         jsonStr = '{"Action":"OrderItems","status":2,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
         url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
         commonJS.get(url,function(text){        
-            waybills.confirmOrders = text.items;
+            orders.confirmOrders = text.items;
         });
 
         jsonStr = '{"Action":"OrderItems","status":3,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
         url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;  
         commonJS.get(url,function(text){        
-            waybills.completeOrders = text.items;
+            orders.completeOrders = text.items;
         });
 
-        for(var i in waybills.pushedOrders){
+        for(var i in orders.pushedOrders){
        
-            var order = waybills.pushedOrders[i];
+            var order = orders.pushedOrders[i];
             order.responsers = ko.observableArray();
             jsonStr= {"Action":"HMList","Token":"07b27a882cc721a9207250f1b6bd2868","parameter":{"orderId":order.orderId,"page":1}};
             url = "http://112.124.122.107/Applications/web/?data=" + JSON.stringify(jsonStr);
             commonJS.get(url,function(text){  
                 if (text.items!=null){
-                    waybills.pushedOrders[i].responsers = text.items; 
-                    waybills.pushedOrders[i].showModify = false;
-                    waybills.pushedOrders[i].showCancel = true;
+                    orders.pushedOrders[i].responsers = text.items; 
+                    orders.pushedOrders[i].showModify = false;
+                    orders.pushedOrders[i].showCancel = true;
                 }
             });
         }
             
-        ko.applyBindings(waybills);
+        ko.applyBindings(orders);
         $('body').trigger("create");
 
     },
