@@ -7,7 +7,7 @@ var LL = {
      * 框架路径
      * @access public
      */
-    path: "lib/core/",
+    path: "js/message/",
     /**
      * LL.System
      * LL核心对像

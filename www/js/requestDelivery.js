@@ -90,8 +90,8 @@ var app = {
           commonJS.get(url,function(data_){
             if (data_.status===0) {
               //提示用户
-              alert("订单提交成功！");
-              window.location.href="myOrder.html";
+              // alert("订单提交成功！");
+              window.location.href="pushing.html?orderId="+data_.orderId;
             }
             else{
               //提示用户
@@ -115,7 +115,8 @@ var app = {
           commonJS.get(url,function(data_){
             if (data_.status===0) {
               //提示用户
-              alert(JSON.stringify(data_));
+              // alert(JSON.stringify(data_));
+              window.location.href="pushing.html?orderId="+data_.orderId;
             }
             else{
                //提示用户
@@ -142,6 +143,7 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         
+        app.token = $.cookie("usrToken");
         var jsonStr = '{"Action":"getWenceng"}';
         var url = app.serverUrl +  jsonStr;
         commonJS.get(url,function(text){ 

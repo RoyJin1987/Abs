@@ -1,6 +1,6 @@
 'use strict'
 /*
- * app首页
+ * 推送页
  */
 var app = {
   serverUrl: "http://112.124.122.107/Applications/web/?data=",
@@ -8,6 +8,7 @@ var app = {
 	position:null,//当前Gps位置
   baiduPosition:null,//当前百度坐标
   map:null,//百度地图对象
+  usrToken:"",
   onLoad:function() {
     	if (!window.device) {
     		$(document).ready(this.onDeviceReady);
@@ -42,19 +43,26 @@ var app = {
      * 消息处理系统准备就绪
      */
     LL.addEventListener(LL.Events.onMessageLoadedEvent,function(){
+        // app.push();
         LL.Message.onMessage=function(message){
-            app.push();
+            
         };
+        var orderId = app.getUrlParam("orderId");
+        app.getPendingPushVehicle(orderId);
         // $("#meid").html(LL.Message.deviceId);
         // $("#uidvalue").val(LL.Message.deviceId);
     });
-    var model = "6";
     app.loadMap();
-    app.getNVehicles(model)
+    
     if ($.cookie("usrToken")) {
       alert("current user:"+$.cookie("usrToken"));
+      app.usrToken = $.cookie("usrToken");
+
     };
-    app.push();
+    if ($.cookie("usrIdentity")) {
+      LL.Message.deviceId = $.cookie("usrIdentity");
+    };
+    // app.push();
   },
 
  	//加载定位
@@ -78,7 +86,6 @@ var app = {
          } else {
             app.loadMap();
          };
-         // app.addMaker(app.position.coords,true,null,"我的位置");    
       }
 
     	// onError Callback receives a PositionError object
@@ -95,7 +102,7 @@ var app = {
 
  	//加载地图
  	loadMap : function() {
- 		app.map = new BMap.Map("allmap");
+ 		app.map = new BMap.Map("map");
 
  		if (app.position) {
         var gpsPoint = new BMap.Point(app.position.coords.longitude, app.position.coords.latitude);
@@ -106,7 +113,6 @@ var app = {
             alert(JSON.stringify(point));
             app.map.centerAndZoom(point, 14); 
             app.baiduPosition = point;
-            app.addMaker(point,true,null,"我的位置"); 
           }); 
         },1000);
         
@@ -116,11 +122,7 @@ var app = {
         app.convertCoordsGPStoBaidu(p,function(point) {
           app.map.centerAndZoom(point, 14); 
           app.baiduPosition = point;
-          app.addMaker(point,true,null,"我的位置");
-          app.getNVehicles("6");//默认获取两轮车  
         });                  // 初始化地图,设置中心点坐标和地图级别。
-        //this.map.addControl(new BMap.ZoomControl());      //添加地图缩放控件
-        //var p = {longitude:31.209,latitude:121.595};
     }
 
  	},
@@ -135,11 +137,11 @@ var app = {
             alert(JSON.stringify(point));
             app.map.centerAndZoom(point, 14);
             app.baiduPosition = point; 
-            app.getNVehicles("6");//默认获取两轮车
           }); 
       };
     };
   },
+
   convertCoordsGPStoBaidu : function(coords,callback) {
     var gpsPoint =  new BMap.Point(coords.longitude,coords.latitude);
     BMap.Convertor.translate(gpsPoint,0,callback); 
@@ -147,33 +149,42 @@ var app = {
   },
 
 
-  getNVehicles:function(model) {
+  getPendingPushVehicle:function(orderId) {
     if (!app.baiduPosition) return;
     var param = {
-      Action:"NVehicles",
-      models:model,
+      Action:"POSTList",
       parameter:{
-        latitude:app.baiduPosition.latitude,
-        longitude:app.baiduPosition.latitude,
+        orderId:orderId,
         page:1
-      }
+      },
+      Token:app.usrToken
     }
     var jsonStr = JSON.stringify(param);
     var self = this;
     var url =  self.serverUrl + jsonStr;
-    debugger;
     commonJS.get(url,function(data){ 
       alert(JSON.stringify(data));
       self.nVehicles = data.items;
-      // for(var i in self.nVehicles)
-      // {
-              
-      // }
-      // // $("body").trigger("create");
+      app.push();
     });
   },
+
+  //推送订单
   push:function()
   {
+    setTimeout(function(){
+       for(var i in self.nVehicles)
+      {
+        var vehicle = nVehicles[i];
+
+        var message = { 
+          msg:"test"+i
+        };
+        LL.Message.send(vehicle.identity,JSON.stringify(message));           
+      }
+    },100);
+   
+      // // $("body").trigger("create");
     var progress = 0;
     var timer = setInterval(function(){
         $("#progress-bar").find('#progress').text(progress);
@@ -184,12 +195,25 @@ var app = {
             $("#progress-bar").find('.right').css('transform', "rotate(180deg)");
             $("#progress-bar").find('.left').css('transform', "rotate(" + (num - 180) + "deg)");
         };
-        progress+=5;
+        progress+=1;
         if (progress>100) {
           clearInterval(timer);
+          window.location.href="myOrder.html";
         };
-    },50);
+    },1000);
+  },
+  
+  getUrlParam : function(name)
+    {
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r!=null) return unescape(r[2]); return null; //返回参数值
+    } 
 
-
-  }
 };
+$(document).ready(function()
+{
+  app.onLoad();
+
+});
+
