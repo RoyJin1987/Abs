@@ -19,8 +19,13 @@
 
 package com.aibangsong.abs;
 
+import org.apache.cordova.Config;
+import org.apache.cordova.CordovaActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
-import org.apache.cordova.*;
+
+import com.aibangsong.abs.push.MQTTService;
 
 public class Abs extends CordovaActivity 
 {
@@ -32,8 +37,18 @@ public class Abs extends CordovaActivity
 //        super.setIntegerProperty("splashscreen",
 //        		R.drawable.splash);
         // Set by <content src="index.html" /> in config.xml
+        appView.getSettings().setJavaScriptEnabled(true);
+        appView.addJavascriptInterface(new NotificationClient(this, appView), "notificationClient");
         super.loadUrl(Config.getStartUrl());
 //        super.loadUrl("file:///android_asset/www/BaiduJSPopMap.html");
     }
+    
+    @Override
+	public void onDestroy() {
+    	final Intent intent = new Intent(this, MQTTService.class);
+        stopService(intent);
+        super.onDestroy();
+	}
+
 }
 
