@@ -73,7 +73,6 @@ var app = {
             
         ko.applyBindings(app.viewModel);
         $('body').trigger("create");
-
     },
 
     showDetails:function(btn){
@@ -84,7 +83,6 @@ var app = {
 
     // Update DOM on a Received Event
     receivedEvent: function(id) {
-
         console.log('Received Event: ' + id);
     },
 };
