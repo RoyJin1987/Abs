@@ -77,7 +77,7 @@
 				<table>
 					<tr>
 						<td style="width:25%"><label for="weight" data-inline="true">货物重量：</label></td>
-						<td style="width:69%"><input type="text" name="weight" id="weight" data-bind="value: orderInfo.weight" data-inline="true"></td><td style="width:6%"></td>
+						<td style="width:49%"><input type="number" name="weight" id="weight" data-bind="value: orderInfo.weight" data-inline="true"></td><td style="width:6%"></td>
 					</tr>
 				</table>
 			</div>
@@ -86,7 +86,7 @@
 				<table>
 					<tr>
 						<td style="width:25%"><label for="volume">货物体积：</label></td>
-						<td style="width:69%"><input type="text" name="volume" id="volume" data-bind="value: orderInfo.volume"/></td><td style="width:6%"></td>
+						<td style="width:49%"><input type="number" name="volume" id="volume" data-bind="value: orderInfo.volume"/></td><td style="width:6%"></td>
 					</tr>
 				</table>
 			</div>
@@ -122,7 +122,7 @@
 				<table>
 					<tr>
 						<td style="width:30%"><label>联系电话：</label></td>
-						<td style="width:69%"><input id="tel" data-bind="value: consignee_phone"></input></td>
+						<td style="width:69%"><input id="tel" type="tel" data-bind="value: consignee_phone"></input></td>
 					</tr>
 				</table>
 			</div>
@@ -141,7 +141,7 @@
 				<table>
 					<tr>
 						<td style="width:25%"><label for="floor">送货楼层：</label></td>
-						<td style="width:69%"><input type="text" name="floor" id="floor" data-bind="value: orderInfo.delivery_floor"/></td><td style="width:6%"></td>
+						<td style="width:69%"><input type="number" name="floor" id="floor" data-bind="value: orderInfo.delivery_floor"/></td><td style="width:6%"></td>
 					</tr>
 				</table>
 			</div>
@@ -226,13 +226,13 @@
 				<table>
 					<tr>
 						<td style="width:45%"><label>平台推荐运输费用：</label></td>
-						<td style="width:55%"><label id="carType" data-bind="text: orderInfo.bid_item.freight"></label></td>
+						<td style="width:55%"><label id="carType" data-bind="text: freight"></label></td>
 					</tr>
 				</table>
 				<table>
 					<tr>
 						<td style="width:25%"><label>调整运费： </label></td>
-						<td style="width:75%"><input type="range" name="slider" data-bind="value: orderInfo.bid_item.freight" min="0" max="100" data-highlight="true" /></td>
+						<td style="width:75%"><input type="range" name="slider" data-bind="value: freight" min="0" max="100" data-highlight="true" /></td>
 					</tr>
 				</table>
 			</div>
@@ -247,7 +247,7 @@
 				<table>
 					<tr>
 						<td style="width:29%"><label>调整搬运费：</label></td>
-						<td style="width:71%"><input type="range" name="slider" data-bind="value: orderInfo.bid_item.truckage" min="0" max="100" data-highlight="true" /></td>
+						<td style="width:71%"><input type="range" name="slider" data-bind="value: truckage" min="0" max="100" data-highlight="true" /></td>
 					</tr>
 				</table>
 			</div>
@@ -260,7 +260,7 @@
 					</tr>
 					<tr>
 						<td style="width:25%"><label>调整小费：</label></td>
-						<td style="width:75%"><input type="range" name="slider" data-bind="value: orderInfo.bid_item.tipping" min="0" max="20" data-highlight="true" /></td>
+						<td style="width:75%"><input type="range" name="slider" data-bind="value: tipping" min="0" max="20" data-highlight="true" /></td>
 					</tr>
 				</table>
 			</div>
