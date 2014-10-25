@@ -68,7 +68,11 @@ var appMyOrder = {
             orders.pushedOrders = text.items;
             for(var i in orders.pushedOrders)
             {
+                
                 var order = orders.pushedOrders[i];
+                order.ship_date =commonJS.jsonDateFormat(orders.pushedOrders[i].ship_date);
+                order.arrival_date =commonJS.jsonDateFormat(orders.pushedOrders[i].arrival_date);
+                order.orderDate = commonJS.jsonDateFormat(orders.pushedOrders[i].orderDate);
                 order.editOrder = function()
                 {
                     var self = this;

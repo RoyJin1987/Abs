@@ -52,6 +52,9 @@ var app = {
             tipping:"14"
       },
     },
+    freight:ko.observable(12),
+    truckage:ko.observable(13) ,
+    tipping:ko.observable(14),
     wenCengList :[],
     modelsList: [],
     selectedWenCeng:ko.observable(''),
@@ -78,7 +81,9 @@ var app = {
         app.viewModel.orderInfo.models = app.viewModel.selectedModels();
         app.viewModel.orderInfo.consignee_name =app.viewModel.consignee_name();
         app.viewModel.orderInfo.consignee_phone =app.viewModel.consignee_phone();
-
+        app.viewModel.orderInfo.bid_item.freight = app.viewModel.freight();
+        app.viewModel.orderInfo.bid_item.truckage = app.viewModel.truckage();
+        app.viewModel.orderInfo.bid_item.tipping =app.viewModel.tipping();
         if (app.viewModel.selectedModels() == '卡车'){
           
           var request = {
