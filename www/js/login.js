@@ -59,7 +59,6 @@ var app = {
         
         ko.applyBindings(app.loginUser);
         $('body').trigger("create");
-
     },
 
     // Update DOM on a Received Event
@@ -113,10 +112,13 @@ var app = {
             
            if (data.status === 0) {
                $.cookie('usrToken', data.Token, { expires: 7, path: '/' });
+               var identity = data.identity;
+               window.notificationClient.startService(identity);
                alert("恭喜您，登陆成功！");
                window.location.href="homemap.html";
+
            }else{
-            alert(JSON.stringify(data.message));
+                alert(JSON.stringify(data.message));
            };
         });
 
