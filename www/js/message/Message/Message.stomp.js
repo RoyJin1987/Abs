@@ -255,6 +255,7 @@ function MessageStomp(_debug) {
 
     };
     this.publish = function(topic, payload,toclientId) {
+
         var headers = {};
         if (typeof(payload)=='undefined' || payload == null) {
             payload = '';
