@@ -111,7 +111,17 @@ var appMyOrder = {
                     orders.pushedOrders[i].responsers = text.items; 
                     orders.pushedOrders[i].showModify = false;
                     orders.pushedOrders[i].showCancel = true;
+                    for(var j in orders.pushedOrders[i].responsers)
+                    {
+                        var responser = orders.pushedOrders[i].responsers[j];
+                        responser.confirmToResponse = function()
+                        {
+                            window.location.href = "orderConfirm.html?orderId="+order.orderId+"&key="+responser.key;
+
+                        };
+                    }
                 }
+
             });
         }
             
