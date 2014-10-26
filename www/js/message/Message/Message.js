@@ -19,10 +19,10 @@ LL.Message = {
      * @return void	无返回
      */
     init: function () {
-        LL.Message.deviceId = "web_" + new Date().getTime();
         LL.Message.Address="112.124.122.107";//
 
         if (LL.System.webSocket && LL.System.system!=LL.System.Systems.Android) {
+
             LL.loadPlugin(
                 [
                         this.path + "Message.stomp.js"
@@ -36,7 +36,9 @@ LL.Message = {
                                     LL.Message.onMessage(payload);
                                 }
                             }
+
                             LL.Message.messageObject.onconnect = function () {
+
                                 LL.Message.messageObject.subscribe(LL.Message.deviceId, 0);
                             }
                             LL.Message.messageObject.ondisconnect = function () {
@@ -80,12 +82,12 @@ LL.Message = {
                             /**
                              * 加载完成事件
                              */
-                            if(typeof(onMessageLoadedEvent)=='function'){
-                                onMessageLoadedEvent();
-                            }
-                            if(typeof(LL.onMessageLoadedEvent)=='function'){
-                                LL.onMessageLoadedEvent();
-                            }
+                            // if(typeof(onMessageLoadedEvent)=='function'){
+                            //     onMessageLoadedEvent();
+                            // }
+                            // if(typeof(LL.onMessageLoadedEvent)=='function'){
+                            //     LL.onMessageLoadedEvent();
+                            // }
                         }
                     }
                 ]);

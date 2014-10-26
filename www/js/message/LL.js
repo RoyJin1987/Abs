@@ -85,12 +85,10 @@ var LL = {
         this.destination = "Tryout" + new Date().getTime()
         LL.loadPlugin(
             [
-                    this.path + "Interfaces/Interfaces.js",
                     this.path + "System/System.js",
                     this.path + "Message/Message.js"
             ],
             [
-                function () { LL.Interfaces.init(); },
                 function () { LL.System.init(); },
                 function () { LL.Message.init(); }
             ]);

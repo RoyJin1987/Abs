@@ -8,6 +8,7 @@ var app = {
 	position:null,//当前Gps位置
   baiduPosition:null,//当前百度坐标
   map:null,//百度地图对象
+  orderId:"",
   usrToken:"",
   onLoad:function() {
     	if (!window.device) {
@@ -36,7 +37,6 @@ var app = {
         //alert("LL.Events.onInterfacesLoadedEvent");
         var user=LL.Interfaces.userTypes.create(LL.Interfaces.userTypes.proxy);
         LL.Interfaces.register(user,function(data){
-            alert(data.status);
         });
     });
     /**
@@ -46,22 +46,23 @@ var app = {
         // app.push();
         LL.Message.onMessage=function(message){
             
-        };
-        var orderId = app.getUrlParam("orderId");
-        app.getPendingPushVehicle(orderId);
+        }; 
+
+        app.orderId = app.getUrlParam("orderId");
+        app.getPendingPushVehicle();
         // $("#meid").html(LL.Message.deviceId);
         // $("#uidvalue").val(LL.Message.deviceId);
     });
     app.loadMap();
     
     if ($.cookie("usrToken")) {
-      alert("current user:"+$.cookie("usrToken"));
       app.usrToken = $.cookie("usrToken");
 
     };
     if ($.cookie("usrIdentity")) {
       LL.Message.deviceId = $.cookie("usrIdentity");
     };
+    // 
     // app.push();
   },
 
@@ -134,7 +135,6 @@ var app = {
       if (app.position) {
           // var gpsPoint = new BMap.Point(this.position.coords.longitude, this.position.coords.latitude);
           app.convertCoordsGPStoBaidu(app.position.coords,function(point) {
-            alert(JSON.stringify(point));
             app.map.centerAndZoom(point, 14);
             app.baiduPosition = point; 
           }); 
@@ -149,12 +149,12 @@ var app = {
   },
 
 
-  getPendingPushVehicle:function(orderId) {
-    if (!app.baiduPosition) return;
+  getPendingPushVehicle:function() {
+     
     var param = {
       Action:"POSTList",
       parameter:{
-        orderId:orderId,
+        orderId:app.orderId,
         page:1
       },
       Token:app.usrToken
@@ -163,22 +163,24 @@ var app = {
     var self = this;
     var url =  self.serverUrl + jsonStr;
     commonJS.get(url,function(data){ 
-      alert(JSON.stringify(data));
+      
       self.nVehicles = data.items;
-      app.push();
+      app.push(self);
     });
   },
 
   //推送订单
-  push:function()
+  push:function(self)
   {
+    
     setTimeout(function(){
        for(var i in self.nVehicles)
       {
-        var vehicle = nVehicles[i];
+        var vehicle = self.nVehicles[i];
 
         var message = { 
-          msg:"test"+i
+          type:"newOrder",
+          orderId:app.orderId
         };
         LL.Message.send(vehicle.identity,JSON.stringify(message));           
       }
