@@ -19,6 +19,7 @@
 
 
 var app = {
+  position:{},
   serverUrl:"http://112.124.122.107/Applications/web/?data=",
   token:"07b27a882cc721a9207250f1b6bd2868",
   viewModel :{
@@ -84,6 +85,8 @@ var app = {
         app.viewModel.orderInfo.bid_item.freight = app.viewModel.freight();
         app.viewModel.orderInfo.bid_item.truckage = app.viewModel.truckage();
         app.viewModel.orderInfo.bid_item.tipping =app.viewModel.tipping();
+        app.viewModel.orderInfo.send_address.longitude = app.position.coords.longitude;
+        app.viewModel.orderInfo.send_address.latitude = app.position.coords.latitude;
         if (app.viewModel.selectedModels() == '卡车'){
           
           var request = {
@@ -91,6 +94,7 @@ var app = {
             Token:app.token,
             parameter:app.viewModel.orderInfo
           };
+          
           var url = app.serverUrl + JSON.stringify(request);
           commonJS.get(url,function(data_){
             if (data_.status===0) {
@@ -111,11 +115,15 @@ var app = {
     },
 
     sendOrderClick:function() {
+        app.viewModel.orderInfo.send_address.longitude = app.position.coords.longitude;
+        app.viewModel.orderInfo.send_address.latitude = app.position.coords.latitude;
+
           var request = {
             Action:"HMSend",
             Token:app.token,
             parameter:app.viewModel.orderInfo
           };
+          //alert("订单创建:"+ JSON.stringify(request));
           var url = app.serverUrl + JSON.stringify(request);
           commonJS.get(url,function(data_){
             if (data_.status===0) {
@@ -147,8 +155,9 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        
+        app.loadNavigator();
         app.token = $.cookie("usrToken");
+
         var jsonStr = '{"Action":"getWenceng"}';
         var url = app.serverUrl +  jsonStr;
         commonJS.get(url,function(text){ 
@@ -165,5 +174,35 @@ var app = {
         $('body').trigger("create");
 
     },
+
+      //加载定位
+  loadNavigator : function() {
+      // onSuccess Callback
+      //   This method accepts a `Position` object, which contains
+      //   the current GPS coordinates
+      //
+      var succ = function onSuccess(position) {
+         app.position = position;
+         // if (app.map) {
+         //    app.refreshMap();
+         // } else {
+         //    app.loadMap();
+         // };
+         // app.addMaker(app.position.coords,true,null,"我的位置");    
+      }
+
+      // onError Callback receives a PositionError object
+      //
+      var err = function onError(error) {
+          alert('code: '    + error.code    + '\n' +
+                'message: ' + error.message + '\n');
+      }
+      // var option = { maximumAge: 10*60*1000, timeout: 2*60*1000, enableHighAccuracy: false }
+      // navigator.geolocation.getCurrentPosition(succ, err, option);
+
+      // Options: throw an error if no update is received every 30 seconds.
+      //
+      var watchID = navigator.geolocation.watchPosition(succ, err, {maximumAge: 10000, timeout: 10000, enableHighAccuracy: false});
+  },
 
 };

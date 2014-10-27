@@ -30,31 +30,6 @@ var app = {
   // The scope of 'this' is the event. In order to call the 'receivedEvent'
   // function, we must explicitly call 'app.receivedEvent(...);'
   onDeviceReady: function() {
-    /**
-     * 接口处理功能准备就绪
-     */
-    LL.addEventListener(LL.Events.onInterfacesLoadedEvent,function(){
-        //alert("LL.Events.onInterfacesLoadedEvent");
-        var user=LL.Interfaces.userTypes.create(LL.Interfaces.userTypes.proxy);
-        LL.Interfaces.register(user,function(data){
-        });
-    });
-    /**
-     * 消息处理系统准备就绪
-     */
-    LL.addEventListener(LL.Events.onMessageLoadedEvent,function(){
-        // app.push();
-        LL.Message.onMessage=function(message){
-            
-        }; 
-
-        app.orderId = app.getUrlParam("orderId");
-        app.getPendingPushVehicle();
-        // $("#meid").html(LL.Message.deviceId);
-        // $("#uidvalue").val(LL.Message.deviceId);
-    });
-    app.loadMap();
-    
     if ($.cookie("usrToken")) {
       app.usrToken = $.cookie("usrToken");
 
@@ -62,6 +37,24 @@ var app = {
     if ($.cookie("usrIdentity")) {
       LL.Message.deviceId = $.cookie("usrIdentity");
     };
+    
+    /**
+     * 消息处理系统准备就绪
+     */
+    LL.addEventListener(function(){
+        // app.push();
+        LL.Message.onMessage=function(message){
+            
+        }; 
+        
+        // $("#meid").html(LL.Message.deviceId);
+        // $("#uidvalue").val(LL.Message.deviceId);
+    });
+    // app.orderId = app.getUrlParam("orderId");
+    // app.getPendingPushVehicle();
+    // app.loadMap();
+    app.orderId = app.getUrlParam("orderId");
+    app.getPendingPushVehicle();
     // 
     // app.push();
   },
@@ -73,14 +66,6 @@ var app = {
     	//   the current GPS coordinates
     	//
     	var succ = function onSuccess(position) {
-    	   alert('Latitude: '          + position.coords.latitude          + '\n' +
-    	          'Longitude: '         + position.coords.longitude         + '\n' +
-    	          'Altitude: '          + position.coords.altitude          + '\n' +
-    	          'Accuracy: '          + position.coords.accuracy          + '\n' +
-    	          'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
-    	          'Heading: '           + position.coords.heading           + '\n' +
-    	          'Speed: '             + position.coords.speed             + '\n' +
-    	          'Timestamp: '         + position.timestamp                + '\n');
     	   app.position = position;
          if (app.map) {
             app.refreshMap();
@@ -111,7 +96,6 @@ var app = {
         // var gpsPoint = new BMap.Point(app.position.coords.longitude, app.position.coords.latitude);
         setTimeout(function(){
           app.convertCoordsGPStoBaidu(app.position.coords,function(point) {
-            alert(JSON.stringify(point));
             app.map.centerAndZoom(point, 14); 
             app.baiduPosition = point;
           }); 
@@ -150,7 +134,7 @@ var app = {
 
 
   getPendingPushVehicle:function() {
-     
+   
     var param = {
       Action:"POSTList",
       parameter:{
@@ -163,7 +147,6 @@ var app = {
     var self = this;
     var url =  self.serverUrl + jsonStr;
     commonJS.get(url,function(data){ 
-      
       self.nVehicles = data.items;
       app.push(self);
     });
@@ -173,18 +156,18 @@ var app = {
   push:function(self)
   {
     
-    setTimeout(function(){
-       for(var i in self.nVehicles)
-      {
-        var vehicle = self.nVehicles[i];
+    // setTimeout(function(){
+    //    for(var i in self.nVehicles)
+    //   {
+    //     var vehicle = self.nVehicles[i];
 
-        var message = { 
-          type:"newOrder",
-          orderId:app.orderId
-        };
-        LL.Message.send(vehicle.identity,JSON.stringify(message));           
-      }
-    },100);
+    //     var message = { 
+    //       type:"newOrder",
+    //       orderId:app.orderId
+    //     };
+    //     LL.Message.send(vehicle.identity,JSON.stringify(message));           
+    //   }
+    // },100);
    
       // // $("body").trigger("create");
     var progress = 0;

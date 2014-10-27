@@ -34,9 +34,6 @@ var app = {
   	//app.loadNavigator();
     app.loadMap();
     // app.getModels();
-    if ($.cookie("usrToken")) {
-      alert("current user:"+$.cookie("usrToken"));
-    };
   },
 
  	//加载定位
@@ -46,14 +43,6 @@ var app = {
     	//   the current GPS coordinates
     	//
     	var succ = function onSuccess(position) {
-    	   alert('Latitude: '          + position.coords.latitude          + '\n' +
-    	          'Longitude: '         + position.coords.longitude         + '\n' +
-    	          'Altitude: '          + position.coords.altitude          + '\n' +
-    	          'Accuracy: '          + position.coords.accuracy          + '\n' +
-    	          'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
-    	          'Heading: '           + position.coords.heading           + '\n' +
-    	          'Speed: '             + position.coords.speed             + '\n' +
-    	          'Timestamp: '         + position.timestamp                + '\n');
     	   app.position = position;
          if (app.map) {
             app.refreshMap();
@@ -117,7 +106,6 @@ var app = {
       if (app.position) {
           // var gpsPoint = new BMap.Point(this.position.coords.longitude, this.position.coords.latitude);
           app.convertCoordsGPStoBaidu(app.position.coords,function(point) {
-            alert(JSON.stringify(point));
             app.map.centerAndZoom(point, 14);
             app.baiduPosition = point; 
             app.getNVehicles("6");//默认获取两轮车
@@ -185,7 +173,6 @@ var app = {
     var self = this;
     var url =  self.serverUrl + jsonStr;
     commonJS.get(url,function(data){ 
-      alert(JSON.stringify(data));
       if(data.items)
       {
         for(var i in data.items)
@@ -220,7 +207,6 @@ var app = {
     var url =  self.serverUrl + jsonStr;
     debugger;
     commonJS.get(url,function(data){ 
-      alert(JSON.stringify(data));
       self.nVehicles = data.items;
       for(var i in self.nVehicles)
       {
