@@ -114,10 +114,11 @@ var appMyOrder = {
                     for(var j in orders.pushedOrders[i].responsers)
                     {
                         var responser = orders.pushedOrders[i].responsers[j];
+                        responser.orderId= order.orderId;
                         responser.confirmToResponse = function()
                         {
-                            window.location.href = "orderConfirm.html?orderId="+order.orderId+"&key="+responser.key;
-
+                            var self = this;
+                            window.location.href = "orderConfirm.html?orderId="+self.orderId+"&key="+self.key;
                         };
                     }
                 }
