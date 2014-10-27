@@ -70,10 +70,11 @@ var app = {
             var url = app.serverUrl + JSON.stringify(request);
             // debugger;
             commonJS.get(url,function(data){
-                // alert(JSON.stringify(data));
+                
                 app.viewModel = data.item;
+                
                 app.viewModel.confirm = function (){
-                    
+                   
                     var request = {
                         Action:"OrderGrab",
                         confirmType:1,
@@ -84,7 +85,9 @@ var app = {
                             pilot_uid:app.viewModel.selectedPilot.identity 
                         }
                     };
+                    
                     var url = app.serverUrl + JSON.stringify(request);
+
                     commonJS.get(url,function(data_){
                         // debugger;
                         if (data_.status===0) {
