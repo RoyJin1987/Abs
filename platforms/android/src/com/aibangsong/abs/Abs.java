@@ -24,6 +24,7 @@ import org.apache.cordova.CordovaActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.webkit.CookieManager;
 
 import com.aibangsong.abs.push.MQTTService;
 
@@ -32,6 +33,7 @@ public class Abs extends CordovaActivity
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+    	CookieManager.setAcceptFileSchemeCookies(true);
         super.onCreate(savedInstanceState);
         super.init();
 //        super.setIntegerProperty("splashscreen",
