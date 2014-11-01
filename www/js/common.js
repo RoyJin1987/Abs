@@ -2,6 +2,23 @@
 /*
  * app??
  */
+
+   Date.prototype.Format = function (fmt) { //author: meizz 
+    var o = {
+        "M+": this.getMonth() + 1, //月份 
+        "d+": this.getDate(), //日 
+        "h+": this.getHours(), //小时 
+        "m+": this.getMinutes(), //分 
+        "s+": this.getSeconds(), //秒 
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+        "S": this.getMilliseconds() //毫秒 
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+};
+
 var commonJS = {
 	    getJsonString: function (o) {
         var r = [];
@@ -44,12 +61,8 @@ var commonJS = {
     },
 
     jsonDateFormat:function(jsonDate) {//json日期格式转换为正常格式
-        var date = new Date(parseInt(jsonDate.replace("/Date(", "").replace(")/", ""), 10));
-        var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
-        var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
-        return date.getFullYear() + "-" + month + "-" + currentDate;
+        return new Date(jsonDate*1000).Format("yyyy-MM-dd hh:mm");
     },
-
 
     /**
      * LL.json
