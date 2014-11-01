@@ -24,6 +24,7 @@
         };
 
 var appMyOrder = {
+    token:"",
     onLoad:function() {
 
         if (!window.device) {
@@ -61,8 +62,10 @@ var appMyOrder = {
     onDeviceReady: function() {
         appMyOrder.receivedEvent('deviceready');
         //some test data
+        appMyOrder.token = $.cookie("usrToken");
+        alert(appMyOrder.token);
          
-        var jsonStr = '{"Action":"OrderItems","status":0,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
+        var jsonStr = '{"Action":"OrderItems","status":0,"Token":"'+appMyOrder.token +'"}';
         var url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
         commonJS.get(url,function(text){        
             orders.pushedOrders = text.items;
@@ -82,19 +85,19 @@ var appMyOrder = {
             }
         });
 
-        jsonStr = '{"Action":"OrderItems","status":1,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
+        jsonStr = '{"Action":"OrderItems","status":1,"Token":"'+appMyOrder.token +'"}';
         url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
         commonJS.get(url,function(text){        
             orders.cancelOrders = text.items;
         });
 
-        jsonStr = '{"Action":"OrderItems","status":2,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
+        jsonStr = '{"Action":"OrderItems","status":2,"Token":"'+appMyOrder.token +'"}';
         url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
         commonJS.get(url,function(text){        
             orders.confirmOrders = text.items;
         });
 
-        jsonStr = '{"Action":"OrderItems","status":3,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
+        jsonStr = '{"Action":"OrderItems","status":3,"Token":"'+appMyOrder.token +'"}';
         url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;  
         commonJS.get(url,function(text){        
             orders.completeOrders = text.items;
@@ -104,7 +107,7 @@ var appMyOrder = {
        
             var order = orders.pushedOrders[i];
             order.responsers = ko.observableArray();
-            jsonStr= {"Action":"HMList","Token":"07b27a882cc721a9207250f1b6bd2868","parameter":{"orderId":order.orderId,"page":1}};
+            jsonStr= {"Action":"HMList","Token":appMyOrder.token ,"parameter":{"orderId":order.orderId,"page":1}};
             url = "http://112.124.122.107/Applications/web/?data=" + JSON.stringify(jsonStr);
             commonJS.get(url,function(text){  
                 if (text.items!=null){
