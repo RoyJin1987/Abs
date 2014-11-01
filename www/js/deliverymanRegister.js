@@ -88,7 +88,6 @@ var app = {
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
         if (window.device) {
-            alert(device.model +"----"+device.cordova +"------"+ device.uuid +"-----"+device.version+"----"+device.platform);
         };
         
         
@@ -132,7 +131,6 @@ var app = {
         {
             return;
         }
-        alert("deviceId");
         var usr = app.newUser;
         var deviceId ="";
         if (window.device) {
@@ -181,10 +179,8 @@ var app = {
         var url = ABSApplication.ABSServer.url + JSON.stringify(request);
 
         commonJS.get(url,function(data){
-            alert(JSON.stringify(data));
            if (data.status === 0) {
                $.cookie('usrToken', data.Token, { expires: 7, path: '/' });
-               alert("恭喜您，注册成功！");
                window.location.href="homemap.html";
            }else{
                 alert(data.message);

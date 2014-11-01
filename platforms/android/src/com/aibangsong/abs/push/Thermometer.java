@@ -6,8 +6,6 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.MqttTopic;
 import org.eclipse.paho.client.mqttv3.internal.MemoryPersistence;
 
-import java.util.Random;
-
 public class Thermometer {
 
     public static final String BROKER_URL = "tcp://112.124.122.107:1883";

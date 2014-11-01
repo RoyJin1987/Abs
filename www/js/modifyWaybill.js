@@ -19,7 +19,7 @@
 
 var app = {
     serverUrl:"http://112.124.122.107/Applications/web/?data=",
-    token:"07b27a882cc721a9207250f1b6bd2868",
+    token:"",
     viewModel: {},
     onLoad:function() {
 
@@ -56,6 +56,7 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
+        app.token = $.cookie("usrToken");
         app.receivedEvent('deviceready');
         //请求正在修改运单
         var orderId = app.getUrlParam("orderId");
@@ -69,9 +70,11 @@ var app = {
             var url = app.serverUrl + JSON.stringify(request);
             // debugger;
             commonJS.get(url,function(data){
-                // alert(JSON.stringify(data));
+                
                 app.viewModel = data.item;
+                
                 app.viewModel.confirm = function (){
+                   
                     var request = {
                         Action:"OrderGrab",
                         confirmType:1,
@@ -82,7 +85,9 @@ var app = {
                             pilot_uid:app.viewModel.selectedPilot.identity 
                         }
                     };
+                    
                     var url = app.serverUrl + JSON.stringify(request);
+
                     commonJS.get(url,function(data_){
                         // debugger;
                         if (data_.status===0) {

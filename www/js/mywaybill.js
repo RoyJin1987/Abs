@@ -24,6 +24,8 @@
         };
 
 var app = {
+    serverUrl:"http://112.124.122.107/Applications/web/?data=",
+    token:"",
   onLoad:function() {
 
         if (!window.device) {
@@ -50,29 +52,46 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
+        app.token = $.cookie("usrToken");
         app.receivedEvent('deviceready');
         //some test data
          
-        var jsonStr = '{"Action":"WaybillItems","status":0,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
-        var url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
+         var request = {
+                Action:"WaybillItems",
+                status:0,
+                Token:app.token
+            };
+        var url = app.serverUrl + JSON.stringify(request);
         commonJS.get(url,function(text){        
             waybills.pushedOrders = text.items;
         });
 
-        jsonStr = '{"Action":"WaybillItems","status":1,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
-        url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
+        request = {
+                Action:"WaybillItems",
+                status:1,
+                Token:app.token
+            };
+        url = app.serverUrl + JSON.stringify(request);
         commonJS.get(url,function(text){        
             waybills.submitOrders = text.items;
         });
 
-        jsonStr = '{"Action":"WaybillItems","status":2,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
-        url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
+        request = {
+                Action:"WaybillItems",
+                status:2,
+                Token:app.token
+            };
+        url = app.serverUrl + JSON.stringify(request);
         commonJS.get(url,function(text){        
             waybills.confirmOrders = text.items;
         });
 
-        jsonStr = '{"Action":"WaybillItems","status":3,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
-        url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;  
+        request = {
+                Action:"WaybillItems",
+                status:3,
+                Token:app.token
+            };
+        url = app.serverUrl + JSON.stringify(request);
         commonJS.get(url,function(text){        
             waybills.completeOrders = text.items;
         });

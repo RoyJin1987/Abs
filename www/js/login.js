@@ -114,8 +114,7 @@ var app = {
                $.cookie('usrToken', data.Token, { expires: 7, path: '/' });
                $.cookie('usrIdentity', data.identity, { expires: 7, path: '/' });
                var identity = data.identity;
-               // window.notificationClient.startService(identity);
-               alert("恭喜您，登陆成功！");
+               window.notificationClient.startService(identity);
                window.location.href="homemap.html";
 
            }else{
@@ -125,3 +124,6 @@ var app = {
 
     }
 };
+$(document).ready(function(){
+    app.onLoad();
+});

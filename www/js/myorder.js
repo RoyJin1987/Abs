@@ -24,7 +24,8 @@
         };
 
 var appMyOrder = {
-    token:"",
+    serverUrl:"http://112.124.122.107/Applications/web/?data=",
+    token:"07b27a882cc721a9207250f1b6bd2868",
     onLoad:function() {
 
         if (!window.device) {
@@ -60,15 +61,19 @@ var appMyOrder = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
+        appMyOrder.token = $.cookie("usrToken");
         appMyOrder.receivedEvent('deviceready');
         //some test data
-        appMyOrder.token = $.cookie("usrToken");
-        alert(appMyOrder.token);
-         
-        var jsonStr = '{"Action":"OrderItems","status":0,"Token":"'+appMyOrder.token +'"}';
-        var url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
+        var request = {
+                Action:"OrderItems",
+                status:0,
+                Token:appMyOrder.token
+            };
+        var url = appMyOrder.serverUrl + JSON.stringify(request);
+
         commonJS.get(url,function(text){        
             orders.pushedOrders = text.items;
+  
             for(var i in orders.pushedOrders)
             {
                 
@@ -85,20 +90,32 @@ var appMyOrder = {
             }
         });
 
-        jsonStr = '{"Action":"OrderItems","status":1,"Token":"'+appMyOrder.token +'"}';
-        url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
+        request = {
+                Action:"OrderItems",
+                status:1,
+                Token:appMyOrder.token
+            };
+        url = appMyOrder.serverUrl + JSON.stringify(request);
         commonJS.get(url,function(text){        
             orders.cancelOrders = text.items;
         });
 
-        jsonStr = '{"Action":"OrderItems","status":2,"Token":"'+appMyOrder.token +'"}';
-        url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
-        commonJS.get(url,function(text){        
+        request = {
+                Action:"OrderItems",
+                status:2,
+                Token:appMyOrder.token
+            };
+        url = appMyOrder.serverUrl + JSON.stringify(request);
+        commonJS.get(url,function(text){      
             orders.confirmOrders = text.items;
         });
 
-        jsonStr = '{"Action":"OrderItems","status":3,"Token":"'+appMyOrder.token +'"}';
-        url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;  
+        request = {
+                Action:"OrderItems",
+                status:3,
+                Token:appMyOrder.token
+            };
+        url = appMyOrder.serverUrl + JSON.stringify(request);
         commonJS.get(url,function(text){        
             orders.completeOrders = text.items;
         });
@@ -107,8 +124,9 @@ var appMyOrder = {
        
             var order = orders.pushedOrders[i];
             order.responsers = ko.observableArray();
-            jsonStr= {"Action":"HMList","Token":appMyOrder.token ,"parameter":{"orderId":order.orderId,"page":1}};
+            jsonStr= {"Action":"HMList","Token":appMyOrder.token,"parameter":{"orderId":order.orderId,"page":1}};
             url = "http://112.124.122.107/Applications/web/?data=" + JSON.stringify(jsonStr);
+        
             commonJS.get(url,function(text){  
                 if (text.items!=null){
                     orders.pushedOrders[i].responsers = text.items; 
@@ -117,10 +135,11 @@ var appMyOrder = {
                     for(var j in orders.pushedOrders[i].responsers)
                     {
                         var responser = orders.pushedOrders[i].responsers[j];
+                        responser.orderId= order.orderId;
                         responser.confirmToResponse = function()
                         {
-                            window.location.href = "orderConfirm.html?orderId="+order.orderId+"&key="+responser.key;
-
+                            var self = this;
+                            window.location.href = "orderConfirm.html?orderId="+self.orderId+"&key="+self.key;
                         };
                     }
                 }

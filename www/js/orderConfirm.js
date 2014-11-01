@@ -64,7 +64,6 @@ var app = {
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
         app.token = $.cookie("usrToken");
-        alert("token:"+ app.token );
         //请求正在修改运单
         var orderId = app.getUrlParam("orderId");
         var key = app.getUrlParam("key");
@@ -75,10 +74,8 @@ var app = {
                 orderId:orderId,
                 Token:app.token
             };
-            alert("请求订单："+JSON.stringify(request));
             var url = app.serverUrl + JSON.stringify(request);
             commonJS.get(url,function(data){
-                alert(JSON.stringify(data));
                 // 参数：
                 // POST|GET data={Action: "OrderConfirm",orderId: “订单编号”,key:”抢单标识”, Token:”身份令牌”} 
                 // 返回
@@ -93,10 +90,8 @@ var app = {
                         key:key,
                         Token:app.token,
                     };
-                    alert("确认订单:"+JSON.stringify(request));
                     var url = app.serverUrl + JSON.stringify(request);
                     commonJS.get(url,function(data_){
-                        alert(JSON.stringify(data_));
                         // debugger;
                         if (data_.status===0) {
                             //提示用户
@@ -141,13 +136,12 @@ var app = {
                     Token:app.token
                 };
                 var url = app.serverUrl + JSON.stringify(request);
-                alert("获取抢单者："+ JSON.stringify(request))
+
                 commonJS.get(url,function(data_){
-                    alert(JSON.stringify(data_));
                     for(var i in data_.items)
                     {
                         var pilot =  data.items[i];
-                        if (pilot.key === key) {
+                        if (pilot.key == key) {
                             app.viewModel.pilot = pilot;
                             break;
                         };
