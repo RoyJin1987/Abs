@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.aibangsong.abs.push.MQTTService;
+import com.aibangsong.abs.push.Thermometer;
 
 public class NotificationClient {
 	private static final String TAG ="NotificationClient";
@@ -24,13 +25,13 @@ public class NotificationClient {
 
     }
 
-    public void notify(String message, String callback) {
+    public void notify(String recevierIdentity,String message) {
 
           Log.d(TAG, "register(message: " + message + ", callback:" + callback + " )");
-          this.callback = callback;
-          Toast.makeText(context, "test js call", Toast.LENGTH_LONG)
+          Toast.makeText(context, message, Toast.LENGTH_LONG)
 			.show();
-          checkMessage();
+          Thermometer thermometer = new Thermometer(message,recevierIdentity);
+          thermometer.start();
     }
     
     public void startService(String identity) {
@@ -46,7 +47,5 @@ public class NotificationClient {
 			     view.sendJavascript(callback);
 			}
         });
-
-
     }
 }

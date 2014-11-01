@@ -21,7 +21,7 @@ public class MQTTService extends Service {
     http://android-developers.blogspot.de/2011/03/identifying-app-installations.html */
     public static final String clientId = "android-client";
 
-    private String topic = "kevin1122";
+    private String topic = "07b27a882cc721a9207250f1b6bd2868";
     private MqttClient mqttClient;
 
 
@@ -31,7 +31,7 @@ public class MQTTService extends Service {
 
     @Override
     public void onStart(Intent intent, int startId) {
-    	topic = intent.getStringExtra("identity");
+    	//topic = intent.getStringExtra("identity");
         super.onStart(intent, startId);
         new Thread(runnable).start();
     }
@@ -47,7 +47,7 @@ public class MQTTService extends Service {
 
                 //Subscribe to all subtopics of homeautomation
                 mqttClient.subscribe(topic);
-
+                
                 
             } catch (MqttException e) {
                 Toast.makeText(getApplicationContext(), "Something went wrong!" + e.getMessage(), Toast.LENGTH_LONG).show();
