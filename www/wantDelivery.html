@@ -59,7 +59,7 @@
 		    		<div>发货体积: <span data-bind="text:volume"></span>立方</div>
 		    		<div>发货地址: <span data-bind="text:send_address.city+send_address.address"></span></div>
 		    		<div>送货地址: <span data-bind="text:shipping_address.city+shipping_address.address"></span></div>
-		    		<div style="color:#FF6A6A">合计运费: <span data-bind="text:bid_item.city+bid_item.address">0</span>元</div>
+		    		<div style="color:#FF6A6A">合计运费: <span data-bind="text:bid_item.freight+bid_item.truckage+bid_item.tipping"></span>元</div>
 		    		<div>（运输费 <span data-bind="text:bid_item.freight"></span> ，搬运费 <span data-bind="text:bid_item.truckage"></span> ，小费 <span data-bind="text:bid_item.tipping"></span>）</div>
 		    		<div>附加信息: <span data-bind="text:additional_information"></span></div>
 		    		<div>语音留言: <a data-role="button" data-icon="flat-volume" data-iconpos="notext"></a></div>
@@ -68,7 +68,7 @@
 		    	<hr style="background-color:#D3D3D3;border:0;height:1px;">
 		    	<div class="ui-grid-b">
 		    		<div class="ui-block-a"></div>
-		    		<div class="ui-block-b">
+		    		<div class="ui-block-b" style="font-size:.7em">
 		    			<a data-role="button" data-bind="click:grab">立即抢单</a>
 		    		</div>
 		    	</div>
@@ -109,7 +109,7 @@
 		    	<hr style="background-color:#D3D3D3;border:0;height:1px;">
 		    	<div class="ui-grid-b">
 		    		<div class="ui-block-a"></div>
-		    		<div class="ui-block-b">
+		    		<div class="ui-block-b" style="font-size:.7em">
 		    			<a data-role="button" href="tel:10086" data-ajax="false" data-bind="click:grabIntercity">电话抢单</a>
 		    		</div>
 		    	</div>
