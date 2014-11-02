@@ -1,13 +1,13 @@
 package com.aibangsong.abs.push;
 
-import android.app.Service;
-import android.content.ContextWrapper;
-import android.content.Intent;
-import android.os.IBinder;
-import android.widget.Toast;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.internal.MemoryPersistence;
+
+import android.app.Service;
+import android.content.Intent;
+import android.os.IBinder;
+import android.widget.Toast;
 
 /**
  * @author Dominik Obermaier
@@ -42,7 +42,7 @@ public class MQTTService extends Service {
         	try {
                 mqttClient = new MqttClient(BROKER_URL, clientId, new MemoryPersistence());
 
-                mqttClient.setCallback(new PushCallback((ContextWrapper)getApplicationContext()));
+                mqttClient.setCallback(new PushCallback(getApplicationContext()));
                 mqttClient.connect();
 
                 //Subscribe to all subtopics of homeautomation

@@ -5,6 +5,9 @@
     <feature name="App">
         <param name="android-package" value="org.apache.cordova.App" />
     </feature>
+    <feature name="BaiduLocation">
+        <param name="android-package" value="com.spout.phonegap.plugins.baidulocation.BaiduLocation" />
+    </feature>
     <name>Abs</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
@@ -12,6 +15,6 @@
     <author email="dev@cordova.apache.org" href="http://cordova.io">
         Apache Cordova Team
     </author>
-    <content src="BaiduJSPopMap.html" />
+    <content src="login.html" />
     <access origin="*" />
 </widget>

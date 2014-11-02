@@ -60,6 +60,7 @@ var app = {
         app.receivedEvent('deviceready');
         //请求正在修改运单
         var orderId = app.getUrlParam("orderId");
+        var pushType = app.getUrlParam("pushType");
         // debugger;
         if (orderId) {
            var request = {
@@ -72,6 +73,25 @@ var app = {
             commonJS.get(url,function(data){
                 
                 app.viewModel = data.item;
+
+                if (pushType){
+                    if (pushType == "1"){
+                        app.viewModel.isIntercity = ko.observable(true);
+                        app.viewModel.isNotIntercity = ko.observable(false);
+                    }else{
+                        app.viewModel.isIntercity = ko.observable(false);
+                        app.viewModel.isNotIntercity = ko.observable(true);
+                    }
+                }else{
+                    if (app.viewModel.models == "8"){
+                        app.viewModel.isIntercity = ko.observable(true);
+                        app.viewModel.isNotIntercity = ko.observable(false);
+                    }else{
+                        app.viewModel.isIntercity = ko.observable(false);
+                        app.viewModel.isNotIntercity = ko.observable(true);
+                    }
+                }
+                
                 
                 app.viewModel.confirm = function (){
                    

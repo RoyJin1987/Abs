@@ -21,15 +21,20 @@ package com.aibangsong.abs;
 
 import org.apache.cordova.Config;
 import org.apache.cordova.CordovaActivity;
+import org.apache.cordova.CordovaWebView;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.webkit.CookieManager;
+import android.webkit.WebSettings;
 
 import com.aibangsong.abs.push.MQTTService;
 
 public class Abs extends CordovaActivity 
 {
+	public static Context context;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -42,6 +47,13 @@ public class Abs extends CordovaActivity
         appView.getSettings().setJavaScriptEnabled(true);
         appView.addJavascriptInterface(new NotificationClient(this, appView), "notificationClient");
         super.loadUrl(Config.getStartUrl());
+
+//        new AlertDialog.Builder(this).setTitle("复选框").setMultiChoiceItems(
+//   		     new String[] { "Item1", "Item2" }, null, null)
+//   		     .setPositiveButton("确定", null)
+//   		     .setNegativeButton("取消", null).show();
+        AppManager.getAppManager().addActivity(this);
+        context = this;
 //        super.loadUrl("file:///android_asset/www/BaiduJSPopMap.html");
     }
     
