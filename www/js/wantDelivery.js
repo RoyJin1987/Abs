@@ -31,6 +31,7 @@ var app = {
         } else {
             document.addEventListener('deviceready', this.onDeviceReady, false);
         }
+        // document.addEventListener('deviceready', this.onDeviceReady, false);
 
     },
 

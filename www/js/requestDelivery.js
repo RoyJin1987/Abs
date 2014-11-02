@@ -20,6 +20,7 @@
 
 var app = {
   position:{},
+  baiduPosition:{},
   serverUrl:"http://112.124.122.107/Applications/web/?data=",
   token:"07b27a882cc721a9207250f1b6bd2868",
   viewModel :{
@@ -68,11 +69,12 @@ var app = {
 
   onLoad:function() {
 
-      if (!window.device) {
-          $(document).ready(this.onDeviceReady);
-      } else {
-          document.addEventListener('deviceready', this.onDeviceReady, false);
-      }
+      // if (!window.device) {
+      //     $(document).ready(this.onDeviceReady);
+      // } else {
+      //     document.addEventListener('deviceready', this.onDeviceReady, false);
+      // }
+      document.addEventListener('deviceready', this.onDeviceReady, false);
 
   },
 
@@ -85,8 +87,8 @@ var app = {
         app.viewModel.orderInfo.bid_item.freight = app.viewModel.freight();
         app.viewModel.orderInfo.bid_item.truckage = app.viewModel.truckage();
         app.viewModel.orderInfo.bid_item.tipping =app.viewModel.tipping();
-        // app.viewModel.orderInfo.send_address.longitude = app.position.coords.longitude;
-        // app.viewModel.orderInfo.send_address.latitude = app.position.coords.latitude;
+        app.viewModel.orderInfo.send_address.longitude = app.baiduPosition.lng;
+        app.viewModel.orderInfo.send_address.latitude = app.baiduPosition.lat;
         if (app.viewModel.selectedModels() == '卡车'){
           
           var request = {
@@ -158,6 +160,21 @@ var app = {
     onDeviceReady: function() {
         //app.loadNavigator();
         app.token = $.cookie("usrToken");
+
+        // var noop = function(){};
+        // var callback = function(pos){
+        //     alert(JSON.stringify(pos));
+        //     app.baiduPosition = new BMap.Point(pos.coords.longitude,pos.coords.latitude);
+        //     // app.loadMap();
+        //     window.locationService.stop(noop,noop);
+        // }
+        // window.locationService.getCurrentPosition(callback,function(e){
+        //     alert(JSON.stringify(e));
+        //     window.locationService.stop(noop,noop);
+        // });
+        var position = $.cookie('baiduPosition');
+        app.baiduPosition = JSON.parse(position);
+        alert(JSON.stringify(app.baiduPosition));
 
         var jsonStr = '{"Action":"getWenceng"}';
         var url = app.serverUrl +  jsonStr;

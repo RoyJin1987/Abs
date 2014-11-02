@@ -29,12 +29,14 @@ var app = {
       //app.receivedEvent('deviceready');
      //通过百度sdk来获取经纬度,并且alert出经纬度信息
       var noop = function(){};
-      window.locationService.getCurrentPosition(function(pos){
-          alert(JSON.stringify(pos));
-          app.baiduPosition = new BMap.Point(pos.coords.longitude,pos.coords.latitude);
-          app.loadMap();
-          window.locationService.stop(noop,noop);
-      },function(e){
+      var callback = function(pos){
+            alert(JSON.stringify(pos));
+            app.baiduPosition = new BMap.Point(pos.coords.longitude,pos.coords.latitude);
+             $.cookie('baiduPosition', JSON.stringify(app.baiduPosition), { expires: 1, path: '/' });
+            app.loadMap();
+            window.locationService.stop(noop,noop);
+        }
+      window.locationService.getCurrentPosition(callback,function(e){
           alert(JSON.stringify(e));
           window.locationService.stop(noop,noop);
       });
