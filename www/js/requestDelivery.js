@@ -22,7 +22,7 @@ var app = {
   position:{},
   baiduPosition:{},
   serverUrl:"http://112.124.122.107/Applications/web/?data=",
-  token:"07b27a882cc721a9207250f1b6bd2868",
+  token:"",
   viewModel :{
     orderInfo:{
       send_address:{
@@ -65,16 +65,18 @@ var app = {
     consignee_phone:ko.observable(""),  
     shipping_address:ko.observable(""),
     send_address:ko.observable(""),  
+    send_city:"请点击选择城市", 
+    shipping_city:"请点击选择城市", 
   },
 
   onLoad:function() {
 
-      // if (!window.device) {
-      //     $(document).ready(this.onDeviceReady);
-      // } else {
-      //     document.addEventListener('deviceready', this.onDeviceReady, false);
-      // }
-      document.addEventListener('deviceready', this.onDeviceReady, false);
+      if (!window.device) {
+          $(document).ready(this.onDeviceReady);
+      } else {
+          document.addEventListener('deviceready', this.onDeviceReady, false);
+      }
+      // document.addEventListener('deviceready', this.onDeviceReady, false);
 
   },
 
@@ -89,7 +91,12 @@ var app = {
         app.viewModel.orderInfo.bid_item.tipping =app.viewModel.tipping();
         app.viewModel.orderInfo.send_address.longitude = app.baiduPosition.lng;
         app.viewModel.orderInfo.send_address.latitude = app.baiduPosition.lat;
-        if (app.viewModel.selectedModels() == '卡车'){
+        app.viewModel.orderInfo.send_address.city = $("#send_city_hidden").text();
+        app.viewModel.orderInfo.send_address.address = $("#send_county_hidden").text() + app.viewModel.send_address();
+        app.viewModel.orderInfo.shipping_address.city = $("#shipping_city_hidden").text();
+        app.viewModel.orderInfo.shipping_address.address = $("#shipping_county_hidden").text() + app.viewModel.shipping_address();
+
+        if (app.viewModel.selectedModels() == '8'){
           
           var request = {
             Action:"HMSend",
@@ -98,6 +105,7 @@ var app = {
           };
           
           var url = app.serverUrl + JSON.stringify(request);
+          alert(JSON.stringify(request));
           commonJS.get(url,function(data_){
             if (data_.status===0) {
               //提示用户
@@ -116,6 +124,9 @@ var app = {
 
     },
 
+    selectCity:function(type){
+      window.notificationClient.selectCity(type);
+    },
     sendOrderClick:function() {
     
         app.viewModel.orderInfo.send_address.longitude = app.position.coords.longitude;
@@ -172,9 +183,12 @@ var app = {
         //     alert(JSON.stringify(e));
         //     window.locationService.stop(noop,noop);
         // });
+      if($.cookie('baiduPosition')){
         var position = $.cookie('baiduPosition');
+        
         app.baiduPosition = JSON.parse(position);
         alert(JSON.stringify(app.baiduPosition));
+      }
 
         var jsonStr = '{"Action":"getWenceng"}';
         var url = app.serverUrl +  jsonStr;

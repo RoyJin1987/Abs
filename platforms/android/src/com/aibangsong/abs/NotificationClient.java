@@ -1,8 +1,5 @@
 package com.aibangsong.abs;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.apache.cordova.CordovaWebView;
 
 import android.app.Dialog;
@@ -10,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.Display;
 import android.view.Window;
 import android.view.WindowManager;
@@ -25,8 +21,7 @@ public class NotificationClient {
 
     private Context context = null;
     private CordovaWebView view = null;
-    private static String callback = "";
-    
+    private static String type = "";
     
     public NotificationClient(Context context, CordovaWebView view) {
 
@@ -38,7 +33,6 @@ public class NotificationClient {
     @JavascriptInterface
     public void notify(String recevierIdentity,String message) {
 
-          Log.d(TAG, "register(message: " + message + ", callback:" + callback + " )");
           Toast.makeText(context, message, Toast.LENGTH_LONG)
 			.show();
           Thermometer thermometer = new Thermometer(message,recevierIdentity);
@@ -46,8 +40,9 @@ public class NotificationClient {
     }
     
     @JavascriptInterface
-    public void selectCity(String callback) {
-    	this.callback =callback;
+    public void selectCity(String type) {
+    	//view.sendJavascript("show()");
+    	this.type =type;
     	AppManager.getAppManager().currentActivity().runOnUiThread(new Runnable() {
             public void run() {
         		Dialog dialog = new AddressPickerDialog(context,
@@ -89,8 +84,7 @@ public class NotificationClient {
 		@Override
 		public void setAddress(String provinceCode, String province,
 				String cityCode, String city, String countyCode, String county) {
-			String address = province+ " " + city+ " "+ county;
-			view.sendJavascript(callback+ "(" +city + "," +  county + ")");
+			view.loadUrl("javascript:show('" +city+ "','"+ county + "','"+ NotificationClient.type +"')");
 		}
 	};
 	
@@ -103,11 +97,4 @@ public class NotificationClient {
     	context.startService(intent);
   }
 
-    public void checkMessage() {
-        new Handler().post(new Runnable() {
-			public void run() {
-			     view.sendJavascript(callback);
-			}
-        });
-    }
 }
