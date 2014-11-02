@@ -70,11 +70,15 @@ var app = {
                 parameter:{"pushType":1,"page":1}
             };
         var url = app.serverUrl + JSON.stringify(request);
-        commonJS.get(url,function(text){        
-            waybills.intercityOrders = text.items;
-            for(var i in waybills.intercityOrders)
+        commonJS.get(url,function(data){        
+            // waybills.intercityOrders = data.items;
+            for(var i in data.items)
             {
-                var order = waybills.intercityOrders[i];
+                var order = data.items[i];
+                order.ship_date =commonJS.jsonDateFormat(data.items[i].ship_date);
+                order.arrival_date =commonJS.jsonDateFormat(data.items[i].arrival_date);
+                order.orderDate = commonJS.jsonDateFormat(data.items[i].orderDate);
+
                 order.grabIntercity = function()
                 {
                     var self = this;
@@ -85,6 +89,7 @@ var app = {
                     },1000);
 
                 }
+                waybills.intercityOrders.push(order);
 
             }
         });
@@ -95,12 +100,14 @@ var app = {
                 parameter:{"pushType":0,"page":1}
             };
         url = app.serverUrl + JSON.stringify(request);
-        commonJS.get(url,function(text){ 
-            JSON.stringify(text);       
-            waybills.orders = text.items;
-            for(var i in waybills.orders)
+        commonJS.get(url,function(data){      
+            // waybills.orders = data.items;
+            for(var i in data.items)
             {
-                var order = waybills.orders[i];
+                var order = data.items[i];
+                order.ship_date =commonJS.jsonDateFormat(data.items[i].ship_date);
+                order.arrival_date =commonJS.jsonDateFormat(data.items[i].arrival_date);
+                order.orderDate = commonJS.jsonDateFormat(data.items[i].orderDate);
                 order.grab = function()
                 {
                     var self = this;
@@ -111,6 +118,7 @@ var app = {
                     },1000);
 
                 }
+                waybills.orders.push(order);
             }
         });
             
