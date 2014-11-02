@@ -63,86 +63,194 @@ var appMyOrder = {
     onDeviceReady: function() {
         appMyOrder.token = $.cookie("usrToken");
         appMyOrder.receivedEvent('deviceready');
-        //some test data
-        var request = {
-                Action:"OrderItems",
-                status:0,
-                Token:appMyOrder.token
-            };
-        var url = appMyOrder.serverUrl + JSON.stringify(request);
+        
+        appMyOrder.refresh(0);
+        // var request = {
+        //         Action:"OrderItems",
+        //         status:0,
+        //         Token:appMyOrder.token
+        //     };
+        // var url = appMyOrder.serverUrl + JSON.stringify(request);
 
-        commonJS.get(url,function(text){        
-            orders.pushedOrders = text.items;
-  
-            for(var i in orders.pushedOrders)
-            {
-                
-                var order = orders.pushedOrders[i];
-                order.ship_date =commonJS.jsonDateFormat(orders.pushedOrders[i].ship_date);
-                order.arrival_date =commonJS.jsonDateFormat(orders.pushedOrders[i].arrival_date);
-                order.orderDate = commonJS.jsonDateFormat(orders.pushedOrders[i].orderDate);
-                order.editOrder = function()
-                {
-                    var self = this;
-                    window.location.href="editOrder.html?orderId="+self.orderId;
+        // commonJS.get(url,function(text){        
+        //     // orders.pushedOrders = text.items;
+        //     for(var i in text.items)
+        //     {          
+        //         var order = text.items[i];
+        //         order.ship_date =commonJS.jsonDateFormat(text.items[i].ship_date);
+        //         order.arrival_date =commonJS.jsonDateFormat(text.items[i].arrival_date);
+        //         order.orderDate = commonJS.jsonDateFormat(text.items[i].orderDate);
+        //         order.cancel = function()
+        //         {
+        //             var index = i;
+        //             var self = this;
+        //             var request = {
+        //                 Action:"OrderRevocation",
+        //                 orderId:self.orderId,
+        //                 Token:appMyOrder.token
+        //             };
+        //             var url = appMyOrder.serverUrl + JSON.stringify(request);
+        //             commonJS.get(url,function(result){
+        //                 if(result.status !== 0)
+        //                 {
+        //                     alert(result.message);
+        //                     return;
+        //                 }
+        //                 alert("订单"+self.orderId+"撤销成功.");
+        //                 orders.pushedOrders.slice(index,1);
+        //             });   
+
+        //         };
+        //         order.responsers = ko.observableArray([]);
+        //         orders.pushedOrders.push(order);
+        //     }
+        // });
+
+        // request = {
+        //         Action:"OrderItems",
+        //         status:1,
+        //         Token:appMyOrder.token
+        //     };
+        // url = appMyOrder.serverUrl + JSON.stringify(request);
+        // commonJS.get(url,function(text){   
+        //     for(var i in text.items)
+        //     {
+        //         var order = text.items[i];
+        //         order.editOrder = function()
+        //         {
+        //             var self = this;
+        //             window.location.href="editOrder.html?orderId="+self.orderId;
                     
-                }
-                order.responsers = ko.observableArray();
-            }
-        });
+        //         }
+               
+        //         orders.cancelOrders.push(order);
+        //     }  
+           
+        // });
 
-        request = {
-                Action:"OrderItems",
-                status:1,
-                Token:appMyOrder.token
-            };
-        url = appMyOrder.serverUrl + JSON.stringify(request);
-        commonJS.get(url,function(text){        
-            orders.cancelOrders = text.items;
-        });
+        // request = {
+        //         Action:"OrderItems",
+        //         status:0,
+        //         Token:appMyOrder.token
+        //     };
+        // url = appMyOrder.serverUrl + JSON.stringify(request);
+        // commonJS.get(url,function(text){      
+        //     // orders.confirmOrders = text.items;
+        //      for(var i in text.items)
+        //     {
+        //         var order = text.items[i];
+        //         order.isCompleted = false;
+        //         order.carrier = ko.observable({
+        //             freight:'',
+        //             motorcade:{},
+        //             user:{},
+        //             pilot:{}
+        //         });
+        //         orders.confirmOrders.push(order);
+        //     }
 
-        request = {
-                Action:"OrderItems",
-                status:0,
-                Token:appMyOrder.token
-            };
-        url = appMyOrder.serverUrl + JSON.stringify(request);
-        commonJS.get(url,function(text){      
-            orders.confirmOrders = text.items;
-             for(var i in orders.confirmOrders)
-            {
-                var order = orders.confirmOrders[i];
-                order.isCompleted = false;
-                order.carrier = {};
-            }
+        // });
 
-        });
-
-        request = {
-                Action:"OrderItems",
-                status:0,
-                Token:appMyOrder.token
-            };
-        url = appMyOrder.serverUrl + JSON.stringify(request);
-        commonJS.get(url,function(text){        
-            orders.completeOrders = text.items;
-            for(var i in orders.completeOrders)
-            {
-                var order = orders.completeOrders[i];
-                order.isCompleted = true;
-                order.carrier = {};
-            }
-        });
+        // request = {
+        //         Action:"OrderItems",
+        //         status:0,
+        //         Token:appMyOrder.token
+        //     };
+        // url = appMyOrder.serverUrl + JSON.stringify(request);
+        // commonJS.get(url,function(text){        
+        //     // orders.completeOrders = text.items;
+        //     for(var i in text.items)
+        //     {
+        //         var order = text.items[i];
+        //         order.isCompleted = true;
+        //         order.carrier = ko.observable({
+        //             freight:'',
+        //             motorcade:{},
+        //             user:{},
+        //             pilot:{}
+        //         });
+        //         orders.completeOrders.push(order);
+        //     }
+        // });
 
         ko.applyBindings(orders);
         $('body').trigger("create");
 
     },
 
-    showDetails:function(btn,action,order){
+    refresh:function(status)
+    {
+        // alert(status);
+        var request = {
+                Action:"OrderItems",
+                status:status,
+                Token:appMyOrder.token
+            };
+        var url = appMyOrder.serverUrl + JSON.stringify(request);
+        commonJS.get(url,function(data){   
+            for(var i in data.items)
+            {
+                var order = data.items[i];
+                order.ship_date =commonJS.jsonDateFormat(data.items[i].ship_date);
+                order.arrival_date =commonJS.jsonDateFormat(data.items[i].arrival_date);
+                order.orderDate = commonJS.jsonDateFormat(data.items[i].orderDate);
+                if (status === 0) {
+                    order.cancel = function()
+                    {
+                        var index = i;
+                        var self = this;
+                        var request = {
+                            Action:"OrderRevocation",
+                            orderId:self.orderId,
+                            Token:appMyOrder.token
+                        };
+                        var url = appMyOrder.serverUrl + JSON.stringify(request);
+                        commonJS.get(url,function(result){
+                            if(result.status !== 0)
+                            {
+                                alert(result.message);
+                                return;
+                            }
+                            alert("订单"+self.orderId+"撤销成功.");
+                            orders.pushedOrders.slice(index,1);
+                        });   
+
+                    };
+                    order.responsers = ko.observableArray([]);
+                    orders.pushedOrders.push(order);
+                };
+                if (status === 1) {
+                    order.editOrder = function()
+                    {
+                        var self = this;
+                        window.location.href="editOrder.html?orderId="+self.orderId;
+                        
+                    }
+                    orders.cancelOrders.push(order);
+                };
+                 if (status === 2 || status === 3) {
+                    order.isCompleted = (status === 3);
+                    order.carrier = ko.observable({
+                        freight:'',
+                        motorcade:{},
+                        user:{},
+                        pilot:{}
+                    });
+                    var arrary = (status===2?orders.confirmOrders:orders.completeOrders);
+                    arrary.push(order);
+                };
+            }  
+           
+        });
+
+    },
+
+    showDetails:function(btn,action){
         var $orderblk = $(btn).parents(".order-info-block");
         $orderblk.find(".brief").hide();
         $orderblk.find(".details").show();   
+        var orderId = $(btn).attr('id');
+        var order = appMyOrder.findOrder(orderId);
 
         //展开时查询抢单者或接单者
         if(action && order)
@@ -155,30 +263,37 @@ var appMyOrder = {
        
             var url = appMyOrder.serverUrl + JSON.stringify(request);
     
-            commonJS.get(url,function(data){  
+            commonJS.get(url,function(data){
+                if (data.status !== 0) {
+                    alert(data.message);
+                };  
                 //抢单者
                 if (data.items){
-                    order.responsers = data.items; 
-                    order.showModify = false;
-                    order.showCancel = true;
-                    for(var j in order.responsers)
+                    for(var i in data.items)
                     {
-                        var responser = order.responsers[j];
+                        var responser = data.items[i];
                         responser.orderId= order.orderId;
                         responser.confirmToResponse = function()
                         {
                             var self = this;
                             window.location.href = "orderConfirm.html?orderId="+self.orderId+"&key="+self.key;
                         };
+                        order.responsers.push(responser);
                     }
+                    order.showModify = false;
+                    order.showCancel = true;
+
                 }
                 //接单者
                 else if (data.motorcade && data.pilot && data.user) {
-                    order.carrier = {
-                        motorcade:data.motorcade,
-                        user:data.user,
-                        pilot:data.pilot
-                    }
+                    // order.carrier = {
+                    //     motorcade:data.motorcade,
+                    //     user:data.user,
+                    //     pilot:data.pilot
+                    // }
+                    order.carrier.motorcade = data.motorcade;
+                    order.carrier.user = data.user;
+                    order.carrier.pilot = data.pilot;
 
                 };
                 //刷新界面
@@ -186,6 +301,39 @@ var appMyOrder = {
 
             }); 
         }
+    },
+
+    findOrder:function(id)
+    {
+        for(var i in orders.pushedOrders())
+        {
+            var order = orders.pushedOrders()[i];
+            if (order.orderId === id) {
+                return order;
+            };
+        }
+         for(var i in orders.cancelOrders())
+        {
+            var order = orders.cancelOrders()[i];
+            if (order.orderId === id) {
+                return order;
+            };
+        }
+         for(var i in orders.confirmOrders())
+        {
+            var order = orders.confirmOrders()[i];
+            if (order.orderId === id) {
+                return order;
+            };
+        }
+         for(var i in orders.completeOrders())
+        {
+            var order = orders.completeOrders()[i];
+            if (order.orderId === id) {
+                return order;
+            };
+        }
+
     },
 
     // Update DOM on a Received Event

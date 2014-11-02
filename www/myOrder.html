@@ -26,7 +26,7 @@
 			<div class="brief">
 		    	<div class="order-info-content">
 		    		<div class="order-info-brief-icon">
-						<a href="#" data-role="button" data-icon="carat-d" data-iconpos="notext" onclick="appMyOrder.showDetails(this,'QDDetails',$data)"></a>
+						<a href="#" data-role="button" data-icon="carat-d" data-iconpos="notext" data-bind="attr:{id:orderId}" onclick="appMyOrder.showDetails(this,'QDDetails')"></a>
 					</div>
 		    		<div style="margin-top:5px">订单编号: <span data-bind="text:orderId"></span></div>
 		    		<div>日期: <span data-bind="text:orderDate"></span></div>
@@ -52,7 +52,7 @@
 		    	<div class="ui-grid-b">
 		    		<div class="ui-block-a"></div>	
 		    		<div class="ui-block-b">
-		    			<a data-role="button"  href="#">撤销</a>
+		    			<a data-role="button"  href="#" data-bind="click:cancel">撤销</a>
 		    		</div>
 		    	</div>
 		    	<hr style="background-color:#D3D3D3;border:0;height:1px;">
@@ -98,7 +98,7 @@
 		    	<div class="ui-grid-b">
 		    		<div class="ui-block-a"></div>
 		    		<div class="ui-block-b">
-		    			<a data-role="button" data-ajax="false" href="modifyOrder.html" rel="external">修改</a>
+		    			<a data-role="button" href="#" data-bind="click:editOrder">修改</a>
 		    		</div>
 		    	</div>
 			</div>
@@ -109,7 +109,7 @@
 			<div class="brief">
 		    	<div class="order-info-content">
 		    		<div class="order-info-brief-icon">
-						<a href="#" data-role="button" data-icon="carat-d" data-iconpos="notext" onclick="appMyOrder.showDetails(this,'SHDetails',$data)"></a>
+						<a href="#" data-role="button" data-icon="carat-d" data-iconpos="notext" data-bind="attr:{id:orderId}" onclick="appMyOrder.showDetails(this,'SHDetails')"></a>
 					</div>
 		    		<div style="margin-top:5px">订单编号: <span data-bind="text:orderId"></span></div>
 		    		<div>日期: <span data-bind="text:orderDate"></span></div>
@@ -135,21 +135,38 @@
 		    	<hr style="background-color:#D3D3D3;border:0;height:1px;">
 		    	<div class="order-info-content" style="margin-bottom:15px">
 					<div class="blue-strong-head">运输方信息</div>
-					<div class="ui-grid-b">
-						<div class="ui-block-a">
-							<a data-role="button" href="#">打给他</a>
-						</div>
-						<div class="ui-block-b">
-							<a data-role="button" href="#">评价</a>		    			
-						</div>
-						<div class="ui-block-c">
-							<a data-role="button" href="#">加入我的车队</a>
-						</div>
-					</div>
+					<div class="responser-list" data-bind="template: { name: 'carrier-template', data:carrier }">
 				</div>
 			</div>	
 		</div>
 	</script>
+
+	<script type="text/html" id="carrier-template" >
+		<div class="responser-list-item">
+			<div>
+				<div style="float:left;">
+					<img style="width:35px;height:35px" src="" alt=""></img>
+				</div>
+				<div style="float:left;margin-left:15px">
+					<div><strong>车牌号: </strong> <span data-bind="text:motorcade.license_plate_number"></span></div>
+					<div><strong>驾驶员: </strong> <span data-bind="text:pilot.name"></span></div>
+				</div>
+				<div style="float:right;width=120px"></div>
+				<div style="clear:both"></div>
+			</div>
+			<div class="ui-grid-b">
+				<div class="ui-block-a">
+					<a data-role="button" href="#">打给他</a>
+				</div>
+				<div class="ui-block-b">
+					<a data-role="button" href="#">评价</a>	
+				</div>
+				<div class="ui-block-c">
+					<a data-role="button" href="#">加入我的车队</a>		    			
+				</div>
+			</div>
+		</div>
+	</script> 
 	<script type="text/html" id="responser-template" >
 		<div class="responser-list-item">
 			<div>
@@ -190,10 +207,10 @@
 	  	<div data-role="tabs">
 		  	<div data-role="navbar">
 		      <ul>
-		        <li><a href="#push" class="ui-btn-active" data-ajax="true" >推送</a></li>
-		        <li><a href="#cancel" data-ajax="true">撤销</a></li>
-		        <li><a href="#confirm" data-ajax="true">确认</a></li>
-		        <li><a href="#completed" data-ajax="true">完成</a></li>
+		        <li><a href="#push" class="ui-btn-active" data-ajax="true" onclick="appMyOrder.refresh(0)" >推送</a></li>
+		        <li><a href="#cancel" data-ajax="true" onclick="appMyOrder.refresh(1)">撤销</a></li>
+		        <li><a href="#confirm" data-ajax="true" onclick="appMyOrder.refresh(2)">确认</a></li>
+		        <li><a href="#completed" data-ajax="true" onclick="appMyOrder.refresh(3)">完成</a></li>
 		      </ul>
 		    </div>
 		    <div id="push" class="ui-content" data-bind="template: { name: 'pushed-template', foreach: pushedOrders, as: 'order' }">

@@ -156,7 +156,7 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        app.loadNavigator();
+        //app.loadNavigator();
         app.token = $.cookie("usrToken");
 
         var jsonStr = '{"Action":"getWenceng"}';
