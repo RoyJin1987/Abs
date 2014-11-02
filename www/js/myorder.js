@@ -87,6 +87,7 @@ var appMyOrder = {
                     window.location.href="editOrder.html?orderId="+self.orderId;
                     
                 }
+                order.responsers = ko.observableArray();
             }
         });
 
@@ -102,39 +103,67 @@ var appMyOrder = {
 
         request = {
                 Action:"OrderItems",
-                status:2,
+                status:0,
                 Token:appMyOrder.token
             };
         url = appMyOrder.serverUrl + JSON.stringify(request);
         commonJS.get(url,function(text){      
             orders.confirmOrders = text.items;
+             for(var i in orders.confirmOrders)
+            {
+                var order = orders.confirmOrders[i];
+                order.isCompleted = false;
+                order.carrier = {};
+            }
+
         });
 
         request = {
                 Action:"OrderItems",
-                status:3,
+                status:0,
                 Token:appMyOrder.token
             };
         url = appMyOrder.serverUrl + JSON.stringify(request);
         commonJS.get(url,function(text){        
             orders.completeOrders = text.items;
+            for(var i in orders.completeOrders)
+            {
+                var order = orders.completeOrders[i];
+                order.isCompleted = true;
+                order.carrier = {};
+            }
         });
 
-        for(var i in orders.pushedOrders){
+        ko.applyBindings(orders);
+        $('body').trigger("create");
+
+    },
+
+    showDetails:function(btn,action,order){
+        var $orderblk = $(btn).parents(".order-info-block");
+        $orderblk.find(".brief").hide();
+        $orderblk.find(".details").show();   
+
+        //展开时查询抢单者或接单者
+        if(action && order)
+        {
+            var request = {
+                Action:action,
+                orderId:order.orderId,
+                Token:appMyOrder.token
+            };
        
-            var order = orders.pushedOrders[i];
-            order.responsers = ko.observableArray();
-            jsonStr= {"Action":"HMList","Token":appMyOrder.token,"parameter":{"orderId":order.orderId,"page":1}};
-            url = "http://112.124.122.107/Applications/web/?data=" + JSON.stringify(jsonStr);
-        
-            commonJS.get(url,function(text){  
-                if (text.items!=null){
-                    orders.pushedOrders[i].responsers = text.items; 
-                    orders.pushedOrders[i].showModify = false;
-                    orders.pushedOrders[i].showCancel = true;
-                    for(var j in orders.pushedOrders[i].responsers)
+            var url = appMyOrder.serverUrl + JSON.stringify(request);
+    
+            commonJS.get(url,function(data){  
+                //抢单者
+                if (data.items){
+                    order.responsers = data.items; 
+                    order.showModify = false;
+                    order.showCancel = true;
+                    for(var j in order.responsers)
                     {
-                        var responser = orders.pushedOrders[i].responsers[j];
+                        var responser = order.responsers[j];
                         responser.orderId= order.orderId;
                         responser.confirmToResponse = function()
                         {
@@ -143,19 +172,20 @@ var appMyOrder = {
                         };
                     }
                 }
+                //接单者
+                else if (data.motorcade && data.pilot && data.user) {
+                    order.carrier = {
+                        motorcade:data.motorcade,
+                        user:data.user,
+                        pilot:data.pilot
+                    }
 
-            });
+                };
+                //刷新界面
+                $('body').trigger("create");
+
+            }); 
         }
-            
-        ko.applyBindings(orders);
-        $('body').trigger("create");
-
-    },
-
-    showDetails:function(btn){
-        var $orderblk = $(btn).parents(".order-info-block");
-        $orderblk.find(".brief").hide();
-        $orderblk.find(".details").show();     
     },
 
     // Update DOM on a Received Event

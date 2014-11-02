@@ -26,7 +26,7 @@
 			<div class="brief">
 		    	<div class="order-info-content">
 		    		<div class="order-info-brief-icon">
-						<a href="#" data-role="button" data-icon="carat-d" data-iconpos="notext" onclick="appMyOrder.showDetails(this)"></a>
+						<a href="#" data-role="button" data-icon="carat-d" data-iconpos="notext" onclick="appMyOrder.showDetails(this,'QDDetails',$data)"></a>
 					</div>
 		    		<div style="margin-top:5px">订单编号: <span data-bind="text:orderId"></span></div>
 		    		<div>日期: <span data-bind="text:orderDate"></span></div>
@@ -49,8 +49,8 @@
 		    		<div>发货地址: <span data-bind="text:send_address.city+send_address.address"></span></div>
 		    		<div>送货地址: <span data-bind="text:shipping_address.city+shipping_address.address"></span></div>
 		    	</div>
-		    	<div class="ui-grid-a">
-		    		<div class="ui-block-a"><a data-role="button" data-bind="click:editOrder">修改</a></div>
+		    	<div class="ui-grid-b">
+		    		<div class="ui-block-a"></div>	
 		    		<div class="ui-block-b">
 		    			<a data-role="button"  href="#">撤销</a>
 		    		</div>
@@ -109,7 +109,7 @@
 			<div class="brief">
 		    	<div class="order-info-content">
 		    		<div class="order-info-brief-icon">
-						<a href="#" data-role="button" data-icon="carat-d" data-iconpos="notext" onclick="appMyOrder.showDetails(this)"></a>
+						<a href="#" data-role="button" data-icon="carat-d" data-iconpos="notext" onclick="appMyOrder.showDetails(this,'SHDetails',$data)"></a>
 					</div>
 		    		<div style="margin-top:5px">订单编号: <span data-bind="text:orderId"></span></div>
 		    		<div>日期: <span data-bind="text:orderDate"></span></div>
@@ -136,17 +136,18 @@
 		    	<div class="order-info-content" style="margin-bottom:15px">
 					<div class="blue-strong-head">运输方信息</div>
 					<div class="ui-grid-b">
-				<div class="ui-block-a">
-					<a data-role="button" href="#">打给他</a>
+						<div class="ui-block-a">
+							<a data-role="button" href="#">打给他</a>
+						</div>
+						<div class="ui-block-b">
+							<a data-role="button" href="#">评价</a>		    			
+						</div>
+						<div class="ui-block-c">
+							<a data-role="button" href="#">加入我的车队</a>
+						</div>
+					</div>
 				</div>
-				<div class="ui-block-b">
-					<a data-role="button" href="#">评价</a>		    			
-				</div>
-				<div class="ui-block-c">
-					<a data-role="button" href="#">加入我的车队</a>
-				</div>
-			</div>
-			</div>
+			</div>	
 		</div>
 	</script>
 	<script type="text/html" id="responser-template" >
@@ -156,9 +157,9 @@
 					<img style="width:35px;height:35px" src="" alt=""></img>
 				</div>
 				<div style="float:left;margin-left:15px">
-					<div><strong>车牌号: </strong> <span data-bind="text:license_plate_number"></span></div>
-					<div><strong>驾驶员: </strong> <span data-bind="text:name"></span></div>
-					<div style="color:#FF6A6A">价格: <span>0</span>元</div>
+					<div><strong>车牌号: </strong> <span data-bind="text:motorcade.license_plate_number"></span></div>
+					<div><strong>驾驶员: </strong> <span data-bind="text:pilot.name"></span></div>
+					<div style="color:#FF6A6A" >价格: <span data-bind="text:freight">0</span>元</div>
 				</div>
 				<div style="float:right;width=120px"></div>
 				<div style="clear:both"></div>
