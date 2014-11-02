@@ -19,22 +19,23 @@
 
 package com.aibangsong.abs;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.apache.cordova.Config;
 import org.apache.cordova.CordovaActivity;
-import org.apache.cordova.CordovaWebView;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.webkit.CookieManager;
-import android.webkit.WebSettings;
 
 import com.aibangsong.abs.push.MQTTService;
 
 public class Abs extends CordovaActivity 
 {
 	public static Context context;
+	public static Country country = null;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -54,9 +55,26 @@ public class Abs extends CordovaActivity
 //   		     .setNegativeButton("取消", null).show();
         AppManager.getAppManager().addActivity(this);
         context = this;
+        new Thread(addressRunnable).run();
 //        super.loadUrl("file:///android_asset/www/BaiduJSPopMap.html");
     }
     
+    Runnable addressRunnable = new Runnable() {
+		@Override
+		public void run() {
+			try {
+				if (country==null){
+					AddressUtils addressUtils = new AddressUtils();
+					InputStream inputStream = context.getAssets().open("country_province_city_county.xml");
+					country = addressUtils.getCountry(inputStream);
+				}
+			} catch (IOException e) {
+			// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	};
+	
     @Override
 	public void onDestroy() {
     	final Intent intent = new Intent(this, MQTTService.class);

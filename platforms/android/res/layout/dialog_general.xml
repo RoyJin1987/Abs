@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical|center_horizontal"
+    android:orientation="vertical"
+    android:paddingBottom="3dp"
+    android:paddingLeft="2dp"
+    android:paddingRight="2dp"
+    android:paddingTop="1dp" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="5dip"
+         >
+
+        <!--
+        <ImageView
+            android:id="@+id/dialog_title_image"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/icon" />
+        -->
+
+        <TextView
+            android:id="@+id/dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Title"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+        <!-- android:layout_toRightOf="@id/dialog_title_image" -->
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="@drawable/grey" />
+
+    <TextView
+        android:id="@+id/dialog_message"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dip"
+        android:gravity="center"
+        android:text="This is a dialog"
+        android:textColor="#000000" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom|center_horizontal"
+        android:paddingTop="15dip" 
+        android:alpha="0.8"
+        >
+
+        <Button
+            android:id="@+id/dialog_button_cancel"
+            android:layout_width="105dp"
+            android:layout_height="32dp"
+            android:layout_alignParentLeft="true"
+            android:text="取消"
+            android:textSize="14sp"
+            android:textColor="#FFFFFF"/>
+
+        <Button
+            android:id="@+id/dialog_button_ok"
+            android:layout_width="105dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="5dip"
+            android:layout_toRightOf="@id/dialog_button_cancel"
+            android:text="抢单"
+              android:textSize="14sp"
+            android:textColor="#FFFFFF" />
+    </RelativeLayout>
+
+</LinearLayout>

@@ -7,15 +7,15 @@
 <title>html app</title>  
     <link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" />
 	<link href="css/main.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="cordova.js"></script>
 	<script src="js/jquery.js"></script>
 	<script src="js/jquery.mobile-1.4.0-rc.1.js"></script> 
 	<script src="js/knockout-3.2.0.js"></script> 
-	<script src="js/jquery.cookie.js"></script>
   	<script src="js/json2.js"></script>
   	<script src="js/jquery.cookie.js"></script>
+  	<script type="text/javascript" src="http://api.map.baidu.com/api?type=quick&ak=tUoYt61wcnunrkdGksApMwQt&v=1.0"></script>
 	<script type="text/javascript" src="js/common.js"></script>
 	<script type="text/javascript" src="js/requestDelivery.js"></script>
-	<script type="text/javascript" src="js/myorder.js"></script>
 </head>  
 <body onload="app.onLoad()">  
 	<div data-role="page" id="requestDelivery">  
@@ -30,7 +30,11 @@
 				<table>
 					<tr>
 						<td style="width:25%"><label for="address">发货地址：</label></td>
-						<td style="width:69%"><input type="text" name="address" id="address" data-bind="value: send_address" required="required"/></td>
+						<td style="width:69%"><label type="text" name="address" data-bind="text: send_city" required="required" onclick="app.selectCity()"/></td>	
+					</tr>
+					<tr>
+						<td style="width:25%"><label for="address"></label></td>
+						<td style="width:69%"><input type="text" name="address" id="address" enabled="false" data-bind="value: send_address" required="required"/></td>
 						<td style="width:6%"><a href="#" data-role="button" data-iconpos="notext" data-icon="flat-location" data-theme="f"></td>
 					</tr>
 				</table>
@@ -53,7 +57,7 @@
 							<td style="width:25%"><label>温层选择：</label></td>
 							<td style="width:69%">
 							
-								<select name="select-choice" data-bind="options: wenCengList, optionsValue: 'name', value: selectedWenCeng" data-theme="c">
+								<select name="select-choice" data-bind="options: wenCengList, optionsText: 'name', optionsValue: 'id', value: selectedWenCeng" data-theme="c">
 								</select>
 					
 							</td><td style="width:6%"></td>
@@ -67,7 +71,7 @@
 						<tr>
 							<td style="width:25%"><label>车型选择：</label></td>
 							<td style="width:69%">
-								<select data-bind="options: modelsList, optionsValue: 'name', value: selectedModels"  data-native-menu="false" data-theme="c">
+								<select data-bind="options: modelsList,  optionsText: 'name', optionsValue: 'id',  value: selectedModels"  data-native-menu="false" data-theme="c">
 								</select>
 							</td><td style="width:6%"></td>
 						</tr>

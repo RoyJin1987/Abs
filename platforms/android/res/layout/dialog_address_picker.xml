@@ -1,0 +1,51 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="fill_parent"
+    android:orientation="vertical"
+
+    >
+    <LinearLayout 
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="5dp"       
+        >
+      <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:gravity="center_vertical" 
+              />
+     
+    </LinearLayout>
+    <LinearLayout 
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_gravity="center_horizontal"
+        >    
+        <kankan.wheel.widget.WheelView android:id="@+id/provice"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+			android:layout_weight="1"
+            />
+        <kankan.wheel.widget.WheelView android:id="@+id/city"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+			android:layout_weight="1"/>
+        <kankan.wheel.widget.WheelView android:id="@+id/area"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+			android:layout_weight="1"/>            
+    </LinearLayout>
+    <Button 
+        android:id="@+id/btnOK"
+        android:layout_width="120dp"
+        android:layout_height="38dp"
+        android:layout_margin="2dp"
+        android:layout_gravity="center"
+        android:background="@drawable/green_style"
+        android:layout_centerVertical="true"
+        android:textColor="#ffffff"
+        android:text="确定"/>
+</LinearLayout>
