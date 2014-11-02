@@ -34,22 +34,7 @@ var app = {
       app.usrToken = $.cookie("usrToken");
 
     };
-    if ($.cookie("usrIdentity")) {
-      LL.Message.deviceId = $.cookie("usrIdentity");
-    };
     
-    /**
-     * 消息处理系统准备就绪
-     */
-    LL.addEventListener(function(){
-        // app.push();
-        LL.Message.onMessage=function(message){
-            
-        }; 
-        
-        // $("#meid").html(LL.Message.deviceId);
-        // $("#uidvalue").val(LL.Message.deviceId);
-    });
     // app.orderId = app.getUrlParam("orderId");
     // app.getPendingPushVehicle();
     // app.loadMap();
@@ -156,18 +141,18 @@ var app = {
   push:function(self)
   {
     
-    // setTimeout(function(){
-    //    for(var i in self.nVehicles)
-    //   {
-    //     var vehicle = self.nVehicles[i];
+    setTimeout(function(){
+       for(var i in self.nVehicles)
+      {
+        var vehicle = self.nVehicles[i];
 
-    //     var message = { 
-    //       type:"newOrder",
-    //       orderId:app.orderId
-    //     };
-    //     LL.Message.send(vehicle.identity,JSON.stringify(message));           
-    //   }
-    // },100);
+        var message = { 
+          type:"newOrder",
+          orderId:app.orderId
+        };
+        window.notificationClient.notify(vehicle.identity,JSON.stringify(message));           
+      }
+    },100);
    
       // // $("body").trigger("create");
     var progress = 0;

@@ -85,8 +85,8 @@ var app = {
         app.viewModel.orderInfo.bid_item.freight = app.viewModel.freight();
         app.viewModel.orderInfo.bid_item.truckage = app.viewModel.truckage();
         app.viewModel.orderInfo.bid_item.tipping =app.viewModel.tipping();
-        app.viewModel.orderInfo.send_address.longitude = app.position.coords.longitude;
-        app.viewModel.orderInfo.send_address.latitude = app.position.coords.latitude;
+        // app.viewModel.orderInfo.send_address.longitude = app.position.coords.longitude;
+        // app.viewModel.orderInfo.send_address.latitude = app.position.coords.latitude;
         if (app.viewModel.selectedModels() == '卡车'){
           
           var request = {
@@ -115,6 +115,7 @@ var app = {
     },
 
     sendOrderClick:function() {
+    
         app.viewModel.orderInfo.send_address.longitude = app.position.coords.longitude;
         app.viewModel.orderInfo.send_address.latitude = app.position.coords.latitude;
 

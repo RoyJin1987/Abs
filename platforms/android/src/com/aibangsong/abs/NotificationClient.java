@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
+import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 
 import com.aibangsong.abs.push.MQTTService;
@@ -25,6 +26,7 @@ public class NotificationClient {
 
     }
 
+    @JavascriptInterface
     public void notify(String recevierIdentity,String message) {
 
           Log.d(TAG, "register(message: " + message + ", callback:" + callback + " )");
@@ -34,10 +36,12 @@ public class NotificationClient {
           thermometer.start();
     }
     
+    @JavascriptInterface
     public void startService(String identity) {
 
     	Intent intent = new Intent(context, MQTTService.class);
     	intent.putExtra("identity", identity);
+    	
     	context.startService(intent);
   }
 
