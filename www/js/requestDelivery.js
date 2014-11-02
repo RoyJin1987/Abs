@@ -20,7 +20,6 @@
 
 var app = {
   position:{},
-  baiduPosition:{},
   serverUrl:"http://112.124.122.107/Applications/web/?data=",
   token:"07b27a882cc721a9207250f1b6bd2868",
   viewModel :{
@@ -65,7 +64,6 @@ var app = {
     consignee_phone:ko.observable(""),  
     shipping_address:ko.observable(""),
     send_address:ko.observable(""),  
-    send_city:ko.observable("请点击选择城市"),  
   },
 
   onLoad:function() {
@@ -79,6 +77,7 @@ var app = {
   },
 
     sendClick:function() {
+    
         app.viewModel.orderInfo.wenCeng = app.viewModel.selectedWenCeng();
         app.viewModel.orderInfo.models = app.viewModel.selectedModels();
         app.viewModel.orderInfo.consignee_name =app.viewModel.consignee_name();
@@ -88,14 +87,14 @@ var app = {
         app.viewModel.orderInfo.bid_item.tipping =app.viewModel.tipping();
         // app.viewModel.orderInfo.send_address.longitude = app.position.coords.longitude;
         // app.viewModel.orderInfo.send_address.latitude = app.position.coords.latitude;
-        if (app.viewModel.selectedModels() == '8'){
+        if (app.viewModel.selectedModels() == '卡车'){
           
           var request = {
             Action:"HMSend",
             Token:app.token,
             parameter:app.viewModel.orderInfo
           };
-         
+          
           var url = app.serverUrl + JSON.stringify(request);
           commonJS.get(url,function(data_){
             if (data_.status===0) {
@@ -115,18 +114,10 @@ var app = {
 
     },
 
-    selectCity:function() {
-        window.notificationClient.selectCity(App.getCityCallback);   
-    },
-
-    getCityCallback:function(city,county){
-      alert(city);
-    },
-
     sendOrderClick:function() {
     
-        // app.viewModel.orderInfo.send_address.longitude = app.position.coords.longitude;
-        // app.viewModel.orderInfo.send_address.latitude = app.position.coords.latitude;
+        app.viewModel.orderInfo.send_address.longitude = app.position.coords.longitude;
+        app.viewModel.orderInfo.send_address.latitude = app.position.coords.latitude;
 
           var request = {
             Action:"HMSend",
@@ -166,19 +157,6 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         //app.loadNavigator();
-      // alert("onDeviceReady");
-      // //通过百度sdk来获取经纬度,并且alert出经纬度信息
-      // var noop = function(){};
-      // // window.locationService.stop(noop,noop);
-      // window.locationService.getCurrentPosition(function(pos){
-      //     alert(JSON.stringify(pos));
-      //     app.baiduPosition = new BMap.Point(pos.coords.longitude,pos.coords.latitude);
-      //     alert(JSON.stringify(app.baiduPosition));
-      //     window.locationService.stop(noop,noop);
-      // },function(e){
-      //     alert(JSON.stringify(e));
-      //     window.locationService.stop(noop,noop);
-      // });
         app.token = $.cookie("usrToken");
 
         var jsonStr = '{"Action":"getWenceng"}';

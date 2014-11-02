@@ -112,6 +112,12 @@ var app = {
                         // debugger;
                         if (data_.status===0) {
 
+                    var message = { 
+                      type:"OrderGrabed",
+                      orderId:app.viewModel.orderId
+                    };
+                    window.notificationClient.notify(vehicle.identity,JSON.stringify(message));           
+      
                             //删除该单
                             waybills.orders.splice(i,1);
 

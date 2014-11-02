@@ -82,14 +82,16 @@ var app = {
             Token:app.token,
             parameter:app.viewModel.orderInfo
           };
+          
           var url = app.serverUrl + JSON.stringify(request);
           commonJS.get(url,function(data_){
             if (data_.status===0) {
               //提示用户
-              alert(JSON.stringify(data_));
+              // alert("订单提交成功！");
+              window.location.href="pushing.html?orderId="+data_.orderId;
             }
             else{
-               //提示用户
+              //提示用户
               alert(data_.message);
             }
           });

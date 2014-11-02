@@ -89,7 +89,17 @@
 		    		<div>发货地址: <span data-bind="text:send_address.city+send_address.address"></span></div>
 		    		<div>送货地址: <span data-bind="text:shipping_address.city+shipping_address.address"></span></div>
 		    	</div>
+		    	<div data-bind="visible:canGrab" class="ui-grid-b">
+		    		<div class="ui-block-a">
+		    		</div>
+		    		<div class="ui-block-b">
+		    			<a data-role="button" href="#" data-bind="click:grab">立即抢单</a>
+		    		</div>
+		    		<div class="ui-block-c">		    			
+		    		</div>
+		    	</div>
 			</div>
+			
 		</div>
 	</script>
 	<script type="text/javascript" src="cordova.js"></script>
@@ -105,10 +115,10 @@
 	  	<div data-role="tabs">
 		  	<div data-role="navbar">
 		      <ul>
-		        <li><a href="#push" class="ui-btn-active" id="aaaa" data-ajax="true">推送</a></li>
-		        <li><a href="#submit" data-ajax="true">提交</a></li>
-		        <li><a href="#confirm" data-ajax="true">确认</a></li>
-		        <li><a href="#completed" data-ajax="true">完成</a></li>
+		        <li><a href="#push" class="ui-btn-active" data-ajax="true" onclick="app.refresh(0)">推送</a></li>
+		        <li><a href="#submit" data-ajax="true" onclick="app.refresh(1)">提交</a></li>
+		        <li><a href="#confirm" data-ajax="true" onclick="app.refresh(2)">确认</a></li>
+		        <li><a href="#completed" data-ajax="true" onclick="app.refresh(3)">完成</a></li>
 		      </ul>
 		    </div>
 		    <div id="push" class="ui-content" data-bind="template: { name: 'waybill-template', foreach: pushedOrders, as: 'order' }">
