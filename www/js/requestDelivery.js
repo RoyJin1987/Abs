@@ -47,7 +47,7 @@ var app = {
       additional_information: '',
       consignee_name:"",
       consignee_phone:"",  
-      stars :"星级要求",
+      stars :"0",
       bid_item:{ // 出价项 车型选择非卡车时才有
             freight:12,
             truckage:"13" ,
@@ -91,13 +91,14 @@ var app = {
         app.viewModel.orderInfo.bid_item.tipping =app.viewModel.tipping();
         app.viewModel.orderInfo.send_address.longitude = app.baiduPosition.lng;
         app.viewModel.orderInfo.send_address.latitude = app.baiduPosition.lat;
+        app.viewModel.orderInfo.shipping_address.longitude = app.baiduPosition.lng;
+        app.viewModel.orderInfo.shipping_address.latitude = app.baiduPosition.lat;
         app.viewModel.orderInfo.send_address.city = $("#send_city_hidden").text();
         app.viewModel.orderInfo.send_address.address = $("#send_county_hidden").text() + app.viewModel.send_address();
         app.viewModel.orderInfo.shipping_address.city = $("#shipping_city_hidden").text();
         app.viewModel.orderInfo.shipping_address.address = $("#shipping_county_hidden").text() + app.viewModel.shipping_address();
-
+        //app.viewModel.orderInfo.consignor = $.cookie("usrName");
         if (app.viewModel.selectedModels() == '8'){
-          
           var request = {
             Action:"HMSend",
             Token:app.token,
@@ -105,8 +106,9 @@ var app = {
           };
           
           var url = app.serverUrl + JSON.stringify(request);
-          alert(JSON.stringify(request));
+          alert(url);
           commonJS.get(url,function(data_){
+
             if (data_.status===0) {
               //提示用户
               // alert("订单提交成功！");

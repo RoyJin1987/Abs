@@ -180,6 +180,16 @@ var appMyOrder = {
 
     refresh:function(status)
     {
+        
+        if (status === 0) {
+            orders.pushedOrders.removeAll();
+        }else if (status === 1) {
+            orders.cancelOrders.removeAll();
+        }else if (status === 2) {
+            orders.confirmOrders.removeAll();
+        }else{
+            orders.completeOrders.removeAll();
+        };
         // alert(status);
         var request = {
                 Action:"OrderItems",
@@ -187,7 +197,8 @@ var appMyOrder = {
                 Token:appMyOrder.token
             };
         var url = appMyOrder.serverUrl + JSON.stringify(request);
-        commonJS.get(url,function(data){   
+        commonJS.get(url,function(data){  
+        
             for(var i in data.items)
             {
                 var order = data.items[i];
@@ -211,11 +222,14 @@ var appMyOrder = {
                                 alert(result.message);
                                 return;
                             }
-                            alert("订单"+self.orderId+"撤销成功.");
-                            orders.pushedOrders.slice(index,1);
+                            alert("订单"+self.orderId+"撤销成功." + index);
+                            
+                            appMyOrder.refresh(0);
+                            
                         });   
 
                     };
+
                     order.responsers = ko.observableArray([]);
                     orders.pushedOrders.push(order);
                 };
@@ -242,7 +256,7 @@ var appMyOrder = {
             }  
            
         });
-
+        $('body').trigger("create");
     },
 
     showDetails:function(btn,action){

@@ -50,7 +50,7 @@
 							<td style="width:25%"><label>温层选择：</label></td>
 							<td style="width:69%">
 							
-								<select name="select-choice" data-bind="options: wenCengList, optionsValue: 'name', value: selectedWenCeng" data-theme="c">
+								<select name="select-choice" data-bind="options: wenCengList, optionsText: 'name', optionsValue: 'id', value: selectedWenCeng" data-theme="c">
 								</select>
 					
 							</td><td style="width:6%"></td>
@@ -64,7 +64,7 @@
 						<tr>
 							<td style="width:25%"><label>车型选择：</label></td>
 							<td style="width:69%">
-								<select data-bind="options: modelsList, optionsValue: 'name', value: selectedModels"  data-native-menu="false" data-theme="c">
+								<select data-bind="options: modelsList,  optionsText: 'name', optionsValue: 'id',  value: selectedModels"  data-native-menu="false" data-theme="c">
 								</select>
 							</td><td style="width:6%"></td>
 						</tr>
@@ -162,7 +162,7 @@
 		</form>
    </div>
 </div><!-- /page -->  
-<!-- <div data-role="page" id="offer" data-theme="f">  
+<div data-role="page" id="offer" data-theme="f">  
 		<div data-role="header" data-position="fixed">
 			<a data-iconpos="left" data-role="button" data-icon="back" data-rel="back" title="Home">返回</a>
 			<h1>出价页</h1>
@@ -226,13 +226,13 @@
 				<table>
 					<tr>
 						<td style="width:45%"><label>平台推荐运输费用：</label></td>
-						<td style="width:55%"><label id="carType"></label></td>
+						<td style="width:55%"><label id="carType" data-bind="text: freight"></label></td>
 					</tr>
 				</table>
 				<table>
 					<tr>
 						<td style="width:25%"><label>调整运费： </label></td>
-						<td style="width:75%"><input type="range" name="slider"  min="0" max="100" data-highlight="true" /></td>
+						<td style="width:75%"><input type="range" name="slider" data-bind="value: freight" min="0" max="100" data-highlight="true" /></td>
 					</tr>
 				</table>
 			</div>
@@ -247,7 +247,7 @@
 				<table>
 					<tr>
 						<td style="width:29%"><label>调整搬运费：</label></td>
-						<td style="width:71%"><input type="range" name="slider"  min="0" max="100" data-highlight="true" /></td>
+						<td style="width:71%"><input type="range" name="slider" data-bind="value: truckage" min="0" max="100" data-highlight="true" /></td>
 					</tr>
 				</table>
 			</div>
@@ -260,7 +260,7 @@
 					</tr>
 					<tr>
 						<td style="width:25%"><label>调整小费：</label></td>
-						<td style="width:75%"><input type="range" name="slider" min="0" max="20" data-highlight="true" /></td>
+						<td style="width:75%"><input type="range" name="slider" data-bind="value: tipping" min="0" max="20" data-highlight="true" /></td>
 					</tr>
 				</table>
 			</div>
@@ -279,6 +279,6 @@
 			</div>
 		</form>
    </div>
-</div> -->
+</div>
 </body>  
 </html> 

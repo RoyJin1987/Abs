@@ -23,10 +23,10 @@ var app = {
   token:"07b27a882cc721a9207250f1b6bd2868",
   viewModel :{
     orderInfo:{},
-    wenCengList :[],
-    modelsList: [],
-    selectedWenCeng:ko.observable(''),
-    selectedModels:ko.observable(''),
+    wenCengList :ko.observableArray(),
+    modelsList: ko.observableArray(),
+    selectedWenCeng:ko.observable(""),
+    selectedModels:ko.observable(""),
     consignee_name:ko.observable(""),
     consignee_phone:ko.observable(""),  
     shipping_address:ko.observable(""),
@@ -49,14 +49,15 @@ var app = {
         app.viewModel.orderInfo.models = app.viewModel.selectedModels();
         app.viewModel.orderInfo.consignee_name =app.viewModel.consignee_name();
         app.viewModel.orderInfo.consignee_phone =app.viewModel.consignee_phone();
-
-        if (app.viewModel.selectedModels() == '卡车'){
+alert(app.viewModel.selectedModels());
+        if (app.viewModel.selectedModels() == '8'){
           
           var request = {
             Action:"HMSend",
             Token:app.token,
             parameter:app.viewModel.orderInfo
           };
+          alert(JSON.stringify(app.viewModel.orderInfo));
           var url = app.serverUrl + JSON.stringify(request);
           commonJS.get(url,function(data_){
             if (data_.status===0) {
@@ -77,6 +78,7 @@ var app = {
     },
 
     sendOrderClick:function() {
+      alert(app.viewModel.selectedModels());
           var request = {
             Action:"HMSend",
             Token:app.token,
@@ -117,34 +119,39 @@ var app = {
         
         var orderId = app.getUrlParam("orderId");
          if (orderId) {
+
+          var jsonStr = '{"Action":"getWenceng"}';
+          var url = app.serverUrl +  jsonStr;
+          commonJS.get(url,function(text){ 
+              app.viewModel.wenCengList = text.items;
+          });
+
+          jsonStr = '{"Action":"getModels"}';
+          url = app.serverUrl + jsonStr;
+          commonJS.get(url,function(text){      
+            app.viewModel.modelsList = text.items;
+          });
+   
            var request = {
                 Action:"getOrderById",
                 orderId:orderId,
                 Token:app.token
             };
-            var url = app.serverUrl + JSON.stringify(request);
+            url = app.serverUrl + JSON.stringify(request);
             // debugger;
             commonJS.get(url,function(data){
                 alert(JSON.stringify(data));
                 app.viewModel.orderInfo = data.item;
-                // app.viewModel.selectedWenCeng =app.viewModel.orderInfo.wenCeng();
-                // app.viewModel.selectedModels = app.viewModel.orderInfo.models();
+                app.viewModel.orderInfo.ship_date =commonJS.jsonDateFormat(data.item.ship_date);
+                app.viewModel.orderInfo.arrival_date =commonJS.jsonDateFormat(data.item.arrival_date);
+                app.viewModel.orderInfo.orderDate = commonJS.jsonDateFormat(data.item.orderDate);
+                app.viewModel.selectedWenCeng ="3";
+                //app.viewModel.selectedModels = ko.observable("8");
+                alert(JSON.stringify(app.viewModel));
                 // app.viewModel.consignee_name= app.viewModel.orderInfo.consignee_name();
                 // app.viewModel.consignee_phone=app.viewModel.orderInfo.consignee_phone();
             });
         }
-        var jsonStr = '{"Action":"getWenceng"}';
-        var url = app.serverUrl +  jsonStr;
-        commonJS.get(url,function(text){ 
-          app.viewModel.wenCengList = text.items;
-        });
-
-        jsonStr = '{"Action":"getModels"}';
-        url = app.serverUrl + jsonStr;
-        commonJS.get(url,function(text){      
-          app.viewModel.modelsList = text.items;
-        });
-   
         ko.applyBindings(app.viewModel);
         $('body').trigger("create");
 

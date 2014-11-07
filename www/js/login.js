@@ -114,9 +114,22 @@ var app = {
                $.cookie('usrToken', data.Token, { expires: 7, path: '/' });
                $.cookie('usrIdentity', data.identity, { expires: 7, path: '/' });
                var identity = data.identity;
-               alert(identity);
-               //window.notificationClient.startService(identity);
-               window.location.href="homemap.html";
+                request = {
+                    Action:"UserInformation",
+                    Token:data.Token,
+                }
+                url = ABSApplication.ABSServer.url + JSON.stringify(request);
+
+                commonJS.get(url,function(data){
+            
+                    if (data.status === 0) {
+                        $.cookie('usrName', data.parameter.name, { expires: 7, path: '/' });
+                        //window.notificationClient.startService(identity);
+                        window.location.href="homemap.html";
+                    }else{
+                        alert(JSON.stringify(data.message));
+                    }
+                });
 
            }else{
                 alert(JSON.stringify(data.message));
