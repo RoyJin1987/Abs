@@ -100,11 +100,12 @@ var app = {
             return;
         }
         var usr = app.newUser;
-        var deviceId ="";
+        var deviceId ="TestDeviceId";
         if (window.device) {
             deviceId = window.device.uuid;
 
         };
+
         var request = {
             Action:"register",
             type:1,
@@ -124,6 +125,8 @@ var app = {
                $.cookie('usrToken', data.Token, { expires: 7, path: '/' });
                alert("恭喜您，注册成功！");
                window.location.href="homemap.html";
+           }else{
+            alert(data.message);
            };
         });
 
