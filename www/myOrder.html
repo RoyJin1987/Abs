@@ -170,14 +170,14 @@
 	</script> 
 	<script type="text/html" id="responser-template" >
 		<div class="responser-list-item">
-			<div>
+			<div class="description">
 				<div style="float:left;">
 					<img style="width:35px;height:35px" src="" alt=""></img>
 				</div>
 				<div style="float:left;margin-left:15px">
-					<div><strong>车牌号: </strong> <span data-bind="text:motorcade.license_plate_number"></span></div>
-					<div><strong>驾驶员: </strong> <span data-bind="text:pilot.name"></span></div>
-					<div style="color:#FF6A6A" >价格: <span data-bind="text:freight">0</span>元</div>
+					<div>车牌号: <span data-bind="text:motorcade.license_plate_number"></span></div>
+					<div>驾驶员: <span data-bind="text:pilot.name"></span></div>
+					<div style="color:#FF6A6A" >价格: <span style="color:#FF6A6A" data-bind="text:freight">0</span>元</div>
 				</div>
 				<div style="float:right;width=120px"></div>
 				<div style="clear:both"></div>
