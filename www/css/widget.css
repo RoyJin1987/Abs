@@ -16,8 +16,7 @@
 .order-info-details-icon {width: 30px;height:30px;right: 2px;top:-5px; position: absolute;}
 .responser-list{}
 .responser-list-item{border-radius:5px;background-color:#E8E8E8;margin-bottom: 10px;padding: 3px}
-.blue-strong-head{color: #00BFFF; font-size: 1.2em;}
-.red-strong{color:#FF6A6A;font-size:1.2em;}
+
 .hide{display: none;}
 
 /*帮我送注册页 textfiedld*/
@@ -62,5 +61,88 @@ a > img
 {
 	width: 100px;
 	height:100px;
+}
+
+.description
+{
+	font-size:.9em;
+	font-weight: bold;
+}
+
+.description span
+{
+	font-weight: normal;
+	color: #7F7F7F;
+}
+
+/*订单描述行间距*/
+.description div
+{
+	margin-bottom:2px;
+}
+
+
+.blue-strong-head,.blue-strong-head > span {color: #00BFFF; font-size: 1.2em; font-weight: bold;}
+.red-strong,.red-strong > span {color:#FF6A6A; font-size:1.2em; font-weight: bold;}
+
+
+.form-line-wrapper{
+	float: left;
+	width: 100%;
+	line-height: 35px;
+	font-size: 16px;
+}
+
+.form-line-wrapper > .left{
+	float: left;
+	width: 75;
+	padding: 6px 0px;
+}
+
+.form-line-wrapper > .left > label{
+	margin: 0;
+	height: 35px;
+	font-size:.8em;
+	font-weight: bold;
+}
+
+/*覆盖默认样式*/
+.red-strong > .left > label,.blue-strong-head > .left > label
+{
+	font-size: 1em;
+} 
+
+.form-line-wrapper > .content{
+	float: left;
+	width: 125px;
+	margin: 0 15px;
+	font-size: .8em;
+}
+
+
+.form-line-wrapper > .content > label{
+	margin: 6px 0;
+	font-weight: normal;
+	color: #7F7F7F;
+	/*覆盖jqm样式*/
+	font-size:1em;
+}
+.form-line-wrapper > .right {
+	float: left;
+	padding: 6px 0px;
+}
+
+.form-line-wrapper > .right > label{
+	margin-bottom:  0;
+	height: 35px;
+	font-size:.8em;
+	font-weight: bold;
+}
+
+hr{
+	width: 100%;
+	background-color:#D3D3D3;
+	border:0;
+	height:1px;
 }
 

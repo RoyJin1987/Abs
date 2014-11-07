@@ -41,155 +41,162 @@
 			<a href="#" data-role="button" data-iconpos="notext" data-icon="search"></a>
 		</div>
 	<div data-role="content">
-		<form method="get" action="">
-			<div >
-				<table>
-					<tr>
-						<td style="width:25%"><label for="address">发货城市：</label></td>
-						<td style="width:69%"><label type="text" id="send_city_county" data-bind="text: send_city" onclick="app.selectCity(0)"/></td>
-						<td style="width:1%"><label type="text" id="send_city_hidden" class="ui-hidden-accessible"/></td>
-						<td style="width:1%"><label type="text" id="send_county_hidden" class="ui-hidden-accessible"/></td>		
-					</tr>
-					<tr>
-						<td style="width:25%"><label for="address">详细地址</label></td>
-						<td style="width:69%"><input type="text" name="address" id="address" enabled="false" data-bind="value: send_address" required="required"/></td>
-						<td style="width:6%"><a href="#" data-role="button" data-iconpos="notext" data-icon="flat-location" data-theme="f"></td>
-					</tr>
-				</table>
+		<div>
+			<div class="form-line-wrapper">
+			 	<div class="left">
+				 	<label > 发货城市:</label>
+				 </div>
+				 <div class="content">
+				 	<label type="text" id="send_city_county" data-bind="text: send_city" onclick="app.selectCity(0)"/>
+				 </div>
+				 <label type="text" id="send_city_hidden" class="ui-hidden-accessible"/>
+				 <label type="text" id="send_county_hidden" class="ui-hidden-accessible"/>
 			</div>
-			<hr/>
-			<div >
-				<table>
-					<tr>
-						<td style="width:25%"><label for="goodsType">货物类型：</label></td>
-						<td style="width:69%"><input type="text" name="goodsType" id="goodsType" data-bind="value:orderInfo.type"/></td>
-						<td style="width:6%"></td>
-					</tr>
-				</table>
+			<div class="form-line-wrapper">
+			 	<div class="left">
+				 	<label > 详细地址:</label>
+				 </div>
+				 <div class="content" style="width:200px">
+				 	<input type="text" name="address" id="address" enabled="false" data-bind="value: send_address" required="required"/>
+				 </div>
+				 <div class="right">
+				 	<a href="#" data-role="button" data-iconpos="notext" data-icon="flat-location" data-theme="f" ></a>
+				 </div>
 			</div>
-			<hr/>
-			<div >
-				<fieldset data-role="controlgroup" data-theme="c">
-					<table>
-						<tr>
-							<td style="width:25%"><label>温层选择：</label></td>
-							<td style="width:69%">
-							
-								<select name="select-choice" data-bind="options: wenCengList, optionsText: 'name', optionsValue: 'id', value: selectedWenCeng" data-theme="c">
+		</div>
+		<hr />
+		<div>
+			<div class="form-line-wrapper">
+			 	<div class="left">
+				 	<label > 货物类型:</label>
+				 </div>
+				 <div class="content" >
+				 	<input type="text" name="goodsType" id="goodsType" data-bind="value:orderInfo.type"/>
+				 </div>
+			</div>
+		</div>
+		<hr />
+		<div>
+			<div class="form-line-wrapper">
+			 	<div class="left">
+				 	<label > 温层选择:</label>
+				 </div>
+				 <div class="content">
+				 	<select name="select-choice" data-bind="options: wenCengList, optionsText: 'name', optionsValue: 'id', value: selectedWenCeng" data-theme="c">
 								</select>
-					
-							</td><td style="width:6%"></td>
-						</tr>
-					</table>
-				</fieldset>
+				 </div>
 			</div>
-			<div >
-				<fieldset data-role="controlgroup" data-theme="c">
-					<table>
-						<tr>
-							<td style="width:25%"><label>车型选择：</label></td>
-							<td style="width:69%">
-								<select data-bind="options: modelsList,  optionsText: 'name', optionsValue: 'id',  value: selectedModels"  data-native-menu="false" data-theme="c">
+
+			<div class="form-line-wrapper">
+			 	<div class="left">
+				 	<label > 车型选择:</label>
+				 </div>
+				 <div class="content">
+				 	<select data-bind="options: modelsList,  optionsText: 'name', optionsValue: 'id',  value: selectedModels"  data-native-menu="false" data-theme="c">
 								</select>
-							</td><td style="width:6%"></td>
-						</tr>
-					</table>
-				</fieldset>
+				 </div>
 			</div>
-			<hr/>
-			<div >
-				<table>
-					<tr>
-						<td style="width:25%"><label for="weight" data-inline="true">货物重量：</label></td>
-						<td style="width:49%"><input type="number" name="weight" id="weight" data-bind="value: orderInfo.weight" data-inline="true"></td><td style="width:6%"></td>
-					</tr>
-				</table>
-			</div>
-			<hr/>
-			<div >
-				<table>
-					<tr>
-						<td style="width:25%"><label for="volume">货物体积：</label></td>
-						<td style="width:49%"><input type="number" name="volume" id="volume" data-bind="value: orderInfo.volume"/></td><td style="width:6%"></td>
-					</tr>
-				</table>
-			</div>
-			<hr/>
-			<div >
-				<table>
-					<tr>
-						<td style="width:25%"><label for="deliveryDate">发货日期：</label></td>
-						<td style="width:69%"><input type="date" name="deliveryDate" id="deliveryDate" data-bind="value: orderInfo.ship_date"/></td><td style="width:6%"></td>
-					</tr>
-				</table>
-			</div>
-			<hr/>
-			<div >
-				<table>
-					<tr>
-						<td style="width:25%"><label for="receiveDate">到货日期：</label></td>
-						<td style="width:69%"><input type="date" name="receiveDate" id="receiveDate" data-bind="value: orderInfo.arrival_date"/></td><td style="width:6%"></td>
-					</tr>
-				</table>
-			</div>
-			<hr/>
-			<div >
-				<table>
-					<tr>
-						<td style="width:30%"><label>收货人姓名：</label></td>
-						<td style="width:69%"><input id="receiver" data-bind="value: consignee_name"></input></td>
-					</tr>
-				</table>
-			</div>
-			<hr/>
-			<div >
-				<table>
-					<tr>
-						<td style="width:30%"><label>联系电话：</label></td>
-						<td style="width:69%"><input id="tel" type="tel" data-bind="value: consignee_phone"></input></td>
-					</tr>
-				</table>
-			</div>
-			<hr/>
-			<div >
-				<table>
-					<tr>
-						<td style="width:25%"><label for="address">送货城市：</label></td>
-						<td style="width:69%"><label type="text" id="shipping_city_county" data-bind="text: shipping_city" onclick="app.selectCity(1)"/></td>
-						<td style="width:1%"><label type="text" id="shipping_city_hidden" class="ui-hidden-accessible"/></td>
-						<td style="width:1%"><label type="text" id="shipping_county_hidden" class="ui-hidden-accessible"/></td>		
-					</tr>
-					<tr>
-						<td style="width:25%"><label for="address">详细地址</label></td>
-						<td style="width:69%"><input type="text" name="address" id="address" enabled="false" data-bind="value: shipping_address" required="required"/></td>
-						<td style="width:6%"><a href="#" data-role="button" data-iconpos="notext" data-icon="flat-location" data-theme="f"></td>
-					</tr>
-				</table>
-			</div>
-			<hr/>
-			<div >
-				<table>
-					<tr>
-						<td style="width:25%"><label for="floor">送货楼层：</label></td>
-						<td style="width:69%"><input type="number" name="floor" id="floor" data-bind="value: orderInfo.delivery_floor"/></td><td style="width:6%"></td>
-					</tr>
-				</table>
-			</div>
-			<hr/>
-			<div >
-				<table>
-					<tr>
-						<td style="width:25%"><label for="remark">附加信息：</label></td>
-						<td style="width:69%"><input type="text" name="remark" id="remark" data-bind="value: orderInfo.additional_information"/></td>
-						<td style="width:6%"><a href="#" data-role="button" data-iconpos="notext" data-icon="flat-volume" data-theme="f"></td>
-					</tr>
-				</table>
-			</div>
-			<hr/>
-			<div  align="center">
-				<a onclick="app.sendClick()" href="#"><img src="img/bws.png" alt=""></img></a>  
-			</div>
-		</form>
+		</div>
+		<hr/>
+
+		<div class="form-line-wrapper">
+		 	<div class="left">
+			 	<label > 货物重量:</label>
+			 </div>
+			 <div class="content">
+			 	<input type="number" name="weight" id="weight" data-bind="value: orderInfo.weight" data-inline="true">
+			 </div>
+		</div>
+		<hr / >
+		<div class="form-line-wrapper">
+		 	<div class="left">
+			 	<label > 货物体积:</label>
+			 </div>
+			 <div class="content">
+			 	<input type="number" name="volume" id="volume" data-bind="value: orderInfo.volume"/>
+			 </div>
+		</div>
+		<hr/>
+		<div class="form-line-wrapper">
+		 	<div class="left">
+			 	<label > 发货日期:</label>
+			 </div>
+			 <div class="content" style="width:200px">
+			 	<input type="date" name="deliveryDate" id="deliveryDate" data-bind="value: orderInfo.ship_date"/>
+			 </div>
+		</div>
+		<hr/>
+		<div class="form-line-wrapper">
+		 	<div class="left">
+			 	<label > 到货日期:</label>
+			 </div>
+			 <div class="content" style="width:200px">
+			 	<input type="date" name="receiveDate" id="receiveDate" data-bind="value: orderInfo.arrival_date"/>
+			 </div>
+		</div>
+		<hr/>
+		<div class="form-line-wrapper">
+		 	<div class="left">
+			 	<label > 收货人姓名:</label>
+			 </div>
+			 <div class="content">
+			 	<input id="receiver" data-bind="value: consignee_name"></input>
+			 </div>
+		</div>
+		<hr/>
+
+		<div class="form-line-wrapper">
+		 	<div class="left">
+			 	<label > 联系电话:</label>
+			 </div>
+			 <div class="content">
+			 	<input id="tel" type="tel" data-bind="value: consignee_phone"></input>
+			 </div>
+		</div>
+		<hr/>
+		<div class="form-line-wrapper">
+		 	<div class="left">
+			 	<label > 送货城市:</label>
+			 </div>
+			 <div class="content" style="width:200px">
+			 	<label type="text" id="shipping_city_county" data-bind="text: shipping_city" onclick="app.selectCity(1)"/>
+			 </div>
+			 <label type="text" id="shipping_city_hidden" class="ui-hidden-accessible"/>
+			 <label type="text" id="shipping_county_hidden" class="ui-hidden-accessible"/>
+		</div>
+		<div class="form-line-wrapper">
+		 	<div class="left">
+			 	<label > 详细地址:</label>
+			 </div>
+			 <div class="content" style="width:200px">
+			 	<input type="text" name="address" id="address" enabled="false" data-bind="value: shipping_address" required="required"/>
+			 </div>
+		</div>
+		<hr />
+		<div class="form-line-wrapper">
+		 	<div class="left">
+			 	<label > 送货楼层:</label>
+			 </div>
+			 <div class="content">
+			 	<input type="number" name="floor" id="floor" data-bind="value: orderInfo.delivery_floor"/>
+			 </div>
+		</div>
+		<hr/>
+		<div class="form-line-wrapper">
+		 	<div class="left">
+			 	<label > 附加信息:</label>
+			 </div>
+			 <div class="content" style="width:200px">
+			 	<input type="text" name="remark" id="remark" data-bind="value: orderInfo.additional_information"/>
+			 </div>
+			 <div class="right">
+			 	<a href="#" data-role="button" data-iconpos="notext" data-icon="flat-volume" data-theme="f"></a>
+			 </div>
+		</div>
+		<hr />
+		<div  align="center">
+			<a onclick="app.sendClick()" href="#"><img src="img/bws.png" alt=""></img></a>  
+		</div>
    </div>
 </div><!-- /page -->  
 <div data-role="page" id="offer" data-theme="f">  
@@ -200,110 +207,120 @@
 		</div>
 	<div data-role="content">
 		<form method="get" action="">
-			<div >
-				<table>
-					<tr>
-						<td style="width:30%"><label>收货人姓名：</label></td> <td style="width:69%"><label data-bind="text:consignee_name"></label></td>
-					</tr>
-				</table>
-			</div>
-			<hr/>
-			<div >
-				<table>
-					<tr>
-						<td style="width:30%"><label>联系电话：</label></td>
-						<td style="width:69%"><label id="tel" data-bind="text: consignee_phone"></label></td>
-					</tr>
-				</table>
-			</div>
-			<hr/>
-			<div >
-				<table>
-					<tr>
-						<td style="width:30%"><label>发货地址：</label></td>
-						<td style="width:69%"><label id="address" data-bind="text: send_address"></label></td>
-					</tr>
-				</table>
-			</div>
-			<div >
-				<table>
-					<tr>
-						<td style="width:30%"><label for="deliveryAddress">送货地址：</label></td>
-						<td style="width:69%"><label id="deliveryAddress" data-bind="text: shipping_address"></label></td>
-					</tr>
-				</table>
-			</div>
-			<hr/>
-			<div >
-				<table>
-					<tr>
-						<td style="width:30%"><label>总计里程数：</label></td>
-						<td style="width:69%"><label id="mileage">1500米</label></td>
-					</tr>
-				</table>
-			</div>
-			<hr/>
-			<div >
-				<table>
-					<tr>
-						<td style="width:30%"><label>车辆类型：</label></td>
-						<td style="width:69%"><label id="carType" data-bind="text: selectedModels"></label></td>
-					</tr>
-				</table>
-			</div>
-			<hr/>
-			<div >
-				<table>
-					<tr>
-						<td style="width:45%"><label>平台推荐运输费用：</label></td>
-						<td style="width:55%"><label id="carType" data-bind="text: freight"></label></td>
-					</tr>
-				</table>
-				<table>
-					<tr>
-						<td style="width:25%"><label>调整运费： </label></td>
-						<td style="width:75%"><input type="range" name="slider" data-bind="value: freight" min="0" max="100" data-highlight="true" /></td>
-					</tr>
-				</table>
-			</div>
-			<hr/>
-			<div >
-				<table>
-					<tr>
-						<td style="width:45%"><label>平台推荐搬运费用：</label></td>
-						<td style="width:44%"><label id="carType">50元</label></td>
-					</tr>
-				</table>
-				<table>
-					<tr>
-						<td style="width:29%"><label>调整搬运费：</label></td>
-						<td style="width:71%"><input type="range" name="slider" data-bind="value: truckage" min="0" max="100" data-highlight="true" /></td>
-					</tr>
-				</table>
-			</div>
-			<hr/>
-			<div >
-				<table>
-					<tr>
-						<td style="width:25%"><label>附加小费：</label></td>
-						<td style="width:69%"><label id="carType">20元</label></td>
-					</tr>
-					<tr>
-						<td style="width:25%"><label>调整小费：</label></td>
-						<td style="width:75%"><input type="range" name="slider" data-bind="value: tipping" min="0" max="20" data-highlight="true" /></td>
-					</tr>
-				</table>
-			</div>
-			<hr/>
-			<div >
-				<table>
-					<tr>
-						<td style="width:25%"><label>费用总计：</label></td>
-						<td style="width:69%"><label id="carType">120元</label></td>
-					</tr>
-				</table>
-			</div>
-			<hr/>
+		<div class="form-line-wrapper">
+		 	<div class="left">
+			 	<label > 收货人姓名:</label>
+			 </div>
+			 <div class="content">
+			 	<label data-bind="text:consignee_name"></label>
+			 </div>
+		</div>
+		<hr />
+		<div class="form-line-wrapper">
+		 	<div class="left">
+			 	<label > 联系电话:</label>
+			 </div>
+			 <div class="content">
+			 	<label id="tel" data-bind="text: consignee_phone"></label>
+			 </div>
+		</div>
+		<hr />
+		<div class="form-line-wrapper">
+		 	<div class="left">
+			 	<label > 发货地址:</label>
+			 </div>
+			 <div class="content" style="width:200px">
+			 	<label id="address" data-bind="text: send_address"></label>
+			 </div>
+		</div>
+		<hr />
+		<div class="form-line-wrapper">
+		 	<div class="left">
+			 	<label > 送货地址:</label>
+			 </div>
+			 <div class="content" style="width:200px">
+			 	<label id="deliveryAddress" data-bind="text: shipping_address"></label>
+			 </div>
+		</div>
+		<hr />
+		<div class="form-line-wrapper">
+		 	<div class="left">
+			 	<label > 总计里程数:</label>
+			 </div>
+			 <div class="content">
+			 	<label id="mileage">1500米</label>
+			 </div>
+		</div>
+		<hr />
+		<div class="form-line-wrapper">
+		 	<div class="left">
+			 	<label > 车辆类型:</label>
+			 </div>
+			 <div class="content">
+			 	<label id="carType" data-bind="text: selectedModels"></label>
+			 </div>
+		</div>
+		<hr />
+		<div class="form-line-wrapper">
+		 	<div class="left">
+			 	<label > 平台推荐运输费用:</label>
+			 </div>
+			 <div class="content">
+			 	<label id="carType" data-bind="text: freight"></label>
+			 </div>
+		</div>
+		<div class="form-line-wrapper">
+		 	<div class="left">
+			 	<label > 调整运费:</label>
+			 </div>
+			 <div class="content" style="width:200px">
+			 	<input type="range" name="slider" data-bind="value: freight" min="0" max="100" data-highlight="true" />
+			 </div>
+		</div>
+		<hr />
+		<div class="form-line-wrapper">
+		 	<div class="left">
+			 	<label > 平台推荐搬运费用:</label>
+			 </div>
+			 <div class="content">
+			 	<label id="carType">50元</label>
+			 </div>
+		</div>
+		<div class="form-line-wrapper">
+		 	<div class="left">
+			 	<label > 调整搬运费:</label>
+			 </div>
+			 <div class="content" style="width:200px">
+			 	<input type="range" name="slider" data-bind="value: truckage" min="0" max="100" data-highlight="true" />
+			 </div>
+		</div>
+		<hr />
+		<div class="form-line-wrapper">
+		 	<div class="left">
+			 	<label > 附加小费:</label>
+			 </div>
+			 <div class="content">
+			 	<label id="carType">20元</label>
+			 </div>
+		</div>
+		<div class="form-line-wrapper">
+		 	<div class="left">
+			 	<label > 调整小费:</label>
+			 </div>
+			 <div class="content" style="width:200px">
+			 	<input type="range" name="slider" data-bind="value: tipping" min="0" max="20" data-highlight="true" />
+			 </div>
+		</div>
+		<hr />
+		<div class="form-line-wrapper">
+		 	<div class="left">
+			 	<label > 费用总计：:</label>
+			 </div>
+			 <div class="content">
+			 	<label id="carType">120元</label>
+			 </div>
+		</div>
+		<hr/>
 			<div  align="center">
 				<a onclick="app.sendOrderClick()" data-role="button" data-ajax="false" data-theme="f">发送</a>  
 			</div>

@@ -37,15 +37,15 @@
 	  		<div style="clear:both"></div>
 	  	</div>
 	  	<div class="order-info-block">
-			<div class="order-info-content">
+			<div class="order-info-content description">
 				<div class="blue-strong-head">订单信息</div>
 	    		<div>订单编号: <span data-bind="text:orderId">BX8739473</span></div>
 	    		<div>发货人姓名: <span data-bind="text:consignor"></span></div>
 	    		<div>货物类型: <span data-bind="text:type"></span></div>
 	    		<div>发货时间: <span data-bind="text:ship_date"></span></div>
 	    		<div>到货时间: <span data-bind="text:arrival_date"></span></div>
-	    		<div>货物重量: <span data-bind="text:weight"></span>kg</div>
-	    		<div>发货体积: <span data-bind="text:volume"></span>立方</div>
+	    		<div>货物重量: <span data-bind="text:weight"></span><span>kg</span></div>
+	    		<div>发货体积: <span data-bind="text:volume"></span><span>立方</span></div>
 	    		<div>发货地址: <span data-bind="text:send_address.city+send_address.address"></span></div>
 	    		<div>送货地址: <span data-bind="text:shipping_address.city+shipping_address.address"></span></div>
 	    		<div>附件信息: <span data-bind="text:additional_information"></span></div>
@@ -63,13 +63,15 @@
 	    	<div class="order-info-content" style="margin-bottom:15px">
 				<div class="blue-strong-head">设定车辆及驾驶员</div>
 	    	</div>
-	    	<div>
-	    		<div data-bind="visible: isIntercity" class="red-strong">
-		    		<div style="float:left;">修改运费:</div>
-		    		<div style="width:80px;float:left">
-						<input type="text" data-mini="true" data-inline="true" data-theme="a" data-bind="value:bid_item.freight"></input>
-					</div>元
-					<div style="clear:both"></div>
+	    	<div class="description">
+			 	 <div class="form-line-wrapper red-strong">
+					 <div class="left">
+					 	<label> 修改运费:</label>
+					 </div>
+					 <div class="content">
+					 	<input type="text" data-mini="true" data-inline="true" data-theme="a" data-bind="value:bid_item.freight"></input>
+					 </div>
+					 <div class="right"><label>元</label></div>
 				</div>
 	    		<div>承运方姓名: <span data-bind="text:consignee_name"></span></div>
 <!-- 	    		<div>选择车辆: 
@@ -81,20 +83,23 @@
 	                    </select>
                    </span>
                </div> -->
-	    		<div>选择驾驶员: 
-	    			<span>
-	    				<select data-mini="true" data-inline="true" data-theme="c" data-bind="options: pilots,
-						                       optionsText: 'name',
-						                       optionsValue: 'identity',
-						                       value: selectedPilot">
-	                    </select>
-                   </span>
-               </div>
+               <div class="form-line-wrapper">
+					 <div class="left">
+					 	<label > 选择驾驶员:</label>
+					 </div>
+					 <div class="content">
+					 	<select data-mini="true" data-inline="true" data-theme="c" data-bind="options: pilots,
+							                       optionsText: 'name',
+							                       optionsValue: 'identity',
+							                       value: selectedPilot">
+		                    </select>
+					 </div>
+				</div>
 	    	</div>
 
   		</div>
-    	<div style="margin-right:10px">
-    		<a href="#" data-role="button" data-theme="g" data-bind="click:confirm">确认</a>
+    	<div style="margin-right:10px;margin-top:10px;text-align:center">
+    		<a href="#"  data-bind="click:confirm"><img src="img/queren.png" alt=""></img></a>
     	</div>
 	</div>
 </body>  
