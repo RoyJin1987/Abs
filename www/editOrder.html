@@ -11,6 +11,7 @@
 	<script src="js/jquery.js"></script>
 	<script src="js/jquery.mobile-1.4.0-rc.1.js"></script> 
 	<script src="js/knockout-3.2.0.js"></script> 
+	<script type="text/javascript" src="js/jquery.cookie.js"></script>
   	<script src="js/json2.js"></script>
 	<script type="text/javascript" src="js/common.js"></script>
 	<script type="text/javascript" src="js/editOrder.js"></script>
@@ -40,7 +41,7 @@
 			 	<div class="left">
 				 	<label> 货物类型:</label>
 				 </div>
-				 <div class="content" style="width:200px">
+				 <div class="content">
 				 	<input type="text" name="goodsType" id="goodsType" data-bind="value:orderInfo.type"/>
 				 </div>
 			</div>
@@ -123,7 +124,7 @@
 			 	<div class="left">
 				 	<label> 送货地址:</label>
 				 </div>
-				 <div class="content">
+				 <div class="content" style="width:200px">
 				 	<input type="text" name="deliveryAddress" id="deliveryAddress" 
 							data-bind="value: orderInfo.shipping_address.address"/>
 				 </div>
@@ -145,7 +146,7 @@
 			 	<div class="left">
 				 	<label> 附加信息:</label>
 				 </div>
-				 <div class="content">
+				 <div class="content" style="width:200px">
 				 	<input type="text" name="remark" id="remark" data-bind="value: orderInfo.additional_information"/>
 				 </div>
 				 <div class="right">
@@ -171,7 +172,7 @@
 				 	<label> 收货人姓名:</label>
 				 </div>
 				 <div class="content">
-				 	<label data-bind="text:consignee_name"></label>
+				 	<label data-bind="text:orderInfo.consignee_name"></label>
 				 </div>
 <!-- 				 <div class="right">
 				 	<a href="#" data-role="button" data-iconpos="notext" data-icon="flat-volume" data-theme="f"></a>
@@ -183,7 +184,7 @@
 				 	<label> 联系电话:</label>
 				 </div>
 				 <div class="content">
-				 	<label id="tel" data-bind="text: consignee_phone"></label>
+				 	<label id="tel" data-bind="text: orderInfo.consignee_phone"></label>
 				 </div>
 			</div>
 			<hr />
@@ -192,7 +193,7 @@
 				 	<label> 发货地址:</label>
 				 </div>
 				 <div class="content">
-				 	<label id="address" data-bind="text: send_address"></label>
+				 	<label id="address" data-bind="text:orderInfo.send_address.address"></label>
 				 </div>
 			</div>
 			<hr />
@@ -200,8 +201,8 @@
 			 	<div class="left">
 				 	<label> 送货地址:</label>
 				 </div>
-				 <div class="content">
-				 	<label id="deliveryAddress" data-bind="text: shipping_address"></label>
+				 <div class="content" style="width:200px">
+				 	<label id="deliveryAddress" data-bind="text: orderInfo.shipping_address.address"></label>
 				 </div>
 			</div>
 			<hr />
@@ -219,7 +220,7 @@
 				 	<label> 车辆类型:</label>
 				 </div>
 				 <div class="content">
-				 	<label id="carType" data-bind="text: selectedModels"></label>
+				 	<label id="carType" data-bind="text: orderInfo.selectedModels"></label>
 				 </div>
 			</div>
 			<hr />
@@ -228,15 +229,15 @@
 				 	<label> 平台推荐运输费用:</label>
 				 </div>
 				 <div class="content">
-				 	<label id="carType" data-bind="text: freight"></label>
+				 	<label data-bind="text: orderInfo.bid_item.freight"></label>
 				 </div>
 			</div>
 			<div class="form-line-wrapper">
 			 	<div class="left">
 				 	<label> 调整运费:</label>
 				 </div>
-				 <div class="content">
-				 	<input type="range" name="slider" data-bind="value: freight" min="0" max="100" data-highlight="true" />
+				 <div class="content" style="width:200px">
+				 	<input type="number" data-bind="value: orderInfo.bid_item.freight" min="0" max="100" data-highlight="true" />
 				 </div>
 			</div>
 			<hr />
@@ -245,15 +246,15 @@
 				 	<label> 平台推荐搬运费用:</label>
 				 </div>
 				 <div class="content">
-				 	<label id="carType">50元</label>
+				 	<label data-bind="text: orderInfo.bid_item.truckage"></label>
 				 </div>
 			</div>
 			<div class="form-line-wrapper">
 			 	<div class="left">
 				 	<label> 调整搬运费:</label>
 				 </div>
-				 <div class="content">
-				 	<input type="range" name="slider" data-bind="value: truckage" min="0" max="100" data-highlight="true" />
+				 <div class="content" style="width:200px">
+				 	<input type="number" name="slider" data-bind="value: orderInfo.bid_item.truckage" min="0" max="100" data-highlight="true" />
 				 </div>
 			</div>
 			<hr />
@@ -262,15 +263,15 @@
 				 	<label> 附加小费:</label>
 				 </div>
 				 <div class="content">
-				 	<label id="carType">20元</label>
+				 	<label data-bind="text: orderInfo.bid_item.tipping"></label>
 				 </div>
 			</div>
 			<div class="form-line-wrapper">
 			 	<div class="left">
-				 	<label> 调整小费:</label>
+				 	<label > 调整小费:</label>
 				 </div>
-				 <div class="content">
-				 	<input type="range" name="slider" data-bind="value: tipping" min="0" max="20" data-highlight="true" />
+				 <div class="content" style="width:200px">
+				 	<input type="number" name="slider" data-bind="value: orderInfo.bid_item.tipping" min="0" max="20" data-highlight="true" />
 				 </div>
 			</div>
 			<hr/>
@@ -278,8 +279,11 @@
 			 	<div class="left">
 				 	<label> 费用总计:</label>
 				 </div>
-				 <div class="content">
-				 	<label id="carType">120元</label>
+				 <div class="content" style="width:200px">
+				 	<label data-bind="text:orderInfo.bid_item.total"></label>
+				 </div>
+				 <div class="right">
+				 	<span>元</span>
 				 </div>
 			</div>
 			<hr/>
