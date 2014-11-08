@@ -110,24 +110,17 @@ var app = {
                     
                  
                     var url = app.serverUrl + JSON.stringify(request);
-alert(url);
+
 
                     commonJS.get(url,function(data_){
                         // debugger;
                         if (data_.status===0) {
-
-                    var message = { 
-                      type:"OrderGrabed",
-                      orderId:app.viewModel.orderId
-                    };
-                    window.notificationClient.notify(vehicle.identity,JSON.stringify(message));           
-      
-                            //删除该单
-                            waybills.orders.splice(i,1);
-
-                            //提示用户
                             alert("您已经抢到运单"+app.viewModel.orderId);
-
+                            var message = { 
+                              type:"OrderGrabed",
+                              orderId:app.viewModel.orderId
+                            };
+                            window.notificationClient.notify(vehicle.identity,JSON.stringify(message));           
                         }
                         else
                         {
