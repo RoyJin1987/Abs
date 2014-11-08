@@ -70,7 +70,8 @@ var app = {
                 parameter:{"pushType":1,"page":1}
             };
         var url = app.serverUrl + JSON.stringify(request);
-        commonJS.get(url,function(data){        
+        commonJS.get(url,function(data){      
+            
             // waybills.intercityOrders = data.items;
             for(var i in data.items)
             {
@@ -82,9 +83,9 @@ var app = {
                 order.grabIntercity = function()
                 {
                     var self = this;
+                    window.notificationClient.call(self.mobile);
                     //Ìøµ½ÐÞ¸ÄÔËµ¥
                     setTimeout(function(){
-                        
                         window.location.href="modifyWaybill.html?orderId="+self.orderId+ "&pushType=1";
                     },1000);
 
