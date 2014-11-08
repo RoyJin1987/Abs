@@ -21,14 +21,13 @@
 var app = {
   serverUrl:"http://112.124.122.107/Applications/web/?data=",
   token:"07b27a882cc721a9207250f1b6bd2868",
+  orderId:"",
   viewModel :{
     orderInfo:{},
     wenCengList :ko.observableArray(),
     modelsList: ko.observableArray(),
     selectedWenCeng:ko.observable(""),
     selectedModels:ko.observable(""),
-    consignee_name:ko.observable(""),
-    consignee_phone:ko.observable(""),  
     shipping_address:ko.observable(""),
     send_address:ko.observable(""),  
   },
@@ -45,15 +44,14 @@ var app = {
 
     sendClick:function() {
     
-        app.viewModel.orderInfo.wenCeng = app.viewModel.selectedWenCeng();
+        app.viewModel.orderInfo.wenCeng = app.viewModel.selectedWenCeng;
         app.viewModel.orderInfo.models = app.viewModel.selectedModels();
-        app.viewModel.orderInfo.consignee_name =app.viewModel.consignee_name();
-        app.viewModel.orderInfo.consignee_phone =app.viewModel.consignee_phone();
-alert(app.viewModel.selectedModels());
+    
         if (app.viewModel.selectedModels() == '8'){
           
           var request = {
-            Action:"HMSend",
+            Action:"OrderEdit",
+            orderId:app.orderId
             Token:app.token,
             parameter:app.viewModel.orderInfo
           };
@@ -117,8 +115,8 @@ alert(app.viewModel.selectedModels());
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         
-        var orderId = app.getUrlParam("orderId");
-         if (orderId) {
+        app.orderId = app.getUrlParam("orderId");
+         if (app.orderId) {
 
           var jsonStr = '{"Action":"getWenceng"}';
           var url = app.serverUrl +  jsonStr;
@@ -134,7 +132,7 @@ alert(app.viewModel.selectedModels());
    
            var request = {
                 Action:"getOrderById",
-                orderId:orderId,
+                orderId:app.orderId,
                 Token:app.token
             };
             url = app.serverUrl + JSON.stringify(request);

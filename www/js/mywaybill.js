@@ -200,7 +200,7 @@ var app = {
                 };
                 if (status === 3) {
                     waybill.canGrab = true;
-                    alert(JSON.stringify(waybill));
+                   
                     waybills.completeOrders.push(waybill);
                 };
             }  
