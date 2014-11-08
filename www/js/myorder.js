@@ -248,8 +248,18 @@ var appMyOrder = {
                         freight:'',
                         motorcade:{},
                         user:{},
-                        pilot:{}
+                        pilot:{},
+                        // callHim :function()
+                        // {
+                        //     var self = this;
+                        //     // alert(JSON.stringify(self));
+                        //     if (self.pilot.mobile_number) {
+                        //         window.notificationClient.call(self.pilot.mobile_number);
+                        //     };
+                            
+                        // }
                     });
+                   
                     var arrary = (status===2?orders.confirmOrders:orders.completeOrders);
                     arrary.push(order);
                 };
@@ -293,6 +303,11 @@ var appMyOrder = {
                             var self = this;
                             window.location.href = "orderConfirm.html?orderId="+self.orderId+"&key="+self.key;
                         };
+                        responser.callHim = function()
+                        {
+                            var self = this;
+                            window.notificationClient.call(self.pilot.mobile_number);
+                        };
                         order.responsers.push(responser);
                     }
                     order.showModify = false;
@@ -306,9 +321,19 @@ var appMyOrder = {
                     //     user:data.user,
                     //     pilot:data.pilot
                     // }
+                    
                     order.carrier.motorcade = data.motorcade;
                     order.carrier.user = data.user;
                     order.carrier.pilot = data.pilot;
+                    // order.carrier.callHim = function()
+                    // {
+                    //     var self = this;
+                    //     // alert(JSON.stringify(self));
+                    //     if (self.pilot.mobile_number) {
+                    //         window.notificationClient.call(self.pilot.mobile_number);
+                    //     };
+                        
+                    // }
 
                 };
                 //刷新界面

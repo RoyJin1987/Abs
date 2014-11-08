@@ -12,7 +12,6 @@ import android.view.Display;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
-import android.widget.Toast;
 
 import com.aibangsong.abs.push.MQTTService;
 import com.aibangsong.abs.push.Thermometer;
@@ -79,11 +78,6 @@ public class NotificationClient {
 			super.handleMessage(msg);
 			//pd.dismiss();
 			// 初始化一个自定义的Dialog
-			
-			 
-			
-		
-			
 		}
 	};
     
