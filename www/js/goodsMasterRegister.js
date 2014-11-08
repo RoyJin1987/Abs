@@ -123,6 +123,7 @@ var app = {
             // alert(JSON.stringify(data));
            if (data.status === 0) {
                $.cookie('usrToken', data.Token, { expires: 7, path: '/' });
+               $.cookie('usrName', usr.name(), { expires: 7, path: '/' });
                alert("恭喜您，注册成功！");
                window.location.href="homemap.html";
            }else{

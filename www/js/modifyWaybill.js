@@ -120,7 +120,8 @@ var app = {
                               type:"OrderGrabed",
                               orderId:app.viewModel.orderId
                             };
-                            window.notificationClient.notify(vehicle.identity,JSON.stringify(message));           
+                            window.notificationClient.notify(vehicle.identity,JSON.stringify(message));  
+                            window.history.back();         
                         }
                         else
                         {

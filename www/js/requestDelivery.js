@@ -189,7 +189,7 @@ var app = {
         var position = $.cookie('baiduPosition');
         
         app.baiduPosition = JSON.parse(position);
-        alert(JSON.stringify(app.baiduPosition));
+        // alert(JSON.stringify(app.baiduPosition));
       }
 
         var jsonStr = '{"Action":"getWenceng"}';
