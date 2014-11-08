@@ -276,7 +276,11 @@ var appMyOrder = {
             };
        
             var url = appMyOrder.serverUrl + JSON.stringify(request);
-            order.responsers.removeAll();
+             if(order.responsers)
+             {
+                order.responsers.removeAll();
+             }
+            //order.responsers.removeAll();
             commonJS.get(url,function(data){
                 if (data.status !== 0) {
                     alert(data.message);
