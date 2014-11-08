@@ -27,7 +27,7 @@ var app = {
         distribution_range:ko.observable(''),
         license_plate_number:ko.observable(''),
         vehicle_description:ko.observable(''),
-        company_name:ko.observable(''),
+        company_name:'',
         company_address:ko.observable(''),
         company_tel:ko.observable(''),
         business_license:ko.observable(''),
@@ -171,13 +171,12 @@ var app = {
             request.parameter.license_plate_number =usr.license_plate_number();
             request.parameter.vehicle_description =usr.vehicle_description();
         }else{
-            request.parameter.company_name =usr.company_name();
+            request.parameter.company_name =usr.company_name;
             request.parameter.company_address =usr.company_address();
             request.parameter.company_tel =usr.company_tel();
             request.parameter.business_license ="";
         }
         var url = ABSApplication.ABSServer.url + JSON.stringify(request);
-
         commonJS.get(url,function(data){
            if (data.status === 0) {
                $.cookie('usrToken', data.Token, { expires: 7, path: '/' });

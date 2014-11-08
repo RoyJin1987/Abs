@@ -102,23 +102,28 @@ var app = {
         url = app.serverUrl + JSON.stringify(request);
         commonJS.get(url,function(data){      
             // waybills.orders = data.items;
-            for(var i in data.items)
-            {
-                var order = data.items[i];
-                order.ship_date =commonJS.jsonDateFormat(data.items[i].ship_date);
-                order.arrival_date =commonJS.jsonDateFormat(data.items[i].arrival_date);
-                order.orderDate = commonJS.jsonDateFormat(data.items[i].orderDate);
-                order.grab = function()
+            if (data.status === 0) {
+                for(var i in data.items)
                 {
-                    var self = this;
-                    //Ìøµ½ÐÞ¸ÄÔËµ¥
-                    setTimeout(function(){
-                        alert(self.orderId);
-                        window.location.href="modifyWaybill.html?orderId="+self.orderId + "&pushType=0";
-                    },1000);
+                    var order = data.items[i];
+                    alert(JSON.stringify(order));
+                    order.ship_date =commonJS.jsonDateFormat(data.items[i].ship_date);
+                    order.arrival_date =commonJS.jsonDateFormat(data.items[i].arrival_date);
+                    order.orderDate = commonJS.jsonDateFormat(data.items[i].orderDate);
+                    order.grab = function()
+                    {
+                        var self = this;
+                        //Ìøµ½ÐÞ¸ÄÔËµ¥
+                        setTimeout(function(){
+                            alert(self.orderId);
+                            window.location.href="modifyWaybill.html?orderId="+self.orderId + "&pushType=0";
+                        },1000);
 
+                    }
+                    waybills.orders.push(order);
                 }
-                waybills.orders.push(order);
+            }else{
+                alert(data.message);
             }
         });
             

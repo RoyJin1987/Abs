@@ -101,14 +101,16 @@ var app = {
                         Action:"OrderGrab",
                         confirmType:1,
                         Token:app.token,
-                        param:{
+                        parameter:{
                             orderId:app.viewModel.orderId,
                             freight: app.viewModel.bid_item.freight, 
-                            pilot_uid:app.viewModel.selectedPilot.identity 
+                            pilot_uid:app.viewModel.selectedPilot 
                         }
                     };
                     
+                 
                     var url = app.serverUrl + JSON.stringify(request);
+alert(url);
 
                     commonJS.get(url,function(data_){
                         // debugger;
@@ -131,6 +133,7 @@ var app = {
                         {
                              //提示用户
                             alert(data_.message);
+                            window.location.href=url;
                         }
                     });
 
@@ -142,9 +145,10 @@ var app = {
                 };
                 var url = app.serverUrl + JSON.stringify(request);
                 commonJS.get(url,function(data_){
-                    // alert(JSON.stringify(data_));
+                    alert(JSON.stringify(data_));
                     app.viewModel.pilots = data_.items
                     app.viewModel.selectedPilot = {};
+                    app.viewModel.pilotsName= ko.observable(data_.items.name);
                     ko.applyBindings(app.viewModel);
                     $('body').trigger("create");
                 });

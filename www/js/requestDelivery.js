@@ -54,9 +54,9 @@ var app = {
             tipping:"14"
       },
     },
-    freight:ko.observable(12),
-    truckage:ko.observable(13) ,
-    tipping:ko.observable(14),
+    freight:ko.observable(),
+    truckage:ko.observable() ,
+    tipping:ko.observable(),
     wenCengList :[],
     modelsList: [],
     selectedWenCeng:ko.observable(''),
@@ -97,7 +97,7 @@ var app = {
         app.viewModel.orderInfo.send_address.address = $("#send_county_hidden").text() + app.viewModel.send_address();
         app.viewModel.orderInfo.shipping_address.city = $("#shipping_city_hidden").text();
         app.viewModel.orderInfo.shipping_address.address = $("#shipping_county_hidden").text() + app.viewModel.shipping_address();
-        //app.viewModel.orderInfo.consignor = $.cookie("usrName");
+        app.viewModel.orderInfo.consignor = $.cookie("usrName");
         if (app.viewModel.selectedModels() == '8'){
           var request = {
             Action:"HMSend",

@@ -30,14 +30,12 @@ var app = {
      //通过百度sdk来获取经纬度,并且alert出经纬度信息
       var noop = function(){};
       var callback = function(pos){
-            alert(JSON.stringify(pos));
             app.baiduPosition = new BMap.Point(pos.coords.longitude,pos.coords.latitude);
              $.cookie('baiduPosition', JSON.stringify(app.baiduPosition), { expires: 1, path: '/' });
             app.loadMap();
             window.locationService.stop(noop,noop);
         }
       window.locationService.getCurrentPosition(callback,function(e){
-          alert(JSON.stringify(e));
           window.locationService.stop(noop,noop);
       });
   },
@@ -49,7 +47,6 @@ var app = {
     	//   the current GPS coordinates
     	//
     	var succ = function onSuccess(position) {
-        alert(JSON.stringify(position));
     	   app.position = position;
          if (app.map) {
             app.refreshMap();
@@ -70,7 +67,7 @@ var app = {
 
     	// Options: throw an error if no update is received every 30 seconds.
     	//
-      alert(JSON.stringify(navigator.geolocation));
+  
     	var watchID = navigator.geolocation.watchPosition(succ, err, {maximumAge: 10000, timeout: 10000, enableHighAccuracy: false});
  	},
 
@@ -166,7 +163,7 @@ var app = {
     var self = this;
     var url =  self.serverUrl + jsonStr;
     commonJS.get(url,function(data){ 
-      alert(JSON.stringify(data));
+
       self.nVehicles = data.items;
       for(var i in self.nVehicles)
       {
