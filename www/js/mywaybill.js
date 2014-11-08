@@ -134,14 +134,20 @@ var app = {
 
     refresh:function(status)
     {
-        // alert(status);
         var request = {
                 Action:"WaybillItems",
                 status:status,
                 Token:app.token
             };
         var url = app.serverUrl + JSON.stringify(request);
+
+        waybills.pushedOrders.removeAll();
+        waybills.submitOrders.removeAll();
+        waybills.confirmOrders.removeAll();
+        waybills.completeOrders.removeAll();
+
         commonJS.get(url,function(data){   
+        
             for(var i in data.items)
             {
                 var waybill = data.items[i];
@@ -150,32 +156,10 @@ var app = {
                 waybill.arrival_date =commonJS.jsonDateFormat(data.items[i].arrival_date);
                 waybill.orderDate = commonJS.jsonDateFormat(data.items[i].orderDate);
                 if (status === 0) {
-                    // order.cancel = function()
-                    // {
-                    //     var index = i;
-                    //     var self = this;
-                    //     var request = {
-                    //         Action:"OrderRevocation",
-                    //         orderId:self.orderId,
-                    //         Token:app.token
-                    //     };
-                    //     var url = app.serverUrl + JSON.stringify(request);
-                    //     commonJS.get(url,function(result){
-                    //         if(result.status !== 0)
-                    //         {
-                    //             alert(result.message);
-                    //             return;
-                    //         }
-                    //         alert("订单"+self.orderId+"撤销成功.");
-                    //         orders.pushedOrders.slice(index,1);
-                    //     });   
-
-                    // };
-                    // order.responsers = ko.observableArray([]);
                     waybill.grab = function()
                     {
                         var self = this;
-                        window.location.href="modifyWaybill.html?orderId="+self.orderId + "&pushType=0";
+                        window.location.href="modifyWaybill.html?orderId="+self.orderId;
                     };
                     waybill.canGrab = true;
                     waybills.pushedOrders.push(waybill);
@@ -187,25 +171,42 @@ var app = {
                     //     window.location.href="editOrder.html?orderId="+self.orderId;
                         
                     // }
-                    waybills.cancelOrders.push(waybill);
+                    waybills.submitOrders.push(waybill);
                 };
                 if (status === 2) {
+                    waybill.completeOrder = function()
+                    {
 
+                        var self = this;
+                        var request = {
+                            Action:"OrderComplete",
+                            orderId:self.orderId,
+                            Token:app.token
+                        };
+                        var url = app.serverUrl + JSON.stringify(request);
+                        commonJS.get(url,function(data){  
+                            if(data.status !== 0)
+                            {
+                                alert(result.message);
+                                return;
+                            }
+                            alert("运单已完成.");
+                            waybills.confirmOrders.remove(self);
+                        });
+
+                    };
+                    
                     waybills.confirmOrders.push(waybill);
                 };
                 if (status === 3) {
-                    waybill.completeOrder = function()
-                    {
-                        var self = this;
-
-
-                    };
+                    waybill.canGrab = true;
+                    alert(JSON.stringify(waybill));
                     waybills.completeOrders.push(waybill);
                 };
             }  
            
         });
-
+        $('body').trigger("create");
     },
 
     showDetails:function(btn){

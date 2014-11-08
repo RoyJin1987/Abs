@@ -106,7 +106,7 @@ var app = {
           };
           
           var url = app.serverUrl + JSON.stringify(request);
-          alert(url);
+          
           commonJS.get(url,function(data_){
 
             if (data_.status===0) {

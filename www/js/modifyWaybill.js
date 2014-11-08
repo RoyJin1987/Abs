@@ -127,7 +127,6 @@ var app = {
                         {
                              //提示用户
                             alert(data_.message);
-                            window.location.href=url;
                         }
                     });
 
@@ -139,7 +138,7 @@ var app = {
                 };
                 var url = app.serverUrl + JSON.stringify(request);
                 commonJS.get(url,function(data_){
-                    alert(JSON.stringify(data_));
+                    
                     app.viewModel.pilots = data_.items
                     app.viewModel.selectedPilot = {};
                     app.viewModel.pilotsName= ko.observable(data_.items.name);

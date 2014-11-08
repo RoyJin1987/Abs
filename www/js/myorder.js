@@ -222,7 +222,7 @@ var appMyOrder = {
                                 alert(result.message);
                                 return;
                             }
-                            alert("订单"+self.orderId+"撤销成功." + index);
+                            alert("订单"+self.orderId+"撤销成功.");
                             
                             appMyOrder.refresh(0);
                             
