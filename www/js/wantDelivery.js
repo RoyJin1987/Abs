@@ -70,7 +70,8 @@ var app = {
                 parameter:{"pushType":1,"page":1}
             };
         var url = app.serverUrl + JSON.stringify(request);
-        commonJS.get(url,function(data){        
+        commonJS.get(url,function(data){      
+            
             // waybills.intercityOrders = data.items;
             for(var i in data.items)
             {
@@ -82,9 +83,9 @@ var app = {
                 order.grabIntercity = function()
                 {
                     var self = this;
+                    window.notificationClient.call(self.mobile);
                     //Ìøµ½ÐÞ¸ÄÔËµ¥
                     setTimeout(function(){
-                        alert(self.orderId);
                         window.location.href="modifyWaybill.html?orderId="+self.orderId+ "&pushType=1";
                     },1000);
 
@@ -106,7 +107,6 @@ var app = {
                 for(var i in data.items)
                 {
                     var order = data.items[i];
-                    alert(JSON.stringify(order));
                     order.ship_date =commonJS.jsonDateFormat(data.items[i].ship_date);
                     order.arrival_date =commonJS.jsonDateFormat(data.items[i].arrival_date);
                     order.orderDate = commonJS.jsonDateFormat(data.items[i].orderDate);
@@ -115,7 +115,6 @@ var app = {
                         var self = this;
                         //Ìøµ½ÐÞ¸ÄÔËµ¥
                         setTimeout(function(){
-                            alert(self.orderId);
                             window.location.href="modifyWaybill.html?orderId="+self.orderId + "&pushType=0";
                         },1000);
 

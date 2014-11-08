@@ -114,6 +114,7 @@ var app = {
                $.cookie('usrToken', data.Token, { expires: 7, path: '/' });
                $.cookie('usrIdentity', data.identity, { expires: 7, path: '/' });
                var identity = data.identity;
+               alert(identity);
                 request = {
                     Action:"UserInformation",
                     Token:data.Token,
@@ -124,7 +125,7 @@ var app = {
             
                     if (data.status === 0) {
                         $.cookie('usrName', data.parameter.name, { expires: 7, path: '/' });
-                        //window.notificationClient.startService(identity);
+                        window.notificationClient.startService(identity);
                         window.location.href="homemap.html";
                     }else{
                         alert(JSON.stringify(data.message));

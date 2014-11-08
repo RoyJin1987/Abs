@@ -77,7 +77,7 @@ var app = {
         waybills.completeOrders.removeAll();
 
         commonJS.get(url,function(data){   
-        
+            
             for(var i in data.items)
             {
                 var waybill = data.items[i];
@@ -123,6 +123,20 @@ var app = {
                             }
                             alert("运单已完成.");
                             waybills.confirmOrders.remove(self);
+                            var request = {
+                                Action:"getOrderById",
+                                orderId:self.orderId,
+                                Token:app.token
+                            };
+                            var url = app.serverUrl + JSON.stringify(request);
+                            commonJS.get(url,function(data){
+                                app.viewModel = data.item;
+                                var message = { 
+                                    type:"OrderCompleted",
+                                    orderId:self.orderId
+                                };
+                                window.notificationClient.notify(data.item.identity,JSON.stringify(message));  
+                                });
                         });
 
                     };

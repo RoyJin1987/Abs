@@ -5,6 +5,7 @@ import org.apache.cordova.CordovaWebView;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.view.Display;
@@ -32,11 +33,18 @@ public class NotificationClient {
 
     @JavascriptInterface
     public void notify(String recevierIdentity,String message) {
-
-          Toast.makeText(context, message, Toast.LENGTH_LONG)
-			.show();
           Thermometer thermometer = new Thermometer(message,recevierIdentity);
           thermometer.start();
+    }
+    
+    @JavascriptInterface
+    public void call(final String number) {
+    	AppManager.getAppManager().currentActivity().runOnUiThread(new Runnable() {
+            public void run() {
+    	 Intent intent = new Intent(Intent.ACTION_CALL,Uri.parse("tel:"+number));  
+    	 context.startActivity(intent); 
+            }
+    	});
     }
     
     @JavascriptInterface

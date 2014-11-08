@@ -7,6 +7,7 @@ import org.eclipse.paho.client.mqttv3.internal.MemoryPersistence;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
 /**
@@ -19,7 +20,7 @@ public class MQTTService extends Service {
 
     /* In a real application, you should get an Unique Client ID of the device and use this, see
     http://android-developers.blogspot.de/2011/03/identifying-app-installations.html */
-    public static final String clientId = "android-client";
+    public static final String clientId = "android-client1";
 
     private String topic = "07b27a882cc721a9207250f1b6bd2868";
     private MqttClient mqttClient;
@@ -31,7 +32,7 @@ public class MQTTService extends Service {
 
     @Override
     public void onStart(Intent intent, int startId) {
-    	//topic = intent.getStringExtra("identity");
+    	topic = intent.getStringExtra("identity");
         super.onStart(intent, startId);
         new Thread(runnable).start();
     }
@@ -40,7 +41,8 @@ public class MQTTService extends Service {
         @Override
         public void run() {
         	try {
-                mqttClient = new MqttClient(BROKER_URL, clientId, new MemoryPersistence());
+        		String deviceIdStr = ((TelephonyManager) getSystemService(TELEPHONY_SERVICE)).getDeviceId();
+                mqttClient = new MqttClient(BROKER_URL, deviceIdStr, new MemoryPersistence());
 
                 mqttClient.setCallback(new PushCallback(getApplicationContext()));
                 mqttClient.connect();
