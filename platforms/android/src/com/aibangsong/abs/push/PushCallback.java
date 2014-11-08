@@ -89,21 +89,36 @@ public class PushCallback implements MqttCallback {
 
 		buttonOK.setBackgroundResource(R.drawable.green_style);
 		buttonCancel.setBackgroundResource(R.drawable.grey_style);
-		buttonOK.setText("抢单");
-		buttonCancel.setText("取消");
-		dialogTitle.setText("有新的订单");
+		
+		if ("OrderGrabed".equals(type)){
+			buttonOK.setText("确定");
+			buttonCancel.setText("取消");
+			dialogTitle.setText("有新的抢单者");
+			dialogMessage.setText("您的订单："+ orderId +"有新的抢单者，去我的订单查看？");
+			buttonOK.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					dialog.dismiss();
+					((CordovaActivity)Abs.context).loadUrl("file:///android_asset/www/myOrder.html");
+				}
+			});
+		}else{
+			buttonOK.setText("抢单");
+			buttonCancel.setText("取消");
+			dialogTitle.setText("有新的订单");
+			dialogMessage.setText("是否抢单？");
+			buttonOK.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					dialog.dismiss();
+					((CordovaActivity)Abs.context).loadUrl("file:///android_asset/www/modifyWaybill.html?orderId=" + orderId);
+				}
+			});
+		}
 		DecimalFormat df = new DecimalFormat();
 		df.setMaximumFractionDigits(2);
-		dialogMessage.setText("是否抢单？");
 		dialog.setCanceledOnTouchOutside(false);
 		dialog.show();
-		buttonOK.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				dialog.dismiss();
-				((CordovaActivity)Abs.context).loadUrl("file:///android_asset/www/modifyWaybill.html?orderId=" + orderId);
-			}
-		});
 		buttonCancel.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

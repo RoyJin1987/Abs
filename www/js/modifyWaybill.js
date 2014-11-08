@@ -71,13 +71,14 @@ var app = {
             var url = app.serverUrl + JSON.stringify(request);
             // debugger;
             commonJS.get(url,function(data){
-                
+            
                 app.viewModel = data.item;
 
                 if (pushType){
                     if (pushType == "1"){
                         app.viewModel.isIntercity = ko.observable(true);
                         app.viewModel.isNotIntercity = ko.observable(false);
+                        app.viewModel.bid_item.freight = "";
                     }else{
                         app.viewModel.isIntercity = ko.observable(false);
                         app.viewModel.isNotIntercity = ko.observable(true);
@@ -86,6 +87,7 @@ var app = {
                     if (app.viewModel.models == "8"){
                         app.viewModel.isIntercity = ko.observable(true);
                         app.viewModel.isNotIntercity = ko.observable(false);
+                        app.viewModel.bid_item.freight = "";
                     }else{
                         app.viewModel.isIntercity = ko.observable(false);
                         app.viewModel.isNotIntercity = ko.observable(true);
@@ -120,7 +122,7 @@ var app = {
                               type:"OrderGrabed",
                               orderId:app.viewModel.orderId
                             };
-                            window.notificationClient.notify(vehicle.identity,JSON.stringify(message));  
+                            window.notificationClient.notify(app.viewModel.identity,JSON.stringify(message));  
                             window.history.back();         
                         }
                         else

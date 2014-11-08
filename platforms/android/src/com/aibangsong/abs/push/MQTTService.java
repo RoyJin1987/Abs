@@ -31,7 +31,7 @@ public class MQTTService extends Service {
 
     @Override
     public void onStart(Intent intent, int startId) {
-    	//topic = intent.getStringExtra("identity");
+    	topic = intent.getStringExtra("identity");
         super.onStart(intent, startId);
         new Thread(runnable).start();
     }
