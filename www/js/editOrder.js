@@ -46,14 +46,14 @@ var app = {
     
         app.viewModel.orderInfo.wenCeng = app.viewModel.selectedWenCeng;
         app.viewModel.orderInfo.models = app.viewModel.selectedModels();
-    
+        
         if (app.viewModel.selectedModels() == '8'){
-          
+          var order = app.extractOrder();
           var request = {
             Action:"OrderEdit",
             orderId:app.orderId,
             Token:app.token,
-            parameter:app.viewModel.orderInfo
+            parameter:order
           };
           alert(JSON.stringify(app.viewModel.orderInfo));
           var url = app.serverUrl + JSON.stringify(request);
@@ -77,25 +77,28 @@ var app = {
 
     sendOrderClick:function() {
       alert(app.viewModel.selectedModels());
-          var request = {
-            Action:"OrderEdit",
-            orderId:app.orderId,
-            Token:app.token,
-            parameter:app.viewModel.orderInfo
-          };
-          
-          var url = app.serverUrl + JSON.stringify(request);
-          commonJS.get(url,function(data_){
-            if (data_.status===0) {
-              //提示用户
-              // alert("订单提交成功！");
-              window.location.href="pushing.html?orderId="+data_.orderId;
-            }
-            else{
-              //提示用户
-              alert(data_.message);
-            }
-          });
+
+      var order = app.extractOrder();
+
+      var request = {
+        Action:"OrderEdit",
+        orderId:app.orderId,
+        Token:app.token,
+        parameter:order
+      };
+      
+      var url = app.serverUrl + JSON.stringify(request);
+      commonJS.get(url,function(data_){
+        if (data_.status===0) {
+          //提示用户
+          // alert("订单提交成功！");
+          window.location.href="pushing.html?orderId="+data_.orderId;
+        }
+        else{
+          //提示用户
+          alert(data_.message);
+        }
+      });
             
     },
     // Application Constructor
@@ -165,16 +168,6 @@ var app = {
                 app.viewModel.orderInfo.arrival_date =  ko.pureComputed(function() {
                     return commonJS.jsonDateFormat(data.item.arrival_date_());
                 });
-                // var subscription = app.viewModel.orderInfo.weight.subscribe(function(newValue) {
-                //   alert("weight changed to:"+newValue);
-                // });
-
-                // app.viewModel.orderInfo.bid_item.freight = ko.observable(app.viewModel.orderInfo.bid_item.freight);
-                // app.viewModel.orderInfo.bid_item.truckage = ko.observable(app.viewModel.orderInfo.bid_item.truckage);
-                // app.viewModel.orderInfo.bid_item.tipping = ko.observable(app.viewModel.orderInfo.bid_item.tipping);
-                // app.viewModel.orderInfo.ship_date =commonJS.jsonDateFormat(data.item.ship_date);
-                // app.viewModel.orderInfo.arrival_date =commonJS.jsonDateFormat(data.item.arrival_date);
-                // app.viewModel.orderInfo.orderDate = commonJS.jsonDateFormat(data.item.orderDate);
                 app.viewModel.selectedWenCeng ="3";
                 // app.viewModel.orderInfo.bid_item.total = 200;
                 app.viewModel.orderInfo.bid_item.total = ko.pureComputed(function() {
@@ -184,9 +177,9 @@ var app = {
                 ko.applyBindings(app.viewModel);
                 $('body').trigger("create");
 
-                setTimeout(function(){
-                  app.viewModel.orderInfo.bid_item.freight(100);
-                },5000);
+                // setTimeout(function(){
+                //   app.viewModel.orderInfo.bid_item.freight(100);
+                // },5000);
                 //app.viewModel.selectedModels = ko.observable("8");
                 // alert(JSON.stringify(app.viewModel));
                 // app.viewModel.consignee_name = app.viewModel.orderInfo.consignee_name();
@@ -195,6 +188,28 @@ var app = {
         }
        
 
+    },
+
+    extractOrder:function()
+    {
+        var order = app.viewModel.orderInfo;
+        order.send_address.address = app.viewModel.orderInfo.send_address.address();
+        order.type = app.viewModel.orderInfo.type();
+        order.weight = app.viewModel.orderInfo.weight();
+        order.volume = app.viewModel.orderInfo.volume();
+        order.ship_date_ = app.viewModel.orderInfo.ship_date_();
+        order.arrival_date_ = app.viewModel.orderInfo.arrival_date_();
+        order.consignee_name = app.viewModel.orderInfo.consignee_name();
+        order.consignee_phone = app.viewModel.orderInfo.consignee_phone();
+        order.shipping_address.address = app.viewModel.orderInfo.shipping_address.address();
+        order.delivery_floor = app.viewModel.orderInfo.delivery_floor();
+        order.additional_information = app.viewModel.orderInfo.additional_information();
+        order.selectedModels = app.viewModel.orderInfo.selectedModels();
+        order.bid_item.freight = app.viewModel.orderInfo.bid_item.freight();
+        order.bid_item.truckage = app.viewModel.orderInfo.bid_item.truckage();
+        order.bid_item.tipping = app.viewModel.orderInfo.bid_item.tipping();
+        order.consignor = $.cookie("usrName");
+        return order;
     },
 
     getUrlParam : function(name)
