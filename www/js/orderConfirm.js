@@ -76,6 +76,7 @@ var app = {
             };
             var url = app.serverUrl + JSON.stringify(request);
             commonJS.get(url,function(data){
+                
                 // 参数：
                 // POST|GET data={Action: "OrderConfirm",orderId: “订单编号”,key:”抢单标识”, Token:”身份令牌”} 
                 // 返回
@@ -95,7 +96,8 @@ var app = {
                         // debugger;
                         if (data_.status===0) {
                             //提示用户
-                            alert("您已经确认订单"+app.viewModel.orderId);
+                            alert("订单确认成功！");
+                            window.location.href = "myOrder.html";
                         }
                         else
                         {
@@ -109,12 +111,27 @@ var app = {
                         Action:"OrderEdit",
                         orderId:app.viewModel.orderId,
                         Token:app.token,
-                        parameter:JSON.stringify(app.viewModel)
+                        parameter:{
+                            send_address:app.viewModel.send_address,
+                          consignor:app.viewModel.consignor,
+                          type:app.viewModel.type,
+                          weight: app.viewModel.weight,
+                          volume: app.viewModel.volume,
+                          ship_date: app.viewModel.ship_date,
+                          arrival_date: app.viewModel.arrival_date,
+                          shipping_address:app.viewModel.shipping_address,
+                          delivery_floor: app.viewModel.delivery_floor,  
+                          additional_information: app.viewModel.additional_information,
+                          consignee_name:app.viewModel.consignee_name,
+                          consignee_phone:app.viewModel.consignee_phone,  
+                          stars :app.viewModel.stars,
+                          bid_item:app.viewModel.bid_item
+                      }
                     };
-                    alert("修改订单:"+JSON.stringify(request));
+                    
                     var url = app.serverUrl + JSON.stringify(request);
                     commonJS.get(url,function(data_){
-                        alert(JSON.stringify(data_))
+                        
                         // debugger;
                         if (data_.status===0) {
                             //提示用户
@@ -128,21 +145,20 @@ var app = {
                     });
                 };
                 var request = {
-                    Action:"HMList",
-                    parameter:{
-                        orderId:app.viewModel.orderId,
-                        page:1
-                    },
+                    Action:"QDDetails",
+                    orderId:app.viewModel.orderId,
                     Token:app.token
                 };
                 var url = app.serverUrl + JSON.stringify(request);
 
                 commonJS.get(url,function(data_){
+                    
                     for(var i in data_.items)
                     {
-                        var pilot =  data.items[i];
-                        if (pilot.key == key) {
-                            app.viewModel.pilot = pilot;
+                        var dataItem =  data_.items[i];
+                        if (dataItem.key == key) {
+                            app.viewModel.pilot = dataItem.pilot;
+                            app.viewModel.freight = dataItem.freight;
                             break;
                         };
                     }

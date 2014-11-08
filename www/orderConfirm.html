@@ -34,8 +34,10 @@
     		<div>货物重量: <span data-bind="text:weight"></span><span>kg</span></div>
     		<div>发货体积: <span data-bind="text:volume"></span><span>立方</span></div>
     		<div>发货地址: <span data-bind="text:send_address.city+send_address.address"></span></div>
+    		<div>收货人姓名: <span data-bind="text:consignee_name"></span></div>
+    		<div>收货人手机: <span data-bind="text:consignee_phone"></span></div>
     	</div>
-		<hr />
+		<!-- <hr />
 		<div>
 			<div class="form-line-wrapper">
 				 <div class="left">
@@ -53,7 +55,7 @@
 				 	<input type="text"  data-mini="true" data-theme="a" data-bind="value:consignee_phone"></input>
 				 </div>
 			</div>
-		</div>
+		</div> -->
 		<hr />
 		<div class="description">
 			<div>补充说明: <span data-bind="text:additional_information"></span></div>
@@ -61,14 +63,14 @@
 		<hr />
 		<div class="description">
 			<div class="blue-strong-head">承运方信息</div>
-			<div class="red-strong">运费: <span data-bind="text:bid_item.freight"></span></div>
+			<div class="red-strong">运费: <span data-bind="text:freight"></span></div>
 			<div>承运方姓名: <span data-bind="text:pilot.name"></span></div>
 			<div>车牌号: <span data-bind="text:pilot.license_plate_number"></span></div>
 		</div>
 		<hr />
-		<div class="ui-grid-a">
+		<div class="ui-grid-b">
 			<div class="ui-block-a" style="text-align:center">
-				<a href="#" data-bind="click:modify"><img src="img/xgdd.png" alt=""></img></a>
+				<!-- <a href="#" data-bind="click:modify"><img src="img/xgdd.png" alt=""></img></a> -->
 			</div>
 			<div class="ui-block-b" style="text-align:center">
 				<a href="#" data-bind="click:confirm"><img src="img/qrdd.png" alt=""></img></a>
