@@ -139,6 +139,10 @@ a > img
 	font-weight: bold;
 }
 
+.form-line-wrapper > .right > a{
+	margin-bottom:  12px;
+}
+
 hr{
 	width: 100%;
 	background-color:#D3D3D3;

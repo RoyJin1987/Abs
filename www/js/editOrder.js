@@ -78,7 +78,8 @@ var app = {
     sendOrderClick:function() {
       alert(app.viewModel.selectedModels());
           var request = {
-            Action:"HMSend",
+            Action:"OrderEdit",
+            orderId:app.orderId,
             Token:app.token,
             parameter:app.viewModel.orderInfo
           };
@@ -114,7 +115,7 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        
+        app.token = $.cookie("usrToken");
         app.orderId = app.getUrlParam("orderId");
          if (app.orderId) {
 
@@ -140,18 +141,59 @@ var app = {
             commonJS.get(url,function(data){
                 alert(JSON.stringify(data));
                 app.viewModel.orderInfo = data.item;
-                app.viewModel.orderInfo.ship_date =commonJS.jsonDateFormat(data.item.ship_date);
-                app.viewModel.orderInfo.arrival_date =commonJS.jsonDateFormat(data.item.arrival_date);
-                app.viewModel.orderInfo.orderDate = commonJS.jsonDateFormat(data.item.orderDate);
+
+                app.viewModel.orderInfo.send_address.address = ko.observable(data.item.send_address.address);
+                app.viewModel.orderInfo.type = ko.observable(data.item.type);
+                app.viewModel.orderInfo.weight = ko.observable(data.item.weight);
+                app.viewModel.orderInfo.volume = ko.observable(data.item.volume);
+                app.viewModel.orderInfo.ship_date_ = ko.observable(data.item.ship_date);
+                app.viewModel.orderInfo.arrival_date_ = ko.observable(data.item.arrival_date);
+                app.viewModel.orderInfo.consignee_name = ko.observable(data.item.consignee_name);
+                app.viewModel.orderInfo.consignee_phone = ko.observable(data.item.consignee_phone);
+                app.viewModel.orderInfo.shipping_address.address = ko.observable(data.item.shipping_address.address);
+                app.viewModel.orderInfo.delivery_floor = ko.observable(data.item.delivery_floor);
+                app.viewModel.orderInfo.additional_information = ko.observable(data.item.additional_information);
+                app.viewModel.orderInfo.selectedModels = ko.observable(data.item.selectedModels);
+                app.viewModel.orderInfo.bid_item.freight = ko.observable(data.item.bid_item.freight);
+                app.viewModel.orderInfo.bid_item.truckage = ko.observable(data.item.bid_item.truckage);
+                app.viewModel.orderInfo.bid_item.tipping = ko.observable(data.item.bid_item.tipping);
+
+
+                app.viewModel.orderInfo.ship_date =  ko.pureComputed(function() {
+                   return commonJS.jsonDateFormat(data.item.ship_date_());
+                });
+                app.viewModel.orderInfo.arrival_date =  ko.pureComputed(function() {
+                    return commonJS.jsonDateFormat(data.item.arrival_date_());
+                });
+                // var subscription = app.viewModel.orderInfo.weight.subscribe(function(newValue) {
+                //   alert("weight changed to:"+newValue);
+                // });
+
+                // app.viewModel.orderInfo.bid_item.freight = ko.observable(app.viewModel.orderInfo.bid_item.freight);
+                // app.viewModel.orderInfo.bid_item.truckage = ko.observable(app.viewModel.orderInfo.bid_item.truckage);
+                // app.viewModel.orderInfo.bid_item.tipping = ko.observable(app.viewModel.orderInfo.bid_item.tipping);
+                // app.viewModel.orderInfo.ship_date =commonJS.jsonDateFormat(data.item.ship_date);
+                // app.viewModel.orderInfo.arrival_date =commonJS.jsonDateFormat(data.item.arrival_date);
+                // app.viewModel.orderInfo.orderDate = commonJS.jsonDateFormat(data.item.orderDate);
                 app.viewModel.selectedWenCeng ="3";
+                // app.viewModel.orderInfo.bid_item.total = 200;
+                app.viewModel.orderInfo.bid_item.total = ko.pureComputed(function() {
+                    return app.viewModel.orderInfo.bid_item.freight()*1+app.viewModel.orderInfo.bid_item.tipping()*1+app.viewModel.orderInfo.bid_item.truckage()*1;
+                });
+
+                ko.applyBindings(app.viewModel);
+                $('body').trigger("create");
+
+                setTimeout(function(){
+                  app.viewModel.orderInfo.bid_item.freight(100);
+                },5000);
                 //app.viewModel.selectedModels = ko.observable("8");
-                alert(JSON.stringify(app.viewModel));
-                // app.viewModel.consignee_name= app.viewModel.orderInfo.consignee_name();
-                // app.viewModel.consignee_phone=app.viewModel.orderInfo.consignee_phone();
+                // alert(JSON.stringify(app.viewModel));
+                // app.viewModel.consignee_name = app.viewModel.orderInfo.consignee_name();
+                // app.viewModel.consignee_phone = app.viewModel.orderInfo.consignee_phone();
             });
         }
-        ko.applyBindings(app.viewModel);
-        $('body').trigger("create");
+       
 
     },
 
