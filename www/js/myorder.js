@@ -276,13 +276,14 @@ var appMyOrder = {
             };
        
             var url = appMyOrder.serverUrl + JSON.stringify(request);
-    
+            order.responsers.removeAll();
             commonJS.get(url,function(data){
                 if (data.status !== 0) {
                     alert(data.message);
                 };  
                 //抢单者
                 if (data.items){
+                    
                     for(var i in data.items)
                     {
                         var responser = data.items[i];
