@@ -51,7 +51,7 @@ var app = {
           
           var request = {
             Action:"OrderEdit",
-            orderId:app.orderId
+            orderId:app.orderId,
             Token:app.token,
             parameter:app.viewModel.orderInfo
           };

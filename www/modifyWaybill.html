@@ -59,21 +59,28 @@
 		    		<div>小费: <span data-bind="text:bid_item.tipping"></span>元</div>
 				</div>
 	    	</div>
-	    	<hr style="background-color:#D3D3D3;border:0;height:1px;">
-	    	<div class="order-info-content" style="margin-bottom:15px">
+	    	<hr style="background-color:#D3D3D3;border:0;height:1px;" />
+	    	<div class="order-info-content description" >
 				<div class="blue-strong-head">设定车辆及驾驶员</div>
-	    	</div>
-	    	<div class="description">
-			 	 <div class="form-line-wrapper red-strong">
+			 	<div class="form-line-wrapper red-strong">
 					 <div class="left">
 					 	<label> 修改运费:</label>
 					 </div>
 					 <div class="content">
 					 	<input type="text" data-mini="true" data-inline="true" data-theme="a" data-bind="value:bid_item.freight"></input>
 					 </div>
-					 <div class="right"><label>元</label></div>
+					 <div class="right">
+					 	<label>元</label>
+					 </div>
 				</div>
-	    		<div>承运方姓名: <span data-bind="text:pilotsName"></span></div>
+				<div class="form-line-wrapper red-strong">
+					 <div class="left">
+					 	<label> 承运方姓名:</label>
+					 </div>
+					 <div class="content">
+					 	<label data-bind="text:pilotsName"></label>
+					 </div>
+				</div>
 <!-- 	    		<div>选择车辆: 
 	    			<span>
 	    				<select data-bind="options: availableCountries,
@@ -92,13 +99,13 @@
 							                       optionsText: 'name',
 							                       optionsValue: 'identity',
 							                       value: selectedPilot">
-		                    </select>
+		                </select>
 					 </div>
 				</div>
+				<div style="clear:both"></div>
 	    	</div>
-
   		</div>
-    	<div style="margin-right:10px;margin-top:10px;text-align:center">
+    	<div style="margin-top:10px;text-align:center">
     		<a href="#"  data-bind="click:confirm"><img src="img/queren.png" alt=""></img></a>
     	</div>
 	</div>

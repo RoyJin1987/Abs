@@ -55,77 +55,7 @@ var app = {
         app.token = $.cookie("usrToken");
         app.receivedEvent('deviceready');
 
-
         app.refresh(0);
-        //  var request = {
-        //         Action:"WaybillItems",
-        //         status:0,
-        //         Token:app.token
-        //     };
-        // var url = app.serverUrl + JSON.stringify(request);
-        // commonJS.get(url,function(text){
-        //     for(var i in text.items)
-        //     {
-        //         var order = text.items[i];
-        //         order.responsers = ko.observableArray();
-        //         waybills.pushedOrders.push(order);
-        //     }        
-        // });
-
-        // request = {
-        //         Action:"WaybillItems",
-        //         status:1,
-        //         Token:app.token
-        //     };
-        // url = app.serverUrl + JSON.stringify(request);
-        // commonJS.get(url,function(text){
-        //     for(var i in text.items)
-        //     {
-        //         var order = text.items[i];
-        //         waybills.submitOrders.push(order);
-        //     }            
-        // });
-
-        // request = {
-        //         Action:"WaybillItems",
-        //         status:2,
-        //         Token:app.token
-        //     };
-        // url = app.serverUrl + JSON.stringify(request);
-        // commonJS.get(url,function(text){
-        //     for(var i in text.items)
-        //     {
-        //         var order = text.items[i];
-        //         waybills.confirmOrders.push(order);
-        //     }           
-        // });
-
-        // request = {
-        //         Action:"WaybillItems",
-        //         status:3,
-        //         Token:app.token
-        //     };
-        // url = app.serverUrl + JSON.stringify(request);
-        // commonJS.get(url,function(text){
-        //     for(var i in text.items)
-        //     {
-        //         var order = text.items[i];
-        //         waybills.completeOrders.push(order);
-        //     }         
-        // });
-
-        // for(var i in waybills.pushedOrders){
-       
-        //     var order = waybills.pushedOrders[i];
-        //     order.responsers = ko.observableArray();
-        //     jsonStr= {"Action":"HMList","Token":"07b27a882cc721a9207250f1b6bd2868","parameter":{"orderId":order.orderId,"page":1}};
-        //     url = "http://112.124.122.107/Applications/web/?data=" + JSON.stringify(jsonStr);
-        //     commonJS.get(url,function(text){  
-        //         if (text.items!=null){
-        //             waybills.pushedOrders[i].responsers = text.items;
-        //         }
-        //     });
-        // }
             
         ko.applyBindings(waybills);
         $('body').trigger("create");
@@ -171,6 +101,7 @@ var app = {
                     //     window.location.href="editOrder.html?orderId="+self.orderId;
                         
                     // }
+                    waybill.grab = function(){};
                     waybills.submitOrders.push(waybill);
                 };
                 if (status === 2) {
@@ -199,8 +130,8 @@ var app = {
                     waybills.confirmOrders.push(waybill);
                 };
                 if (status === 3) {
-                    waybill.canGrab = true;
-                   
+                    // waybill.canGrab = true;
+                    waybill.grab = function(){};
                     waybills.completeOrders.push(waybill);
                 };
             }  

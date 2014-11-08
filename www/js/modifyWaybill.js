@@ -141,7 +141,7 @@ var app = {
                     
                     app.viewModel.pilots = data_.items
                     app.viewModel.selectedPilot = {};
-                    app.viewModel.pilotsName= ko.observable(data_.items.name);
+                    app.viewModel.pilotsName= ko.observable(data_.name);
                     ko.applyBindings(app.viewModel);
                     $('body').trigger("create");
                 });
