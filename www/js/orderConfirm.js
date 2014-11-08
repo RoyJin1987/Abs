@@ -96,12 +96,12 @@ var app = {
                         // debugger;
                         if (data_.status===0) {
                             //提示用户
-                            // alert("订单确认成功！");
-                            // var message = { 
-                            //   type:"OrderConfirmed",
-                            //   orderId:app.viewModel.orderId
-                            // };
-                            // window.notificationClient.notify(app.viewModel.identity,JSON.stringify(message));  
+                            alert("订单确认成功！");
+                            var message = { 
+                              type:"OrderConfirmed",
+                              orderId:app.viewModel.orderId
+                            };
+                            window.notificationClient.notify(app.viewModel.delivery_identity,JSON.stringify(message));  
                             window.location.href = "myOrder.html";
                         }
                         else
@@ -161,9 +161,11 @@ var app = {
                     for(var i in data_.items)
                     {
                         var dataItem =  data_.items[i];
+                        //alert(JSON.stringify(dataItem));
                         if (dataItem.key == key) {
                             app.viewModel.pilot = dataItem.pilot;
                             app.viewModel.freight = dataItem.freight;
+                            app.viewModel.delivery_identity = dataItem.user.identity;
                             break;
                         };
                     }

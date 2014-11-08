@@ -90,7 +90,29 @@ public class PushCallback implements MqttCallback {
 		buttonOK.setBackgroundResource(R.drawable.green_style);
 		buttonCancel.setBackgroundResource(R.drawable.grey_style);
 		
-		if ("OrderGrabed".equals(type)){
+		if ("OrderCompleted".equals(type)){
+			buttonOK.setText("确定");
+			dialogTitle.setText("送货完成");
+			dialogMessage.setText("您的订单："+ orderId +"已送货完成。");
+			buttonOK.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					dialog.dismiss();
+				}
+			});
+		}else if ("OrderConfirmed".equals(type)){
+			buttonOK.setText("查看我的运单");
+			buttonCancel.setText("取消");
+			dialogTitle.setText("运单被确定");
+			dialogMessage.setText("您的运单："+ orderId +"已被货主确定，请准备送货。");
+			buttonOK.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					dialog.dismiss();
+					((CordovaActivity)Abs.context).loadUrl("file:///android_asset/www/mywaybill.html");
+				}
+			});
+		}else if ("OrderGrabed".equals(type)){
 			buttonOK.setText("确定");
 			buttonCancel.setText("取消");
 			dialogTitle.setText("有新的抢单者");

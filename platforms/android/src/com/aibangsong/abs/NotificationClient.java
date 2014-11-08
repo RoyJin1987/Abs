@@ -32,9 +32,6 @@ public class NotificationClient {
 
     @JavascriptInterface
     public void notify(String recevierIdentity,String message) {
-
-          Toast.makeText(context, message, Toast.LENGTH_LONG)
-			.show();
           Thermometer thermometer = new Thermometer(message,recevierIdentity);
           thermometer.start();
     }
