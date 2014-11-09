@@ -32,6 +32,7 @@ var app = {
     send_address:ko.observable(""),  
   },
 
+
   onLoad:function() {
 
       if (!window.device) {
@@ -86,7 +87,6 @@ var app = {
         Token:app.token,
         parameter:order
       };
-      
       var url = app.serverUrl + JSON.stringify(request);
       commonJS.get(url,function(data_){
         if (data_.status===0) {
@@ -98,8 +98,7 @@ var app = {
           //提示用户
           alert(data_.message);
         }
-      });
-            
+      });            
     },
     // Application Constructor
     initialize: function() {
@@ -119,6 +118,12 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.token = $.cookie("usrToken");
+        if($.cookie('baiduPosition')){
+          var position = $.cookie('baiduPosition');
+          
+          app.baiduPosition = JSON.parse(position);
+          // alert(JSON.stringify(app.baiduPosition));
+        }
         app.orderId = app.getUrlParam("orderId");
          if (app.orderId) {
 
@@ -191,8 +196,18 @@ var app = {
     },
 
     extractOrder:function()
-    {
-        var order = app.viewModel.orderInfo;
+    { 
+        var clone = function clone(myObj){ 
+          if(typeof(myObj) != 'object') return myObj; 
+          if(myObj == null) return myObj; 
+          var myNewObj = new Object(); 
+          for(var i in myObj) 
+          myNewObj[i] = clone(myObj[i]); 
+          return myNewObj; 
+        } 
+
+
+        var order = clone(app.viewModel.orderInfo);
         order.send_address.address = app.viewModel.orderInfo.send_address.address();
         order.type = app.viewModel.orderInfo.type();
         order.weight = app.viewModel.orderInfo.weight();
@@ -209,6 +224,9 @@ var app = {
         order.bid_item.truckage = app.viewModel.orderInfo.bid_item.truckage();
         order.bid_item.tipping = app.viewModel.orderInfo.bid_item.tipping();
         order.consignor = $.cookie("usrName");
+        order.send_address.longitude = app.baiduPosition.lng;
+        order.send_address.latitude = app.baiduPosition.lat;
+
         return order;
     },
 

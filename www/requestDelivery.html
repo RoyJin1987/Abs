@@ -35,7 +35,7 @@
 <body onload="app.onLoad()">  
 
 	<div data-role="page" id="requestDelivery">  
-		<div data-role="header" data-position="fixed" data-theme="f">
+		<div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="f">
 			<a data-iconpos="left" data-role="button" data-icon="back" data-rel="back"  title="Home">返回</a>
 			<h1>帮我送</h1>
 			<a href="#" data-role="button" data-iconpos="notext" data-icon="search"></a>
@@ -57,7 +57,7 @@
 				 	<label > 详细地址:</label>
 				 </div>
 				 <div class="content" style="width:200px">
-				 	<input type="text" name="address" id="address" enabled="false" data-bind="value: send_address" required="required"/>
+				 	<input type="text" name="address" id="address" enabled="false" data-bind="value: orderInfo.send_address.address" required="required"/>
 				 </div>
 				 <div class="right">
 				 	<a href="#" data-role="button" data-iconpos="notext" data-icon="flat-location" data-theme="f" ></a>
@@ -122,7 +122,7 @@
 			 	<label > 发货日期:</label>
 			 </div>
 			 <div class="content" style="width:200px">
-			 	<input type="date" name="deliveryDate" id="deliveryDate" data-bind="value: orderInfo.ship_date"/>
+			 	<input type="date" name="deliveryDate" id="deliveryDate" data-bind="value: orderInfo.ship_date_"/>
 			 </div>
 		</div>
 		<hr/>
@@ -131,7 +131,7 @@
 			 	<label > 到货日期:</label>
 			 </div>
 			 <div class="content" style="width:200px">
-			 	<input type="date" name="receiveDate" id="receiveDate" data-bind="value: orderInfo.arrival_date"/>
+			 	<input type="date" name="receiveDate" id="receiveDate" data-bind="value: orderInfo.arrival_date_"/>
 			 </div>
 		</div>
 		<hr/>
@@ -140,7 +140,7 @@
 			 	<label > 收货人姓名:</label>
 			 </div>
 			 <div class="content">
-			 	<input id="receiver" data-bind="value: consignee_name"></input>
+			 	<input id="receiver" data-bind="value: orderInfo.consignee_name"></input>
 			 </div>
 		</div>
 		<hr/>
@@ -150,7 +150,7 @@
 			 	<label > 联系电话:</label>
 			 </div>
 			 <div class="content">
-			 	<input id="tel" type="tel" data-bind="value: consignee_phone"></input>
+			 	<input id="tel" type="tel" data-bind="value: orderInfo.consignee_phone"></input>
 			 </div>
 		</div>
 		<hr/>
@@ -169,7 +169,7 @@
 			 	<label > 详细地址:</label>
 			 </div>
 			 <div class="content" style="width:200px">
-			 	<input type="text" name="address" id="address" enabled="false" data-bind="value: shipping_address" required="required"/>
+			 	<input type="text" name="address" id="address" enabled="false" data-bind="value:orderInfo.shipping_address.address" required="required"/>
 			 </div>
 		</div>
 		<hr />
@@ -200,11 +200,11 @@
    </div>
 </div><!-- /page -->  
 <div data-role="page" id="offer" data-theme="f">  
-		<div data-role="header" data-position="fixed">
-			<a data-iconpos="left" data-role="button" data-icon="back" data-rel="back" title="Home">返回</a>
-			<h1>出价页</h1>
-			<a href="#" data-role="button" data-iconpos="notext" data-icon="search"></a>
-		</div>
+	<div data-role="header" data-position="fixed" data-tap-toggle="false">
+		<a data-iconpos="left" data-role="button" data-icon="back" data-rel="back" title="Home">返回</a>
+		<h1>出价页</h1>
+		<a href="#" data-role="button" data-iconpos="notext" data-icon="search"></a>
+	</div>
 	<div data-role="content">
 		<form method="get" action="">
 		<div class="form-line-wrapper">
@@ -212,7 +212,7 @@
 			 	<label > 收货人姓名:</label>
 			 </div>
 			 <div class="content">
-			 	<label data-bind="text:consignee_name"></label>
+			 	<label data-bind="text:orderInfo.consignee_name"></label>
 			 </div>
 		</div>
 		<hr />
@@ -221,7 +221,7 @@
 			 	<label > 联系电话:</label>
 			 </div>
 			 <div class="content">
-			 	<label id="tel" data-bind="text: consignee_phone"></label>
+			 	<label id="tel" data-bind="text: orderInfo.consignee_phone"></label>
 			 </div>
 		</div>
 		<hr />
@@ -230,7 +230,7 @@
 			 	<label > 发货地址:</label>
 			 </div>
 			 <div class="content" style="width:200px">
-			 	<label id="address" data-bind="text: send_address"></label>
+			 	<label id="address" data-bind="text:orderInfo.send_address.address"></label>
 			 </div>
 		</div>
 		<hr />
@@ -239,7 +239,7 @@
 			 	<label > 送货地址:</label>
 			 </div>
 			 <div class="content" style="width:200px">
-			 	<label id="deliveryAddress" data-bind="text: shipping_address"></label>
+			 	<label id="deliveryAddress" data-bind="text:orderInfo.shipping_address.address"></label>
 			 </div>
 		</div>
 		<hr />
@@ -257,7 +257,7 @@
 			 	<label > 车辆类型:</label>
 			 </div>
 			 <div class="content">
-			 	<label id="carType" data-bind="text: selectedModels"></label>
+			 	<label id="carType" data-bind="text: orderInfo.selectedModels"></label>
 			 </div>
 		</div>
 		<hr />
@@ -266,7 +266,7 @@
 			 	<label > 平台推荐运输费用:</label>
 			 </div>
 			 <div class="content">
-			 	<label id="carType" data-bind="text: freight"></label>
+			 	<label data-bind="text: orderInfo.bid_item.freight"></label>
 			 </div>
 		</div>
 		<div class="form-line-wrapper">
@@ -274,7 +274,7 @@
 			 	<label > 调整运费:</label>
 			 </div>
 			 <div class="content" style="width:200px">
-			 	<input type="range" name="slider" data-bind="value: freight" min="0" max="100" data-highlight="true" />
+			 	<input type="number" data-bind="value: orderInfo.bid_item.freight" min="0" max="100" data-highlight="true" />
 			 </div>
 		</div>
 		<hr />
@@ -283,7 +283,7 @@
 			 	<label > 平台推荐搬运费用:</label>
 			 </div>
 			 <div class="content">
-			 	<label id="carType">50元</label>
+			 	<label data-bind="text: orderInfo.bid_item.truckage"></label>
 			 </div>
 		</div>
 		<div class="form-line-wrapper">
@@ -291,7 +291,7 @@
 			 	<label > 调整搬运费:</label>
 			 </div>
 			 <div class="content" style="width:200px">
-			 	<input type="range" name="slider" data-bind="value: truckage" min="0" max="100" data-highlight="true" />
+			 	<input type="number" data-bind="value: orderInfo.bid_item.truckage" min="0" max="100" data-highlight="true" />
 			 </div>
 		</div>
 		<hr />
@@ -300,7 +300,7 @@
 			 	<label > 附加小费:</label>
 			 </div>
 			 <div class="content">
-			 	<label id="carType">20元</label>
+			 	<label data-bind="text: orderInfo.bid_item.tipping"></label>
 			 </div>
 		</div>
 		<div class="form-line-wrapper">
@@ -308,16 +308,16 @@
 			 	<label > 调整小费:</label>
 			 </div>
 			 <div class="content" style="width:200px">
-			 	<input type="range" name="slider" data-bind="value: tipping" min="0" max="20" data-highlight="true" />
+			 	<input type="number" data-bind="value: orderInfo.bid_item.tipping" min="0" max="20" data-highlight="true" />
 			 </div>
 		</div>
 		<hr />
 		<div class="form-line-wrapper">
 		 	<div class="left">
-			 	<label > 费用总计：:</label>
+			 	<label > 费用总计:</label>
 			 </div>
 			 <div class="content">
-			 	<label id="carType">120元</label>
+			 	<label data-bind="text: orderInfo.bid_item.total"></label>
 			 </div>
 		</div>
 		<hr/>

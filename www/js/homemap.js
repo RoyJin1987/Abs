@@ -27,6 +27,9 @@ var app = {
   // function, we must explicitly call 'app.receivedEvent(...);'
   onDeviceReady: function() {
       //app.receivedEvent('deviceready');
+      $("#allmap").css("width",$(document).width());
+      $("#allmap").css("height",$(document).height());
+
      //通过百度sdk来获取经纬度,并且alert出经纬度信息
       var noop = function(){};
       var callback = function(pos){

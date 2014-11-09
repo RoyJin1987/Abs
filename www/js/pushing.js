@@ -38,8 +38,28 @@ var app = {
     // app.orderId = app.getUrlParam("orderId");
     // app.getPendingPushVehicle();
     // app.loadMap();
+
     app.orderId = app.getUrlParam("orderId");
     app.getPendingPushVehicle();
+
+    var screenWidth = $(document).width();
+    var screenHeight = $(document).height();
+
+    alert(screenWidth + "x" +screenHeight);
+    // var screenWidth = screen.availWidth;
+    // var screenHeight = screen.availHeight;
+
+    // alert($("#progress-bar-container").css("left"));
+    // alert($("#progress-bar-container").css("top"));
+    // alert($("#progress-bar-container").width());
+    // alert($("#progress-bar-container").height());
+
+    var left = (screenWidth - $("#progress-bar-container").width())/2/screenWidth*100;
+    var top = (screenHeight - $("#progress-bar-container").height())/2/screenHeight*100;
+    alert(left + "," + top);
+    $("#progress-bar-container").css("left",left+"%");
+    $("#progress-bar-container").css("top",top+"%");
+
     // 
     // app.push();
   },
