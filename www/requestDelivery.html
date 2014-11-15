@@ -19,14 +19,13 @@
 	<script type="text/javascript" src="js/requestDelivery.js"></script>
 		<script type="text/javascript">
             function show(city,county,type){   
+            	
             if (type =="0"){
             	$("#send_city_county").text(city+county);
-            	$("#send_city_hidden").text(city);
-            	$("#send_county_hidden").text(county);
+            	$("#send_city_county_hidden").text(city + "," + county);
             } else{
             	$("#shipping_city_county").text(city+county);
-            	$("#shipping_city_hidden").text(city);
-            	$("#shipping_county_hidden").text(county);
+            	$("#shipping_city_county_hidden").text(city + "," + county);
             }
             	
             }
@@ -48,9 +47,10 @@
 				 </div>
 				 <div class="content">
 				 	<label type="text" id="send_city_county" data-bind="text: send_city" onclick="app.selectCity(0)"/>
+
 				 </div>
-				 <label type="text" id="send_city_hidden" class="ui-hidden-accessible"/>
-				 <label type="text" id="send_county_hidden" class="ui-hidden-accessible"/>
+				 <label type="text" id="send_city_county_hidden" class="ui-hidden-accessible"/>
+				 
 			</div>
 			<div class="form-line-wrapper">
 			 	<div class="left">
@@ -82,7 +82,7 @@
 				 	<label > 温层选择:</label>
 				 </div>
 				 <div class="content">
-				 	<select name="select-choice" data-bind="options: wenCengList, optionsText: 'name', optionsValue: 'id', value: selectedWenCeng" data-theme="c">
+				 	<select name="select-choice" data-bind="options: wenCengList, optionsText: 'name', optionsValue: 'id', value: selectedWenCeng"  data-native-menu="false" data-theme="c">
 								</select>
 				 </div>
 			</div>
@@ -161,8 +161,7 @@
 			 <div class="content" style="width:200px">
 			 	<label type="text" id="shipping_city_county" data-bind="text: shipping_city" onclick="app.selectCity(1)"/>
 			 </div>
-			 <label type="text" id="shipping_city_hidden" class="ui-hidden-accessible"/>
-			 <label type="text" id="shipping_county_hidden" class="ui-hidden-accessible"/>
+			 <label type="text" id="shipping_city_county_hidden" class="ui-hidden-accessible"/>
 		</div>
 		<div class="form-line-wrapper">
 		 	<div class="left">

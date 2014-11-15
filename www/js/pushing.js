@@ -45,7 +45,7 @@ var app = {
     var screenWidth = $(document).width();
     var screenHeight = $(document).height();
 
-    alert(screenWidth + "x" +screenHeight);
+    //alert(screenWidth + "x" +screenHeight);
     // var screenWidth = screen.availWidth;
     // var screenHeight = screen.availHeight;
 
@@ -56,7 +56,7 @@ var app = {
 
     var left = (screenWidth - $("#progress-bar-container").width())/2/screenWidth*100;
     var top = (screenHeight - $("#progress-bar-container").height())/2/screenHeight*100;
-    alert(left + "," + top);
+    //alert(left + "," + top);
     $("#progress-bar-container").css("left",left+"%");
     $("#progress-bar-container").css("top",top+"%");
 
