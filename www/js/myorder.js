@@ -259,15 +259,24 @@ var appMyOrder = {
                         motorcade:{},
                         user:{},
                         pilot:{},
-                        // callHim :function()
-                        // {
-                        //     var self = this;
-                        //     // alert(JSON.stringify(self));
-                        //     if (self.pilot.mobile_number) {
-                        //         window.notificationClient.call(self.pilot.mobile_number);
-                        //     };
+                        callHim :function()
+                        {
+                            // var self = this;
+                            // alert(JSON.stringify(self));
+                            // if (self.pilot.mobile_number) {
+                            //     window.notificationClient.call(self.pilot.mobile_number);
+                            // };
                             
-                        // }
+                        },
+                        inviteHim :function()
+                        {
+                            // var self = this;
+                            // alert(JSON.stringify(self));
+                            // if (self.pilot.mobile_number) {
+                            //     window.notificationClient.call(self.pilot.mobile_number);
+                            // };
+                            
+                        }
                     });
                    
                     var arrary = (status===2?orders.confirmOrders:orders.completeOrders);
@@ -343,15 +352,19 @@ var appMyOrder = {
                     carrier.pilot = data.pilot;
                     order.carrier(carrier);
                     //alert(JSON.stringify(order.carrier()));
-                    // order.carrier.callHim = function()
-                    // {
-                    //     var self = this;
-                    //     // alert(JSON.stringify(self));
-                    //     if (self.pilot.mobile_number) {
-                    //         window.notificationClient.call(self.pilot.mobile_number);
-                    //     };
-                        
-                    // }
+                    carrier.callHim = function()
+                    {
+                        var self = this;
+                        // alert(JSON.stringify(self));
+                        if (self.pilot.mobile_number) {
+                            window.notificationClient.call(self.pilot.mobile_number);
+                        }
+                    }
+
+                    carrier.inviteHim = function()
+                    {
+                        alert("邀请如火！");
+                    }
 
                 };
                 //刷新界面
