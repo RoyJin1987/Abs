@@ -84,6 +84,7 @@ var app = {
 
         var url = ABSApplication.ABSServer.url + JSON.stringify(request);
         commonJS.get(url,function(data){
+            // alert(JSON.stringify(data));
            if (data.status === 0) {
                 app.loginUser.verificationCode(data.code);
            };
@@ -108,13 +109,16 @@ var app = {
             }
         }
         var url = ABSApplication.ABSServer.url + JSON.stringify(request);
+        
         commonJS.get(url,function(data){
             
            if (data.status === 0) {
+                
                $.cookie('usrToken', data.Token, { expires: 7, path: '/' });
                $.cookie('usrIdentity', data.identity, { expires: 7, path: '/' });
                var identity = data.identity;
-               alert(identity);
+               var token = data.Token;
+               
                 request = {
                     Action:"UserInformation",
                     Token:data.Token,
@@ -125,7 +129,8 @@ var app = {
             
                     if (data.status === 0) {
                         $.cookie('usrName', data.parameter.name, { expires: 7, path: '/' });
-                        window.notificationClient.startService(identity);
+                        
+                        window.notificationClient.startService(identity,token,true);
                         window.location.href="homemap.html";
                     }else{
                         alert(JSON.stringify(data.message));

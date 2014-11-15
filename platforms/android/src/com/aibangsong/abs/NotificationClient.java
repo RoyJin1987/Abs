@@ -12,6 +12,7 @@ import android.view.Display;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
+import android.widget.Toast;
 
 import com.aibangsong.abs.push.MQTTService;
 import com.aibangsong.abs.push.Thermometer;
@@ -47,6 +48,15 @@ public class NotificationClient {
     }
     
     @JavascriptInterface
+    public void showToast(final String msg) {
+    	AppManager.getAppManager().currentActivity().runOnUiThread(new Runnable() {
+            public void run() {
+            	Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+            }
+    	});
+    }
+    
+    @JavascriptInterface
     public void selectCity(String type) {
     	//view.sendJavascript("show()");
     	this.type =type;
@@ -69,8 +79,6 @@ public class NotificationClient {
             }
         });
     }
-    
-    
 	
 	Handler addressHandler = new Handler() {
 		@Override
@@ -91,11 +99,12 @@ public class NotificationClient {
 	};
 	
     @JavascriptInterface
-    public void startService(String identity) {
+    public void startService(String identity,String token,boolean reportPos) {
 
     	Intent intent = new Intent(context, MQTTService.class);
     	intent.putExtra("identity", identity);
-    	
+    	intent.putExtra("token", token);
+    	intent.putExtra("reportPos", reportPos);
     	context.startService(intent);
   }
 
