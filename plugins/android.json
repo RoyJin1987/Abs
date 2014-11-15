@@ -38,7 +38,7 @@
                         },
                         {
                             "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
-                            "count": 1
+                            "count": 4
                         },
                         {
                             "xml": "<uses-permission android:name=\"android.permission.INTERNET\" />",
@@ -67,6 +67,28 @@
                         {
                             "xml": "<feature name=\"BaiduLocation\"><param name=\"android-package\" value=\"com.spout.phonegap.plugins.baidulocation.BaiduLocation\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Device\"><param name=\"android-package\" value=\"org.apache.cordova.device.Device\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Camera\"><param name=\"android-package\" value=\"org.apache.cordova.camera.CameraLauncher\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"File\"><param name=\"android-package\" value=\"org.apache.cordova.file.FileUtils\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"FileTransfer\"><param name=\"android-package\" value=\"org.apache.cordova.filetransfer.FileTransfer\" /></feature>",
+                            "count": 1
+                        }
+                    ],
+                    "/widget": [
+                        {
+                            "xml": "<feature name=\"FileChooser\"><param name=\"android-package\" value=\"com.megster.cordova.FileChooser\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -79,7 +101,23 @@
         },
         "com.spout.phonegap.plugins.baidulocation": {
             "PACKAGE_NAME": "com.aibangsong.abs"
+        },
+        "org.apache.cordova.device": {
+            "PACKAGE_NAME": "com.aibangsong.abs"
+        },
+        "org.apache.cordova.camera": {
+            "PACKAGE_NAME": "com.aibangsong.abs"
+        },
+        "org.apache.cordova.file-transfer": {
+            "PACKAGE_NAME": "com.aibangsong.abs"
+        },
+        "com.megster.cordova.FileChooser": {
+            "PACKAGE_NAME": "com.aibangsong.abs"
         }
     },
-    "dependent_plugins": {}
+    "dependent_plugins": {
+        "org.apache.cordova.file": {
+            "PACKAGE_NAME": "com.aibangsong.abs"
+        }
+    }
 }
