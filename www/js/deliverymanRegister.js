@@ -96,6 +96,10 @@ var app = {
 
     },
 
+    upload:function(type){
+        alert($("#file").value());
+    },
+
     // Update DOM on a Received Event
     receivedEvent: function(id) {
 
