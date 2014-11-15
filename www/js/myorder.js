@@ -326,9 +326,13 @@ var appMyOrder = {
                     //     pilot:data.pilot
                     // }
                     
-                    order.carrier.motorcade = data.motorcade;
-                    order.carrier.user = data.user;
-                    order.carrier.pilot = data.pilot;
+                    
+                    var carrier = order.carrier();
+                    carrier.motorcade = data.motorcade;
+                    carrier.user = data.user;
+                    carrier.pilot = data.pilot;
+                    order.carrier(carrier);
+                    alert(JSON.stringify(order.carrier()));
                     // order.carrier.callHim = function()
                     // {
                     //     var self = this;
