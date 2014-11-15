@@ -24,7 +24,7 @@
 		  <div data-role="header" data-position="fixed" data-tap-toggle="false" class="header-extra-height">
 		    <div>
 		    	<div style="margin:0 auto;text-align:center">
-		     		<a data-ajax="false" href="#" data-role="button" data-transition="slide" onclick="app.gotoSettings">
+		     		<a data-ajax="false" href="#" data-role="button" data-transition="slide" onclick="app.goto('settings.html')">
 		     			<img class="icon-img" src="img/noPhoto.png" alt=""></img>
 		     		</a>
 		     		<span id="usr-name"></span>
@@ -56,19 +56,19 @@
 
 		     <div style="margin:0 auto;width:100%">
 		     	<div style="text-align:center;float:left;width:35%">
-		     		<a data-ajax="false" href="requestDelivery.html" data-role="button">
+		     		<a data-ajax="false" href="#" data-role="button" onclick="app.goto('requestDelivery.html')">
 		     			<span> </span>
 		     			<img  src="img/home/s_w.png" alt=""></img>
 		     			<span >帮我送 </span>
 		     		</a>
 		     	</div>
 		     	<div style="text-align:center;float:left;width:20%;margin:0 5%">
-		     		<a style="height:100%" data-ajax="false" href="userCenter.html" data-role="button">
+		     		<a style="height:100%" data-ajax="false" href="#" data-role="button" onclick="app.goto('userCenter.html')">
 		     			<img  src="img/home/t_w_index.png" alt=""></img>
 		     		</a>
 		     	</div>
 		     	<div style="text-align:center;float:right;width:35%">
-		     		<a data-ajax="false" href="wantDelivery.html" data-role="button">
+		     		<a data-ajax="false" href="#" data-role="button" onclick="app.goto('wantDelivery.html')">
 		     			<span>我来送</span>
 		     			<img  src="img/home/t_w.png" alt=""></img>
 		     		</a>
