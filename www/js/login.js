@@ -55,8 +55,7 @@ var app = {
         if (window.device) {
             alert(device.model +"----"+device.cordova +"------"+ device.uuid +"-----"+device.version+"----"+device.platform);
         };
-        
-        
+
         ko.applyBindings(app.loginUser);
         $('body').trigger("create");
     },
@@ -109,12 +108,27 @@ var app = {
         }
         var url = ABSApplication.ABSServer.url + JSON.stringify(request);
         commonJS.get(url,function(data){
-            
+            // alert(JSON.stringify(data));
            if (data.status === 0) {
-               $.cookie('usrToken', data.Token, { expires: 7, path: '/' });
-               $.cookie('usrIdentity', data.identity, { expires: 7, path: '/' });
+                if(typeof localStorage === 'undefined' )
+                {
+                   $.cookie('usrToken', data.Token, { expires: 7, path: '/' });
+                   $.cookie('usrIdentity', data.identity, { expires: 7, path: '/' });
+                   $.cookie('usrImage', data.image, { expires: 7, path: '/' });
+               }
+               else
+               {
+                    localStorage.setItem('usrToken',data.Token);
+                    localStorage.setItem('usrIdentity',data.identity);
+                    localStorage.setItem('usrImage',data.image);
+
+               }
+               
+
+               // console.log('usrToken = '+ localStorage ? localStorage['usrToken'] : $.cookie('usrToken'));
+               // console.log('usrIdentity = '+ localStorage?localStorage['usrIdentity']:$.cookie('usrIdentity'));
                var identity = data.identity;
-               alert(identity);
+
                 request = {
                     Action:"UserInformation",
                     Token:data.Token,
@@ -124,8 +138,19 @@ var app = {
                 commonJS.get(url,function(data){
             
                     if (data.status === 0) {
-                        $.cookie('usrName', data.parameter.name, { expires: 7, path: '/' });
-                        window.notificationClient.startService(identity);
+                        if(typeof localStorage === 'undefined' )
+                        {
+                            $.cookie('usrName', data.parameter.name, { expires: 7, path: '/' });
+                        }
+                        else
+                        {
+                            localStorage.setItem('usrName',data.parameter.name);
+                        }
+                        
+                        // console.log('usrName = '+ localStorage['usrName']);
+                        if (window.notificationClient) {
+                            window.notificationClient.startService(identity);
+                        };
                         window.location.href="homemap.html";
                     }else{
                         alert(JSON.stringify(data.message));

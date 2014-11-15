@@ -30,10 +30,16 @@ var app = {
   // The scope of 'this' is the event. In order to call the 'receivedEvent'
   // function, we must explicitly call 'app.receivedEvent(...);'
   onDeviceReady: function() {
-    if ($.cookie("usrToken")) {
-      app.usrToken = $.cookie("usrToken");
-
-    };
+    if(typeof localStorage === 'undefined' )
+    {
+      app.token = $.cookie("usrToken");
+      app.usrName = $.cookie("usrName");
+    }
+    else
+    {
+      app.token = localStorage["usrToken"];
+      app.usrName = localStorage["usrName"];
+    }
     
     // app.orderId = app.getUrlParam("orderId");
     // app.getPendingPushVehicle();
@@ -59,7 +65,7 @@ var app = {
     alert(left + "," + top);
     $("#progress-bar-container").css("left",left+"%");
     $("#progress-bar-container").css("top",top+"%");
-
+    $("#progress-bar-container").show();
     // 
     // app.push();
   },

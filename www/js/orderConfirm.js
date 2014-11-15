@@ -63,7 +63,16 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
-        app.token = $.cookie("usrToken");
+        if(typeof localStorage === 'undefined' )
+        {
+          app.token = $.cookie("usrToken");
+          app.usrName = $.cookie("usrName");
+        }
+        else
+        {
+          app.token = localStorage["usrToken"];
+          app.usrName = localStorage["usrName"];
+        }
         //请求正在修改运单
         var orderId = app.getUrlParam("orderId");
         var key = app.getUrlParam("key");

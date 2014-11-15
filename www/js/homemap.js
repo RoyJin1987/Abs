@@ -4,8 +4,11 @@
  */
 var app = {
   serverUrl: "http://112.124.122.107/Applications/web/?data=",
+  token:"",
+  usrName:"",
   models:[],//车型
   nVehicles:[],//附近车辆
+  vehicleMarkers:[],//附近车辆地图覆盖物
   currentModel:"",
 	position:null,//当前Gps位置
   baiduPosition:null,//当前百度坐标
@@ -19,7 +22,11 @@ var app = {
   // Bind any events that are required on startup. Common events are:
   // 'load', 'deviceready', 'offline', and 'online'.
   bindEvents: function() {
-      document.addEventListener('deviceready', this.onDeviceReady, false);
+       if (!window.device) {
+            $(document).ready(this.onDeviceReady);
+        } else {
+            document.addEventListener('deviceready', this.onDeviceReady, false);
+        }
   },
   // deviceready Event Handler
   //
@@ -27,20 +34,52 @@ var app = {
   // function, we must explicitly call 'app.receivedEvent(...);'
   onDeviceReady: function() {
       //app.receivedEvent('deviceready');
-      $("#allmap").css("width",$(document).width());
-      $("#allmap").css("height",$(document).height());
+      if(typeof localStorage === 'undefined' )
+      {
+        app.token = $.cookie("usrToken");
+        app.usrName = $.cookie("usrName");
+      }
+      else
+      {
+        app.token = localStorage["usrToken"];
+        app.usrName = localStorage["usrName"];
+      }
 
-     //通过百度sdk来获取经纬度,并且alert出经纬度信息
-      var noop = function(){};
-      var callback = function(pos){
-            app.baiduPosition = new BMap.Point(pos.coords.longitude,pos.coords.latitude);
-             $.cookie('baiduPosition', JSON.stringify(app.baiduPosition), { expires: 1, path: '/' });
-            app.loadMap();
+
+
+      if (app.token) {
+        //已登录
+        $("#usr-name").text("您好,"+app.usrName);
+      }
+      else
+      {
+        //未登录
+        $("#usr-name").text('您尚未登录');
+      }
+      alert("screen height:"+screen.availHeight);
+      alert("screen height:"+screen.availHeight);
+      $("#allmap").css("height",screen.availHeight+"px");
+
+      app.getModels();
+
+      if (typeof locationService != 'undefined') {
+        //通过百度sdk来获取经纬度,并且alert出经纬度信息
+        var noop = function(){};
+        var callback = function(pos){
+              app.baiduPosition = new BMap.Point(pos.coords.longitude,pos.coords.latitude);
+               // $.cookie('baiduPosition', JSON.stringify(app.baiduPosition), { expires: 1, path: '/' });
+              localStorage.setItem('baiduPosition',app.baiduPosition);
+              app.loadMap();
+              window.locationService.stop(noop,noop);
+          }
+        window.locationService.getCurrentPosition(callback,function(e){
             window.locationService.stop(noop,noop);
-        }
-      window.locationService.getCurrentPosition(callback,function(e){
-          window.locationService.stop(noop,noop);
-      });
+        });
+      }
+      else
+      {
+        app.loadMap();
+      }
   },
 
  	//加载定位 
@@ -56,7 +95,7 @@ var app = {
          } else {
             app.loadMap();
          };
-         // app.addMaker(app.position.coords,true,null,"我的位置");    
+         // app.addVehicleMaker(app.position.coords,true,null,"我的位置");    
       }
 
     	// onError Callback receives a PositionError object
@@ -79,14 +118,15 @@ var app = {
  		app.map = new BMap.Map("allmap");
  		if (app.baiduPosition) {
         app.map.centerAndZoom(app.baiduPosition, 14); 
-        app.addMaker(app.baiduPosition,true,null,"我的位置"); 
-        app.getNVehicles("6");
+        // app.addMyLocMaker(app.baiduPosition); 
+        alert("loadmap-->>current model:"+app.currentModel);
+        app.getNVehicles(app.currentModel);
  		} else {
         //test
        var point = new BMap.Point(121.605368,31.203069);
        app.map.centerAndZoom(point, 14); 
-       app.addMaker(point,true,null,"我的位置");
-       app.getNVehicles("6");             
+       // app.addMyLocMaker(point);
+       app.getNVehicles(app.currentModel);             
     }
 
  	},
@@ -97,33 +137,77 @@ var app = {
     if (app.map) {
       if (app.baiduPosition) {
          app.map.centerAndZoom(app.baiduPosition, 14);
-         app.getNVehicles("6");//默认获取两轮车
+         app.getNVehicles(app.currentModel);//默认获取两轮车
       };
     };
   },
 
-
-  addMaker:function(BMapPoint,isAnimated,opts,title)  {
+  addMyLocMaker:function(BMapPoint)
+  {
     if (!BMapPoint) { return;};
     if (app.map) {
-       var marker = new BMap.Marker(BMapPoint);  //创建标注
-          app.map.addOverlay(marker);    // 将标注添加到地图中
-          if (!opts) {
-              opts = {
-              width : 100,    // 信息窗口宽度
-              height: 60,     // 信息窗口高度
-              title : title?title:"车辆位置", // 信息窗口标题
-              enableAutoPan : true //自动平移
-            }
+       var myIcon = new BMap.Icon("img/map/myloc.png",   
+          new BMap.Size(50, 50), {      
+           // 指定定位位置。     
+           // 当标注显示在地图上时，其所指向的地理位置距离图标左上      
+           // 角各偏移7像素和25像素。您可以看到在本例中该位置即是     
+           // 图标中央下端的尖角位置。      
+           anchor: new BMap.Size(25, 25),        
+          });        
+     // 创建标注对象并添加到地图     
+      var marker = new BMap.Marker(BMapPoint,{icon:myIcon});      
+      app.map.addOverlay(marker);           
+    }
+  },
 
-          };
-          var infoWindow = new BMap.InfoWindow(title?title:"车辆位置", opts);  // 创建信息窗口对象
-          marker.addEventListener("click", function(){          
-            app.map.openInfoWindow(infoWindow,BMapPoint); //开启信息窗口
-          });
-          if (isAnimated) {
-            marker.setAnimation(BMAP_ANIMATION_BOUNCE); 
-          };
+
+  addVehicleMaker:function(BMapPoint,isAnimated,opts,vehicle)  {
+    if (!BMapPoint) { return;};
+    if (app.map) {
+      var vehicleImg = $("input[name='car-type'][value='"+app.currentModel+"']").attr('icon-path');
+      var vIcon = new BMap.Icon(vehicleImg,   
+      new BMap.Size(50, 50), {      
+       // 指定定位位置。     
+       // 当标注显示在地图上时，其所指向的地理位置距离图标左上      
+       // 角各偏移7像素和25像素。您可以看到在本例中该位置即是     
+       // 图标中央下端的尖角位置。      
+       anchor: new BMap.Size(25, 51),        
+      });       
+      var marker = new BMap.Marker(BMapPoint,{icon:vIcon});  //创建标注
+      app.map.addOverlay(marker);    // 将标注添加到地图中
+      if (!opts) {
+          opts = {
+          width : 100,    // 信息窗口宽度
+          height: 60,     // 信息窗口高度
+          title : title?title:"车辆位置", // 信息窗口标题
+          enableAutoPan : true //自动平移
+        }
+
+      };
+      // var infoWindow = new BMap.InfoWindow(title?title:"车辆位置", opts);  // 创建信息窗口对象
+
+      //构造车辆信息窗口
+      var content = "<div style='padding:2px 5px;font-size:.8em'>"
+                     + "<div><img style='width:38px;height:38px' src='"+vehicle.image+"' alt=''></img></div>"
+                     +"<div style='position:relative;padding-right:55px'>"
+                     +"<div style='position:absolute;right:0px;top:10px'>"
+                     +"<a href='#'><img style='width:80px;height:80px' src='img/map/jiujiaota_gr.png'></img></a></div>"
+                     +"<div>车牌号:"+vehicle.item.license_plate_number+"</div>"
+                     +"<div>联系人:"+vehicle.name+"</div>"
+                     +"<div>距离我:"+1.5+"公里</div>"
+                     +"<div>类型:"+vehicle.usertype+"</div>"
+                     +"<div>成交单数:"+vehicle.waybill_items+"</div>"
+                     +"<div>好评/差评次数:"+vehicle.haoping+"/"+vehicle.chaping+"</div></div></div>";
+
+      var infoWindow = new BMap.InfoWindow(content,{offset:new BMap.Size(0,-50)});             
+      marker.addEventListener("click", function(){          
+        app.map.openInfoWindow(infoWindow,BMapPoint); //开启信息窗口
+      });
+      if (isAnimated) {
+        marker.setAnimation(BMAP_ANIMATION_BOUNCE); 
+      };
+      //保存maker
+      // app.vehicleMarkers.push(marker);
     }
   },
 
@@ -138,21 +222,52 @@ var app = {
         for(var i in data.items)
         {
           var model = data.items[i];
-          model.select = function()
-          {
-            var self = this;
-            app.currentModel = self.id;
-          }
+          // model.select = function()
+          // {
+          //   var self = this;
+          //   app.currentModel = self.id;
+          // }
+
+          //绑定界面
+          $("input[name='car-type']")[i].value = model.id;
+          $("label[for^='car-type']")[i].innerHtml = model.name;
         }
+
+        app.currentModel = $("input[name='car-type'][checked='checked']").first().val();
+        alert("initmodels-->>current model:"+app.currentModel);
+        $("input[name='car-type']").on('click',function()
+        {
+          alert($(this).val());
+          var selectedModel = $(this).val();
+          if (app.currentModel != selectedModel) {
+            app.currentModel =  selectedModel;
+            app.getNVehicles(selectedModel);
+          };
+
+        });
+
       }
-      self.models = data.items;
-      ko.applyBindings(self.models);
-      $("body").trigger("create");
+      // self.models = data.items;
+      // ko.applyBindings(self.models);
+      // $("body").trigger("create");
     });
   },
 
+  //获取对应类型附近车辆
   getNVehicles:function(model) {
     if (!app.baiduPosition) return;
+    //清除车辆覆盖物
+    // for(var i in app.vehicleMarkers)
+    // {
+    //   var marker = app.vehicleMarkers[i]
+    //   app.map.removeOverlay(maker);
+    // }
+    // app.vehicleMarkers = [];
+    app.map.clearOverlays();
+    alert("overlays count:"+app.map.getOverlays().length);
+    app.addMyLocMaker(app.baiduPosition); 
+
+    //请求附近车辆
     var param = {
       Action:"NVehicles",
       models:model,
@@ -166,8 +281,9 @@ var app = {
     var self = this;
     var url =  self.serverUrl + jsonStr;
     commonJS.get(url,function(data){ 
-
+      alert(JSON.stringify(data));
       self.nVehicles = data.items;
+      // alert("Got nVehicles count:"+self.nVehicles.length);
       for(var i in self.nVehicles)
       {
         var vehicle = self.nVehicles[i];
@@ -184,11 +300,21 @@ var app = {
           var lngSpan = Math.abs(sw.lng - ne.lng);
           var latSpan = Math.abs(ne.lat - sw.lat);
           var point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
-          app.addMaker(point,false,opts,vehicle.name);  
+          app.addVehicleMaker(point,false,opts,vehicle);  
               
       }
       // $("body").trigger("create");
     });
 
+  },
+  gotoSettings:function()
+  {
+    if (app.token) {
+      //goto settings
+    }
+    else
+    {
+      window.location.href="login.html";
+    }
   }
 };

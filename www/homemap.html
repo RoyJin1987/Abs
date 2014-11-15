@@ -7,39 +7,72 @@
 		body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;}
 		#golist {display: none;}
 		@media (max-device-width: 780px){#golist{display: block !important;}}
+		.ui-header img{width: 40px;height: 40px;border-radius:20px;}
+		.ui-footer img{ width: 31px; height: 28px;margin:3px 5px;vertical-align: middle;}
+		.ui-footer div { line-height: 40px;}
+		.ui-footer a{height: :40px; line-height:40px; vertical-align: middle;}
+		.ui-footer a > span{height: :40px; font-size: 1.3em}
 	</style>
 	<title>html app</title>  
     <link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" />
-	<link href="css/main.css" rel="stylesheet" type="text/css">
-	<link href="css/buttons.css" rel="stylesheet" type="text/css">
+	<link href="css/main.css" rel="stylesheet" type="text/css" />
+	<link href="css/buttons.css" rel="stylesheet" type="text/css" />
+	<link href="css/widget.css" rel="stylesheet" type="text/css" />
 </head>  
 <body>  
 	<div data-role="page" data-theme="f">  
 		  <div data-role="header" data-position="fixed" data-tap-toggle="false" class="header-extra-height">
-		    <a href="#" data-icon="home" data-iconpos="notext"></a>
-		    <h1>首页</h1>
+		    <div>
+		    	<div style="margin:0 auto;text-align:center">
+		     		<a data-ajax="false" href="#" data-role="button" data-transition="slide" onclick="app.gotoSettings">
+		     			<img class="icon-img" src="img/noPhoto.png" alt=""></img>
+		     		</a>
+		     		<span id="usr-name"></span>
+		     	</div>
+		    </div>
 		  </div>
 		  
 		  <div data-role="content" id="allmap" style="height:780px" style="position:relative">
 		  </div>
-		  <div style="position:fixed;bottom:60px;left:0;right:0;top:auto;margin:0 auto;text-align:center"> &nbsp;
+		  <div style="position:fixed;bottom:80px;left:0;right:0;top:auto;margin:0 auto;text-align:center"> &nbsp;
 		  		<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
-				    <input type="radio" name="radio-choice-h-6" id="radio-choice-h-6a" value="on" checked="checked">
-				    <label for="radio-choice-h-6a">两轮类</label>
-				    <input type="radio" name="radio-choice-h-6" id="radio-choice-h-6b" value="off">
-				    <label for="radio-choice-h-6b">货的类</label>
-				    <input type="radio" name="radio-choice-h-6" id="radio-choice-h-6c" value="other">
-				    <label for="radio-choice-h-6c">卡车类</label>
+				    <input type="radio" name="car-type" id="car-type-a" value="" checked="checked" icon-path="img/map/car_1.png" />
+				    <label for="car-type-a">两轮类</label>
+				    <input type="radio" name="car-type" id="car-type-b" value="" icon-path="img/map/car_2.png"/>
+				    <label for="car-type-b">货的类</label>
+				    <input type="radio" name="car-type" id="car-type-c" value="" icon-path="img/map/car_3.png"/>
+				    <label for="car-type-c">卡车类</label>
 				</fieldset>
 		  </div>
 
 		  <div data-role="footer" data-position="fixed" data-tap-toggle="false">
-		  	<div data-role="navbar">
+		  	<!-- <div data-role="navbar">
 			   <ul>
-		        <li><a data-ajax="false" href="requestDelivery.html" data-icon="info" data-iconpos="left">帮我送</a></li>
-		        <li><a data-ajax="false" href="userCenter.html" data-icon="info" data-iconpos="notext">消息</a></li>
-		        <li><a data-ajax="false" href="wantDelivery.html" data-icon="info" data-iconpos="right">我来送</a></li>
+		        <li><a data-ajax="false" href="requestDelivery.html" data-role="button" data-icon="search" data-iconpos="left">帮我送</a></li>
+		        <li><a data-ajax="false" href="userCenter.html" data-role="button" data-icon="info" data-iconpos="notext">消息</a></li>
+		        <li><a data-ajax="false" href="wantDelivery.html" data-role="button" data-icon="search" data-iconpos="right">我来送</a></li>
 		      </ul>
+		     </div> -->
+
+		     <div style="margin:0 auto;width:100%">
+		     	<div style="text-align:center;float:left;width:35%">
+		     		<a data-ajax="false" href="requestDelivery.html" data-role="button">
+		     			<span> </span>
+		     			<img  src="img/home/s_w.png" alt=""></img>
+		     			<span >帮我送 </span>
+		     		</a>
+		     	</div>
+		     	<div style="text-align:center;float:left;width:20%;margin:0 5%">
+		     		<a style="height:100%" data-ajax="false" href="userCenter.html" data-role="button">
+		     			<img  src="img/home/t_w_index.png" alt=""></img>
+		     		</a>
+		     	</div>
+		     	<div style="text-align:center;float:right;width:35%">
+		     		<a data-ajax="false" href="wantDelivery.html" data-role="button">
+		     			<span>我来送</span>
+		     			<img  src="img/home/t_w.png" alt=""></img>
+		     		</a>
+		     	</div>
 		     </div>
 		</div>
 	</div><!-- /page --> 

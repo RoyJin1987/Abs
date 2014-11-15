@@ -56,7 +56,16 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        app.token = $.cookie("usrToken");
+       if(typeof localStorage === 'undefined' )
+        {
+          app.token = $.cookie("usrToken");
+          app.usrName = $.cookie("usrName");
+        }
+        else
+        {
+          app.token = localStorage["usrToken"];
+          app.usrName = localStorage["usrName"];
+        }
         app.receivedEvent('deviceready');
         //请求正在修改运单
         var orderId = app.getUrlParam("orderId");

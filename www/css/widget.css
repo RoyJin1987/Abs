@@ -150,3 +150,11 @@ hr{
 	height:1px;
 }
 
+
+/*扩展jquery mobile icon*/
+.ui-icon-usr-no-image {background:url('img/noPhoto.png') no-repeat 0 0;}
+
+.ui-icon-want-delivery {background:url('img/home/t_w.png') no-repeat 0 0;}
+
+.ui-icon-request-delivery {background:url('img/home/s_w.png') no-repeat 0 0;}
+

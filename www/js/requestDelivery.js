@@ -168,7 +168,16 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
       //app.loadNavigator();
-      app.token = $.cookie("usrToken");
+      if(typeof localStorage === 'undefined' )
+      {
+        app.token = $.cookie("usrToken");
+        app.usrName = $.cookie("usrName");
+      }
+      else
+      {
+        app.token = localStorage["usrToken"];
+        app.usrName = localStorage["usrName"];
+      }
 
       //双向绑定可编辑字段
       app.viewModel.orderInfo.send_address.address = ko.observable(app.viewModel.orderInfo.send_address.address);

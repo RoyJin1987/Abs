@@ -61,7 +61,16 @@ var appMyOrder = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        appMyOrder.token = $.cookie("usrToken");
+        if(typeof localStorage === 'undefined' )
+        {
+          app.token = $.cookie("usrToken");
+          app.usrName = $.cookie("usrName");
+        }
+        else
+        {
+          app.token = localStorage["usrToken"];
+          app.usrName = localStorage["usrName"];
+        }
         appMyOrder.receivedEvent('deviceready');
         
         appMyOrder.refresh(0);
