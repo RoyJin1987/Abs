@@ -108,8 +108,9 @@ var app = {
         }
         var url = ABSApplication.ABSServer.url + JSON.stringify(request);
         commonJS.get(url,function(data){
-            // alert(JSON.stringify(data));
+            
            if (data.status === 0) {
+                var token = data.Token;
                 if(typeof localStorage === 'undefined' )
                 {
                    $.cookie('usrToken', data.Token, { expires: 7, path: '/' });
@@ -118,7 +119,9 @@ var app = {
                }
                else
                {
+                    
                     localStorage.setItem('usrToken',data.Token);
+                    
                     localStorage.setItem('usrIdentity',data.identity);
                     localStorage.setItem('usrImage',data.image);
 
@@ -136,7 +139,7 @@ var app = {
                 url = ABSApplication.ABSServer.url + JSON.stringify(request);
 
                 commonJS.get(url,function(data){
-            
+                    alert(JSON.stringify(data));
                     if (data.status === 0) {
                         if(typeof localStorage === 'undefined' )
                         {
@@ -149,7 +152,7 @@ var app = {
                         
                         // console.log('usrName = '+ localStorage['usrName']);
                         if (window.notificationClient) {
-                            window.notificationClient.startService(identity);
+                            window.notificationClient.startService(identity,token,true);
                         };
                         window.location.href="homemap.html";
                     }else{
