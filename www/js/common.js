@@ -255,7 +255,7 @@ var commonJS = {
 		                callbacks(result);
 		            },
 		            error: function (request, error) {
-		                alert(error);
+		                alert("网络连接出错，请稍后重试！");
 		            }
 		        });
 				

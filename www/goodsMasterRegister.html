@@ -10,6 +10,7 @@
 	</style>
 	<title>html app</title>
 	<link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" />
+	<!-- <link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" /> -->
 <!-- 	<link href="css/main.css" rel="stylesheet" type="text/css"> -->
 	<link rel="stylesheet" type="text/css" href="css/widget.css" />
 	<link rel="stylesheet" type="text/css" href="css/layout.css" />
@@ -22,8 +23,9 @@
   	<script src="js/json2.js"></script>
   	<script type="text/javascript" src="js/app.js"></script>
   	<script type="text/javascript" src="js/common.js"></script>
+  	<script type="text/javascript" src="cordova.js"></script>
   	<script type="text/javascript" src="js/goodsMasterRegister.js"></script>
-	<script type="text/javascript" src="cordova.js"></script>
+	
 </head>  
 <body onload="app.onLoad()">
 	<div data-role="page" data-theme="f">  
@@ -36,10 +38,11 @@
 	  	<div class="container">
 	  		<div class="container-line">
 	  			<div class="center-align" style="width:20%;">
-	  				<img class="center-align" style="width:40px" src="img/noPhoto.png"></img>
+	  				<a class="center-align" href="#select_pic_page" data-rel="popup" data-position-to="window" data-transition="pop"><img id="face" style="width:40px;height:40px;" src="img/noPhoto.png" /></a>
 	  				<div class="center-align" style="width:50px;font-size:.7em">
 	  					<span>上传头像</span>
 	  				</div>
+	  				<div><input type="file" name="file" id="file" /> </div>
 	  			</div>
 	  		</div>
 	  		<div class="container-line">
@@ -101,6 +104,15 @@
 	  		</div>
 	  	</div>
 	</div>
+</div>
+<div>
+	<div data-role="popup" id="select_pic_page" data-overlay-theme="c">
+		<ul data-role="listview" data-icon="false">
+			<li onclick="app.onFaceImgClick(0)" style="border-width:0;border-color:#666;border-bottom-width: 1px;"><a style="padding:16px;font-weight:normal;" href="#" data-rel="back">拍照</a></li>
+			<li onclick="app.onFaceImgClick(1)" style="border-width:0;"><a style="padding:16px;font-weight:normal;" href="#" data-rel="back">从已有照片选择</a></li>
+		</ul>
+	</div>			
+</div>
 </body>  
 </html>
 

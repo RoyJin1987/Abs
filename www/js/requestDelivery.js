@@ -28,8 +28,8 @@ var app = {
       send_address:{
         longitude:"经度",
         latitude:"纬度",
-        city:"城市1",
-        address:'123',
+        city:"上海市",
+        address:'',
       },
       consignor:"测试人",
       type:'',
@@ -40,7 +40,7 @@ var app = {
       shipping_address:{
         longitude:"经度",
         latitude:"纬度",
-        city:"城市2",
+        city:"上海市",
         address:'',
       },
       delivery_floor: '',  
@@ -196,11 +196,25 @@ var app = {
       app.viewModel.orderInfo.bid_item.truckage = ko.observable(app.viewModel.orderInfo.bid_item.truckage);
       app.viewModel.orderInfo.bid_item.tipping = ko.observable(app.viewModel.orderInfo.bid_item.tipping);
 
-      app.viewModel.orderInfo.ship_date =  ko.pureComputed(function() {
+       app.viewModel.orderInfo.ship_date =  ko.pureComputed({
+        read:function() {
          return commonJS.jsonDateFormat(app.viewModel.orderInfo.ship_date_());
+        },
+        write:function(value)
+        {
+          app.viewModel.orderInfo.ship_date_(value);
+        },
+        owner:app.viewModel.orderInfo
       });
-      app.viewModel.orderInfo.arrival_date =  ko.pureComputed(function() {
+      app.viewModel.orderInfo.arrival_date =  ko.pureComputed({
+        read:function() {
           return commonJS.jsonDateFormat(app.viewModel.orderInfo.arrival_date_());
+        },
+        write:function(value)
+        {
+          app.viewModel.orderInfo.arrival_date_(value);
+        },
+        owner:app.viewModel.orderInfo
       });
       app.viewModel.selectedWenCeng ("3");
       // app.viewModel.orderInfo.bid_item.total = 200;
@@ -285,7 +299,7 @@ var app = {
       }     
       
       var order = clone(app.viewModel.orderInfo);
-      order.send_address.address = app.viewModel.orderInfo.send_address.address();
+  
       order.type = app.viewModel.orderInfo.type();
       order.weight = app.viewModel.orderInfo.weight();
       order.volume = app.viewModel.orderInfo.volume();
@@ -293,7 +307,6 @@ var app = {
       order.arrival_date = formatDate(app.viewModel.orderInfo.arrival_date_());
       order.consignee_name = app.viewModel.orderInfo.consignee_name();
       order.consignee_phone = app.viewModel.orderInfo.consignee_phone();
-      order.shipping_address.address = app.viewModel.orderInfo.shipping_address.address();
       order.delivery_floor = app.viewModel.orderInfo.delivery_floor();
       order.additional_information = app.viewModel.orderInfo.additional_information();
       // order.selectedModels = app.viewModel.orderInfo.selectedModels();
@@ -305,7 +318,22 @@ var app = {
       order.send_address.latitude = app.baiduPosition.lat;
       order.wenceng = app.viewModel.selectedWenCeng();
       order.models = app.viewModel.selectedModels();
-
+      var cityCounty = $("#send_city_county_hidden").text().split(",");
+      if (cityCounty){
+        order.send_address.address = cityCounty[1] + app.viewModel.orderInfo.send_address.address();
+        order.send_address.city = cityCounty[0];
+      }else{
+        order.send_address.address = app.viewModel.orderInfo.send_address.address();
+      }
+      
+      var shipCityCounty = $("#shipping_city_county_hidden").text().split(",");
+      if (shipCityCounty){
+        order.shipping_address.city = shipCityCounty[0];
+        order.shipping_address.address = shipCityCounty[1] + app.viewModel.orderInfo.shipping_address.address();
+      }else{
+        order.shipping_address.address = app.viewModel.orderInfo.shipping_address.address();
+      }
+      
       alert("order info:"+JSON.stringify(order));
       return order;
   },
