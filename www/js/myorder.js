@@ -190,7 +190,6 @@ var appMyOrder = {
 
     refresh:function(status)
     {
-        alert(status);
         if (status === 0) {
             orders.pushedOrders.removeAll();
         }else if (status === 1) {
@@ -207,9 +206,9 @@ var appMyOrder = {
                 Token:appMyOrder.token
             };
         var url = appMyOrder.serverUrl + JSON.stringify(request);
-        alert(url);
+        
         commonJS.get(url,function(data){  
-        alert(JSON.stringify(data));
+        
             for(var i in data.items)
             {
                 var order = data.items[i];
@@ -343,7 +342,7 @@ var appMyOrder = {
                     carrier.user = data.user;
                     carrier.pilot = data.pilot;
                     order.carrier(carrier);
-                    alert(JSON.stringify(order.carrier()));
+                    //alert(JSON.stringify(order.carrier()));
                     // order.carrier.callHim = function()
                     // {
                     //     var self = this;
