@@ -56,30 +56,57 @@ var app = {
         //未登录
         $("#usr-name").text('您尚未登录');
       }
-      alert("screen height:"+screen.availHeight);
-      alert("screen height:"+screen.availHeight);
-      $("#allmap").css("height",screen.availHeight+"px");
+      // alert("screen height:"+screen.availHeight);
+      // alert("screen height:"+$(".ui-page").first().height());
+      $("#allmap").css("height",$(".ui-page").first().height()+"px");
 
-      app.getModels();
+      app.getModels(function(){
+          app.currentModel = $("input[name='car-type'][checked='checked']").first().val();
+          alert("initmodels-->>current model:"+app.currentModel);
+          //绑定页面事件
+          $("input[name='car-type']").on('click',function()
+          {
+            alert($(this).val());
+            var selectedModel = $(this).val();
+            if (app.currentModel != selectedModel) {
+              app.currentModel =  selectedModel;
+              app.getNVehicles(selectedModel);
+            };
 
-      if (typeof locationService != 'undefined') {
-        //通过百度sdk来获取经纬度,并且alert出经纬度信息
-        var noop = function(){};
-        var callback = function(pos){
-              app.baiduPosition = new BMap.Point(pos.coords.longitude,pos.coords.latitude);
-               // $.cookie('baiduPosition', JSON.stringify(app.baiduPosition), { expires: 1, path: '/' });
-              localStorage.setItem('baiduPosition',app.baiduPosition);
-              app.loadMap();
-              window.locationService.stop(noop,noop);
+          });
+
+          $(document).delegate(".vehicle-calling","click",function(){
+            alert("clicked");
+            app.navigatorTo("requestDelivery.html");
+          });
+          // alert("got locationService");
+          //通过百度sdk来获取经纬度,并且alert出经纬度信息
+          var noop = function(){};
+          var callback = function(pos){
+                app.baiduPosition = new BMap.Point(pos.coords.longitude,pos.coords.latitude);
+                 // $.cookie('baiduPosition', JSON.stringify(app.baiduPosition), { expires: 1, path: '/' });
+                localStorage.setItem('baiduPosition',JSON.stringify(app.baiduPosition));
+                // var location = JSON.parse(localStorage["baiduPosition"]);
+                // alert("baiduPosition："+ JSON.stringify(location));
+                app.loadMap();
+                window.locationService.stop(noop,noop);
           }
-        window.locationService.getCurrentPosition(callback,function(e){
-            window.locationService.stop(noop,noop);
-        });
-      }
-      else
-      {
-        app.loadMap();
-      }
+          setTimeout(function()
+          {
+            window.locationService.getCurrentPosition(callback,function(e){
+              window.locationService.stop(noop,noop);
+            });
+            //每60秒获取一次坐标
+            setInterval(function(){
+              window.locationService.getCurrentPosition(callback,function(e){
+                window.locationService.stop(noop,noop);
+              });
+            },60000);
+
+          },3000);
+      });
+
+      
   },
 
  	//加载定位 
@@ -191,15 +218,18 @@ var app = {
                      + "<div><img style='width:38px;height:38px' src='"+vehicle.image+"' alt=''></img></div>"
                      +"<div style='position:relative;padding-right:55px'>"
                      +"<div style='position:absolute;right:0px;top:10px'>"
-                     +"<a href='#'><img style='width:80px;height:80px' src='img/map/jiujiaota_gr.png'></img></a></div>"
+                     +"<a href='requestDelivery.html'><img style='width:80px;height:80px' src='img/map/jiujiaota_gr.png'></img></a></div>"
                      +"<div>车牌号:"+vehicle.item.license_plate_number+"</div>"
                      +"<div>联系人:"+vehicle.name+"</div>"
                      +"<div>距离我:"+1.5+"公里</div>"
                      +"<div>类型:"+vehicle.usertype+"</div>"
                      +"<div>成交单数:"+vehicle.waybill_items+"</div>"
                      +"<div>好评/差评次数:"+vehicle.haoping+"/"+vehicle.chaping+"</div></div></div>";
+      // var html = [];
+       
 
-      var infoWindow = new BMap.InfoWindow(content,{offset:new BMap.Size(0,-50)});             
+      var infoWindow = new BMap.InfoWindow(content,{offset:new BMap.Size(0,-50)}); 
+      infoWindow.dis            
       marker.addEventListener("click", function(){          
         app.map.openInfoWindow(infoWindow,BMapPoint); //开启信息窗口
       });
@@ -212,7 +242,7 @@ var app = {
   },
 
   //获取车型
-  getModels:function()  {
+  getModels:function(callback)  {
     var jsonStr = '{"Action":"getModels"}';
     var self = this;
     var url =  self.serverUrl + jsonStr;
@@ -232,20 +262,7 @@ var app = {
           $("input[name='car-type']")[i].value = model.id;
           $("label[for^='car-type']")[i].innerHtml = model.name;
         }
-
-        app.currentModel = $("input[name='car-type'][checked='checked']").first().val();
-        alert("initmodels-->>current model:"+app.currentModel);
-        $("input[name='car-type']").on('click',function()
-        {
-          alert($(this).val());
-          var selectedModel = $(this).val();
-          if (app.currentModel != selectedModel) {
-            app.currentModel =  selectedModel;
-            app.getNVehicles(selectedModel);
-          };
-
-        });
-
+        callback();
       }
       // self.models = data.items;
       // ko.applyBindings(self.models);
@@ -307,14 +324,18 @@ var app = {
     });
 
   },
-  gotoSettings:function()
+  navigatorTo:function(url)
   {
-    if (app.token) {
-      //goto settings
+    alert("navigatorTo "+url);
+    if(app.token)
+    {
+      window.location.href = url;
     }
     else
     {
-      window.location.href="login.html";
+      alert("请先登录");
+      window.location.href = "login.html";
     }
   }
+
 };
