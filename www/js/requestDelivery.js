@@ -179,6 +179,12 @@ var app = {
         app.usrName = localStorage["usrName"];
       }
 
+      if(!app.token)
+      {
+        alert("请先登录");
+        window.location.href= "login.html";
+      }
+
       //双向绑定可编辑字段
       app.viewModel.orderInfo.send_address.address = ko.observable(app.viewModel.orderInfo.send_address.address);
       app.viewModel.orderInfo.type = ko.observable(app.viewModel.orderInfo.type);
