@@ -50,8 +50,8 @@ var app = {
       stars :"0",
       bid_item:{ // 出价项 车型选择非卡车时才有
           freight:10,
-          truckage:10 ,
-          tipping:10,
+          truckage:24,
+          tipping:20,
       },
     },
     wenCengList :[],
@@ -96,7 +96,7 @@ var app = {
       // app.viewModel.orderInfo.shipping_address.address = $("#shipping_county_hidden").text() + app.viewModel.shipping_address();
       // app.viewModel.orderInfo.consignor = $.cookie("usrName");
 
-      var order = app.extractOrder();
+      var order = app.extractOrder(false);
       if (app.viewModel.selectedModels() == '8'){
         var request = {
           Action:"HMSend",
@@ -129,7 +129,7 @@ var app = {
       window.notificationClient.selectCity(type);
     },
     sendOrderClick:function() {
-      var order = app.extractOrder();
+      var order = app.extractOrder(true);
       var request = {
         Action:"HMSend",
         Token:app.token,
@@ -222,11 +222,13 @@ var app = {
           return app.viewModel.orderInfo.bid_item.freight()*1+app.viewModel.orderInfo.bid_item.tipping()*1+app.viewModel.orderInfo.bid_item.truckage()*1;
       });
 
-      if($.cookie('baiduPosition')){
-        var position = $.cookie('baiduPosition');
-        
-        app.baiduPosition = JSON.parse(position);
-        // alert(JSON.stringify(app.baiduPosition));
+      if(typeof localStorage === 'undefined' )
+      {
+          app.baiduPosition = {lng:121.654443,lat:31.653235};
+      }
+      else
+      {
+           app.baiduPosition = localStorage['baiduPosition'];
       }
 
       var jsonStr = '{"Action":"getWenceng"}';
@@ -276,7 +278,7 @@ var app = {
       var watchID = navigator.geolocation.watchPosition(succ, err, {maximumAge: 10000, timeout: 10000, enableHighAccuracy: false});
   },
 
-  extractOrder:function()
+  extractOrder:function(isInCity)
   { 
       var clone = function clone(myObj){ 
         if(typeof(myObj) != 'object') return myObj; 
@@ -310,10 +312,25 @@ var app = {
       order.delivery_floor = app.viewModel.orderInfo.delivery_floor();
       order.additional_information = app.viewModel.orderInfo.additional_information();
       // order.selectedModels = app.viewModel.orderInfo.selectedModels();
-      order.bid_item.freight = app.viewModel.orderInfo.bid_item.freight();
-      order.bid_item.truckage = app.viewModel.orderInfo.bid_item.truckage();
-      order.bid_item.tipping = app.viewModel.orderInfo.bid_item.tipping();
-      order.consignor = $.cookie("usrName");
+      if (isInCity){
+        order.bid_item.freight = app.viewModel.orderInfo.bid_item.freight();
+        order.bid_item.truckage = app.viewModel.orderInfo.bid_item.truckage();
+        order.bid_item.tipping = app.viewModel.orderInfo.bid_item.tipping();
+      }else{
+        order.bid_item.freight = '';
+        order.bid_item.truckage = '';
+        order.bid_item.tipping = '';
+      }
+      
+      if(typeof localStorage === 'undefined' )
+      {
+          order.consignor = $.cookie("usrName");
+      }
+      else
+      {
+          order.consignor = localStorage['usrName'];
+      }
+      
       order.send_address.longitude = app.baiduPosition.lng;
       order.send_address.latitude = app.baiduPosition.lat;
       order.wenceng = app.viewModel.selectedWenCeng();

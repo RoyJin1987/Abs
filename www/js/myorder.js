@@ -61,15 +61,16 @@ var appMyOrder = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
+
         if(typeof localStorage === 'undefined' )
         {
-          app.token = $.cookie("usrToken");
-          app.usrName = $.cookie("usrName");
+          appMyOrder.token = $.cookie("usrToken");
+          appMyOrder.usrName = $.cookie("usrName");
         }
         else
         {
-          app.token = localStorage["usrToken"];
-          app.usrName = localStorage["usrName"];
+          appMyOrder.token = localStorage["usrToken"];
+          appMyOrder.usrName = localStorage["usrName"];
         }
         appMyOrder.receivedEvent('deviceready');
         
@@ -189,7 +190,6 @@ var appMyOrder = {
 
     refresh:function(status)
     {
-        
         if (status === 0) {
             orders.pushedOrders.removeAll();
         }else if (status === 1) {
@@ -206,6 +206,7 @@ var appMyOrder = {
                 Token:appMyOrder.token
             };
         var url = appMyOrder.serverUrl + JSON.stringify(request);
+        
         commonJS.get(url,function(data){  
         
             for(var i in data.items)
@@ -258,15 +259,24 @@ var appMyOrder = {
                         motorcade:{},
                         user:{},
                         pilot:{},
-                        // callHim :function()
-                        // {
-                        //     var self = this;
-                        //     // alert(JSON.stringify(self));
-                        //     if (self.pilot.mobile_number) {
-                        //         window.notificationClient.call(self.pilot.mobile_number);
-                        //     };
+                        callHim :function()
+                        {
+                            // var self = this;
+                            // alert(JSON.stringify(self));
+                            // if (self.pilot.mobile_number) {
+                            //     window.notificationClient.call(self.pilot.mobile_number);
+                            // };
                             
-                        // }
+                        },
+                        inviteHim :function()
+                        {
+                            // var self = this;
+                            // alert(JSON.stringify(self));
+                            // if (self.pilot.mobile_number) {
+                            //     window.notificationClient.call(self.pilot.mobile_number);
+                            // };
+                            
+                        }
                     });
                    
                     var arrary = (status===2?orders.confirmOrders:orders.completeOrders);
@@ -341,16 +351,20 @@ var appMyOrder = {
                     carrier.user = data.user;
                     carrier.pilot = data.pilot;
                     order.carrier(carrier);
-                    alert(JSON.stringify(order.carrier()));
-                    // order.carrier.callHim = function()
-                    // {
-                    //     var self = this;
-                    //     // alert(JSON.stringify(self));
-                    //     if (self.pilot.mobile_number) {
-                    //         window.notificationClient.call(self.pilot.mobile_number);
-                    //     };
-                        
-                    // }
+                    //alert(JSON.stringify(order.carrier()));
+                    carrier.callHim = function()
+                    {
+                        var self = this;
+                        // alert(JSON.stringify(self));
+                        if (self.pilot.mobile_number) {
+                            window.notificationClient.call(self.pilot.mobile_number);
+                        }
+                    }
+
+                    carrier.inviteHim = function()
+                    {
+                        alert("邀请如火！");
+                    }
 
                 };
                 //刷新界面
