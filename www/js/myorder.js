@@ -61,15 +61,16 @@ var appMyOrder = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
+
         if(typeof localStorage === 'undefined' )
         {
-          app.token = $.cookie("usrToken");
-          app.usrName = $.cookie("usrName");
+          appMyOrder.token = $.cookie("usrToken");
+          appMyOrder.usrName = $.cookie("usrName");
         }
         else
         {
-          app.token = localStorage["usrToken"];
-          app.usrName = localStorage["usrName"];
+          appMyOrder.token = localStorage["usrToken"];
+          appMyOrder.usrName = localStorage["usrName"];
         }
         appMyOrder.receivedEvent('deviceready');
         
@@ -189,7 +190,7 @@ var appMyOrder = {
 
     refresh:function(status)
     {
-        
+        alert(status);
         if (status === 0) {
             orders.pushedOrders.removeAll();
         }else if (status === 1) {
@@ -206,8 +207,9 @@ var appMyOrder = {
                 Token:appMyOrder.token
             };
         var url = appMyOrder.serverUrl + JSON.stringify(request);
+        alert(url);
         commonJS.get(url,function(data){  
-        
+        alert(JSON.stringify(data));
             for(var i in data.items)
             {
                 var order = data.items[i];
