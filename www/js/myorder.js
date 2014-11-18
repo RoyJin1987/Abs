@@ -363,7 +363,23 @@ var appMyOrder = {
 
                     carrier.inviteHim = function()
                     {
-                        alert("邀请如火！");
+                        var self = this;
+                        var request = {
+                            Action:"InviteTeam",
+                            motorcadekey:self.motorcade.motorcadekey,
+                            Token:appMyOrder.token
+                        };
+                        var url = appMyOrder.serverUrl + JSON.stringify(request);
+                        alert(url);
+                        commonJS.get(url,function(result){
+                            if(result.status !== 0)
+                            {
+                                alert(result.message);
+                                return;
+                            }
+                            alert("邀请成功，等待对方确认.");
+                            
+                        });   
                     }
 
                 };

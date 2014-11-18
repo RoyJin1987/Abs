@@ -124,8 +124,51 @@ var app = {
         commonJS.get(url,function(data){
             // alert(JSON.stringify(data));
            if (data.status === 0) {
-               $.cookie('usrToken', data.Token, { expires: 7, path: '/' });
-               $.cookie('usrName', usr.name(), { expires: 7, path: '/' });
+               
+                if(typeof localStorage === 'undefined' )
+                {
+                    $.cookie('usrToken', data.Token, { expires: 7, path: '/' });
+                }
+                else
+                {
+                    localStorage.setItem('usrToken',data.Token);
+                }
+               request = {
+                    Action:"UserInformation",
+                    Token:data.Token,
+                }
+                url = ABSApplication.ABSServer.url + JSON.stringify(request);
+                var token = data.Token;
+                commonJS.get(url,function(data){
+                    
+                    if (data.status === 0) {
+                        if(typeof localStorage === 'undefined' )
+                        {
+                            $.cookie('usrName', data.parameter.name, { expires: 7, path: '/' });
+                            $.cookie('usrIdentity', data.parameter.identity, { expires: 7, path: '/' });
+                            $.cookie('usrImage', ABSApplication.ABSServer.host +data.parameter.image, { expires: 7, path: '/' });
+                        }
+                        else
+                        {
+                            
+                            localStorage.setItem('usrName',data.parameter.name);
+                            localStorage.setItem('usrIdentity',data.parameter.identity);
+                            localStorage.setItem('usrImage',ABSApplication.ABSServer.host +data.parameter.image);
+                        }
+                        
+                        // console.log('usrName = '+ localStorage['usrName']);
+                        if (window.notificationClient) {
+                            
+                            window.notificationClient.startService(data.parameter.identity,token,true);
+                        };
+                        
+                        window.location.href="homemap.html";
+                    }else{
+
+                        alert(JSON.stringify(data.message));
+                    }
+                });
+
                alert("恭喜您，注册成功！");
                window.location.href="homemap.html";
            }else{
@@ -189,13 +232,13 @@ var app = {
         var options = new FileUploadOptions();
 
         options.fileKey = "file";//图片域名！！！
-        alert(fileName);
+
         if(fileName.indexOf('?')==-1){
             options.fileName = fileName;
         }else{
             options.fileName = fileName.substr(0,fileName.indexOf('?'));
         }
-        alert(fileName);
+       
          options.mimeType = "image/jpeg";
         //options.mimeType = "multipart/form-data";
          options.chunkedMode = false;
@@ -203,15 +246,15 @@ var app = {
          var params = {};
          params.fileType = "customer";
          options.params = params;
-         alert("fileName");
+       
          var request = {
             Action:"upFile",
             type:"image" ,
             Token:"",
         }
-        alert(JSON.stringify(request));
+      
          var uri = encodeURI(ABSApplication.ABSServer.url+JSON.stringify(request));
-         alert(uri);
+        
          var ft = new FileTransfer();
          ft.upload(imageURI, uri, app.onFileUploadSuccess, app.onFileUploadFail, options);
     },
@@ -222,8 +265,32 @@ var app = {
     },
 
     onFileUploadSuccess:function (result){
-        alert(JSON.stringify(result));
-        app.newUser.image = result.response.filepath;
+        
+        var response = JSON.stringify(result.response);
+      
+        var pairs = response.split(",");
+        var filePath="";
+        for (var i in pairs){
+
+            var pair = pairs[i].split(":");
+            var tmpPath;
+            if (pair[0].indexOf("filepath")>-1){
+              
+                tmpPath = pair[1];
+              
+               
+
+                var paths= tmpPath.split("\\\/");
+                for (var j in paths){
+                    filePath =filePath +"/"+ paths[j];
+                }
+                filePath =filePath.substr(3);
+                filePath = filePath.replace("\\\"","");
+            }
+        }
+  
+        app.newUser.image = filePath;
+        alert("头像上传成功");
         log("========onFileUploadSuccess===========");
     //  log("Code = " + result.responseCode+";Response = " + result.response+";Sent = " + result.bytesSent);
     },

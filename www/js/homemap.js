@@ -6,6 +6,7 @@ var app = {
   serverUrl: "http://112.124.122.107/Applications/web/?data=",
   token:"",
   usrName:"",
+  usrImage:"",
   models:[],//车型
   nVehicles:[],//附近车辆
   vehicleMarkers:[],//附近车辆地图覆盖物
@@ -38,11 +39,13 @@ var app = {
       {
         app.token = $.cookie("usrToken");
         app.usrName = $.cookie("usrName");
+        app.usrImage = $.cookie("usrImage");
       }
       else
       {
         app.token = localStorage["usrToken"];
         app.usrName = localStorage["usrName"];
+        app.usrImage = localStorage["usrImage"];
       }
 
 
@@ -56,6 +59,12 @@ var app = {
         //未登录
         $("#usr-name").text('您尚未登录');
       }
+      if(app.usrImage){
+        
+        //$("#usr-image").src=app.usrImage;
+        document.getElementById("usr-image").src=app.usrImage;
+      }
+     
       // alert("screen height:"+screen.availHeight);
       // alert("screen height:"+$(".ui-page").first().height());
       $("#allmap").css("height",$(".ui-page").first().height()+"px");

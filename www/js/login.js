@@ -115,16 +115,13 @@ var app = {
                 {
                    $.cookie('usrToken', data.Token, { expires: 7, path: '/' });
                    $.cookie('usrIdentity', data.identity, { expires: 7, path: '/' });
-                   $.cookie('usrImage', data.image, { expires: 7, path: '/' });
+                   $.cookie('usrImage', ABSApplication.ABSServer.host +data.image, { expires: 7, path: '/' });
                }
                else
                {
-                    
                     localStorage.setItem('usrToken',data.Token);
-                    
                     localStorage.setItem('usrIdentity',data.identity);
-                    localStorage.setItem('usrImage',data.image);
-
+                    localStorage.setItem('usrImage',ABSApplication.ABSServer.host +data.image);
                }
                
 
@@ -139,7 +136,7 @@ var app = {
                 url = ABSApplication.ABSServer.url + JSON.stringify(request);
 
                 commonJS.get(url,function(data){
-                    alert(JSON.stringify(data));
+                    //alert(JSON.stringify(data));
                     if (data.status === 0) {
                         if(typeof localStorage === 'undefined' )
                         {

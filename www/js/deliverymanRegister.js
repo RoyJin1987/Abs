@@ -183,7 +183,46 @@ var app = {
         var url = ABSApplication.ABSServer.url + JSON.stringify(request);
         commonJS.get(url,function(data){
            if (data.status === 0) {
-               $.cookie('usrToken', data.Token, { expires: 7, path: '/' });
+               if(typeof localStorage === 'undefined' )
+                {
+                    $.cookie('usrToken', data.Token, { expires: 7, path: '/' });
+                }
+                else
+                {
+                    localStorage.setItem('usrToken',data.Token);
+                }
+                var token = data.Token;
+                request = {
+                    Action:"UserInformation",
+                    Token:data.Token,
+                }
+                url = ABSApplication.ABSServer.url + JSON.stringify(request);
+
+                commonJS.get(url,function(data){
+                    //alert(JSON.stringify(data));
+                    if (data.status === 0) {
+                        if(typeof localStorage === 'undefined' )
+                        {
+                            $.cookie('usrName', data.parameter.name, { expires: 7, path: '/' });
+                            $.cookie('usrIdentity', data.parameter.identity, { expires: 7, path: '/' });
+                            $.cookie('usrImage', ABSApplication.ABSServer.host +data.parameter.image, { expires: 7, path: '/' });
+                        }
+                        else
+                        {
+                            localStorage.setItem('usrName',data.parameter.name);
+                            localStorage.setItem('usrIdentity',data.parameter.identity);
+                            localStorage.setItem('usrImage',ABSApplication.ABSServer.host +data.parameter.image);
+                        }
+                        
+                        // console.log('usrName = '+ localStorage['usrName']);
+                        if (window.notificationClient) {
+                            window.notificationClient.startService(data.parameter.identity,token,true);
+                        };
+                        window.location.href="homemap.html";
+                    }else{
+                        alert(JSON.stringify(data.message));
+                    }
+                });
                window.location.href="homemap.html";
            }else{
                 alert(data.message);
