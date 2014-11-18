@@ -202,33 +202,33 @@ var app = {
                 targetWidth : w,
                 targetHeight : h
         };
-        
+        navigator.camera.getPicture( app.onCameraSuccess, app.onCameraError, app.cameraOptions);
     }else{
         // alert(Camera.pictureSource.CAMERA);
         // alert(Camera.pictureSource.PHOTOLIBRARY);
         //window.open(app.onCameraSuccess,app.onCameraError);
 
-        //app.open(app.onCameraSuccess,app.onCameraError);
-        cameraOptions={ 
-                quality : quality,//ios为了避免部分设备上出现内存错误，quality的设定值要低于50。
-                destinationType : Camera.DestinationType.FILE_URI,//FILE_URI,DATA_URL
-                sourceType : Camera.PictureSourceType.PHOTOLIBRARY,
-                saveToPhotoAlbum: true
-        };
+        fileChooser.open(app.onCameraSuccess,app.onCameraError);
+        // cameraOptions={ 
+        //         quality : quality,//ios为了避免部分设备上出现内存错误，quality的设定值要低于50。
+        //         destinationType : Camera.DestinationType.FILE_URI,//FILE_URI,DATA_URL
+        //         sourceType : Camera.PictureSourceType.PHOTOLIBRARY,
+        //         saveToPhotoAlbum: true
+        // };
     }
     // alert(JSON.stringify(cameraOptions));
-    navigator.camera.getPicture( app.onCameraSuccess, app.onCameraError, app.cameraOptions);
+    
     },
 
     onCameraSuccess:function(imageURI){//imageData
 //  log("data==="+imageURI);
 //  $("#my_profile_page #face").attr("src","data:image/jpeg;base64," + imageData);
-    
+		alert(imageURI);
         var imgOriginalUrl=imageURI;
         
         //拍照成功后，需要上传文件
         var fileName=imageURI.substr(imageURI.lastIndexOf('/') + 1);
-
+alert(fileName);
         var options = new FileUploadOptions();
 
         options.fileKey = "file";//图片域名！！！
@@ -254,7 +254,7 @@ var app = {
         }
       
          var uri = encodeURI(ABSApplication.ABSServer.url+JSON.stringify(request));
-        
+        alert(uri);
          var ft = new FileTransfer();
          ft.upload(imageURI, uri, app.onFileUploadSuccess, app.onFileUploadFail, options);
     },
@@ -295,6 +295,7 @@ var app = {
     //  log("Code = " + result.responseCode+";Response = " + result.response+";Sent = " + result.bytesSent);
     },
     onFileUploadFail:function (error){
+		alert("alert(error);");
         alert(error);
         log("code = "+error.code+";upload error source = " + error.source+";upload error target = " + error.target);
     }
