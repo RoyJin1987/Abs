@@ -184,7 +184,7 @@ var app = {
             request.parameter.business_license =usr.business_license;
         }
 
-        alert(JSON.stringify(request));
+        //alert(JSON.stringify(request));
         var url = ABSApplication.ABSServer.url + JSON.stringify(request);
         commonJS.get(url,function(data){
            if (data.status === 0) {
@@ -223,6 +223,7 @@ var app = {
                         if (window.notificationClient) {
                             window.notificationClient.startService(data.parameter.identity,token,true);
                         };
+                        alert("注册成功！");
                         window.location.href="homemap.html";
                     }else{
                         alert(JSON.stringify(data.message));
