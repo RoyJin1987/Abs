@@ -338,7 +338,7 @@ var app = {
     //alert("navigatorTo "+url);
     if(app.token)
     {
-      window.location.href = url;
+      window.location.href = url+"?model="+app.currentModel;
     }
     else
     {
