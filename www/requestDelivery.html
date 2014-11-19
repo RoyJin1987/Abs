@@ -193,11 +193,11 @@
 			 </div>
 		</div>
 		<hr />
-		<div  align="center" data-bind="visible:selectedModels=='8'">
+		<div  align="center" data-bind="visible:selectedModels()=='8'">
 			<a onclick="app.sendClick()" href="#"><img src="img/bws.png" alt=""></img></a>  
 		</div>
 		<div  align="center">
-			<a onclick="app.sendClick()" data-role="button" data-ajax="false" data-bind="visible:selectedModels!=8" data-theme="f">下一步</a>  
+			<a onclick="app.sendClick()" data-role="button" data-ajax="false" data-bind="visible:selectedModels()!=8" data-theme="f">下一步</a>  
 		</div>
    </div>
 </div><!-- /page -->  

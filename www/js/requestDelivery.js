@@ -19,6 +19,8 @@
 
 
 var app = {
+  id:"",
+  identity:"",
   position:{},
   baiduPosition:{},
   serverUrl:"http://112.124.122.107/Applications/web/?data=",
@@ -104,11 +106,20 @@ var app = {
 
       var order = app.extractOrder(false);
       if (app.viewModel.selectedModels() == '8'){
-        var request = {
-          Action:"HMSend",
-          Token:app.token,
-          parameter:order
-        };
+        var request;
+        if (app.id){
+          request = {
+            Action:"CalledTA",
+            Token:app.token,
+            id:app.id
+          };
+        }else{
+          request = {
+            Action:"HMSend",
+            Token:app.token,
+            parameter:order
+          };
+        }
         
         var url = app.serverUrl + JSON.stringify(request);
         
@@ -117,7 +128,20 @@ var app = {
           if (data_.status===0) {
             //提示用户
             // alert("订单提交成功！");
-            window.location.href="pushing.html?orderId="+data_.orderId;
+            if (app.id){
+              alert("下单成功");
+              var message = { 
+                  type:"newOrder",
+                  orderId:data_.orderId
+              };
+              //alert(app.identity);
+              if (window.notificationClient){
+                window.notificationClient.notify(app.identity,JSON.stringify(message));  
+              }
+            }else{
+              window.location.href="pushing.html?orderId="+data_.orderId;
+            }
+            
           }
           else{
             //提示用户
@@ -141,18 +165,37 @@ var app = {
     },
     sendOrderClick:function() {
       var order = app.extractOrder(true);
-      var request = {
-        Action:"HMSend",
-        Token:app.token,
-        parameter:order
-      };
+      var request;
+      if (app.id){
+        request = {
+          Action:"CalledTA",
+          Token:app.token,
+          id:app.id
+        };
+      }else{
+        request = {
+          Action:"HMSend",
+          Token:app.token,
+          parameter:order
+        };
+      }
       //alert("订单创建:"+ JSON.stringify(request));
       var url = app.serverUrl + JSON.stringify(request);
       commonJS.get(url,function(data_){
         if (data_.status===0) {
-          //提示用户
-          // alert(JSON.stringify(data_));
-          window.location.href="pushing.html?orderId="+data_.orderId;
+            if (app.id){
+              alert("下单成功");
+              var message = { 
+                  type:"newOrder",
+                  orderId:data_.orderId
+              };
+              //alert(app.identity);
+              if (window.notificationClient){
+                window.notificationClient.notify(app.identity,JSON.stringify(message));  
+              }
+            }else{
+              window.location.href="pushing.html?orderId="+data_.orderId;
+            }
         }
         else{
            //提示用户
@@ -197,7 +240,8 @@ var app = {
       }
 
       var defaultModel = commonJS.getUrlParam("model");
-
+      app.id = commonJS.getUrlParam("id");
+      app.identity =commonJS.getUrlParam("identity");
       //双向绑定可编辑字段
       app.viewModel.orderInfo.send_address.address = ko.observable(app.viewModel.orderInfo.send_address.address);
       app.viewModel.orderInfo.type = ko.observable(app.viewModel.orderInfo.type);
@@ -374,7 +418,7 @@ var app = {
         order.shipping_address.address = app.viewModel.orderInfo.shipping_address.address();
       }
       
-      alert("order info:"+JSON.stringify(order));
+      //alert("order info:"+JSON.stringify(order));
       return order;
   },
 

@@ -321,7 +321,7 @@ var app = {
     var self = this;
     var url =  self.serverUrl + jsonStr;
     commonJS.get(url,function(data){ 
-      alert(JSON.stringify(data));
+      //alert(JSON.stringify(data));
       self.nVehicles = data.items;
       // alert("Got nVehicles count:"+self.nVehicles.length);
       for(var i in self.nVehicles)

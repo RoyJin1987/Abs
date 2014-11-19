@@ -26,8 +26,12 @@ var app = {
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
-        document.addEventListener("backbutton", commonJS.goback(), false);
+         if (!window.device) {
+            $(document).ready(this.onDeviceReady);
+        } else {
+            document.addEventListener('deviceready', this.onDeviceReady, false);
+        }
+        //document.addEventListener("backbutton", commonJS.goback(), false);
     },
     // deviceready Event Handler
     //
