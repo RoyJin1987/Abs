@@ -84,35 +84,42 @@ var app = {
 
           });
 
-          $(document).delegate(".vehicle-calling","click",function(){
-            //alert("clicked");
-            app.navigatorTo("requestDelivery.html");
-          });
+          // $(document).delegate(".vehicle-calling","click",function(){
+          //   //alert("clicked");
+          //   app.navigatorTo("requestDelivery.html");
+          // });
           // alert("got locationService");
           //通过百度sdk来获取经纬度,并且alert出经纬度信息
           var noop = function(){};
-          var callback = function(pos){
-                app.baiduPosition = new BMap.Point(pos.coords.longitude,pos.coords.latitude);
-                 // $.cookie('baiduPosition', JSON.stringify(app.baiduPosition), { expires: 1, path: '/' });
-                localStorage.setItem('baiduPosition',JSON.stringify(app.baiduPosition));
-                // var location = JSON.parse(localStorage["baiduPosition"]);
-                // alert("baiduPosition："+ JSON.stringify(location));
-                app.loadMap();
-                window.locationService.stop(noop,noop);
-          }
-          setTimeout(function()
+          if(window.locationService)
           {
-            window.locationService.getCurrentPosition(callback,function(e){
-              window.locationService.stop(noop,noop);
-            });
-            //每60秒获取一次坐标
-            setInterval(function(){
+            var callback = function(pos){
+                  app.baiduPosition = new BMap.Point(pos.coords.longitude,pos.coords.latitude);
+                   // $.cookie('baiduPosition', JSON.stringify(app.baiduPosition), { expires: 1, path: '/' });
+                  localStorage.setItem('baiduPosition',JSON.stringify(app.baiduPosition));
+                  // var location = JSON.parse(localStorage["baiduPosition"]);
+                  // alert("baiduPosition："+ JSON.stringify(location));
+                  app.loadMap();
+                  window.locationService.stop(noop,noop);
+            }
+            setTimeout(function()
+            {
               window.locationService.getCurrentPosition(callback,function(e){
                 window.locationService.stop(noop,noop);
               });
-            },60000);
+              //每60秒获取一次坐标
+              setInterval(function(){
+                window.locationService.getCurrentPosition(callback,function(e){
+                  window.locationService.stop(noop,noop);
+                });
+              },60000);
 
-          },3000);
+            },3000);
+          }
+          else
+          {
+            app.loadMap();
+          }
       });
 
       
@@ -161,6 +168,7 @@ var app = {
         //test
        var point = new BMap.Point(121.605368,31.203069);
        app.map.centerAndZoom(point, 14); 
+       app.baiduPosition = point;
        // app.addMyLocMaker(point);
        app.getNVehicles(app.currentModel);             
     }
@@ -200,7 +208,23 @@ var app = {
   addVehicleMaker:function(BMapPoint,isAnimated,opts,vehicle)  {
     if (!BMapPoint) { return;};
     if (app.map) {
-      var vehicleImg = $("input[name='car-type'][value='"+app.currentModel+"']").attr('icon-path');
+      var vehicleImg = "";//$("input[name='car-type'][value='"+app.currentModel+"']").attr('icon-path');
+      switch(vehicle.gid)
+      {
+        case 1:
+        vehicleImg = "img/map/gid_1.png";
+        break;
+        case 2:
+        vehicleImg = "img/map/gid_2.png";
+        break;
+        case 3:
+        vehicleImg = "img/map/gid_3.png";
+        break;
+        default:
+        vehicleImg = "img/map/gid_1.png";
+        break;
+
+      }
       var vIcon = new BMap.Icon(vehicleImg,   
       new BMap.Size(50, 50), {      
        // 指定定位位置。     
@@ -227,7 +251,7 @@ var app = {
                      + "<div><img style='width:38px;height:38px' src='"+vehicle.image+"' alt=''></img></div>"
                      +"<div style='position:relative;padding-right:55px'>"
                      +"<div style='position:absolute;right:0px;top:10px'>"
-                     +"<a href='callHim.html?model="+app.currentModel+"&id="+vehicle.item.id+"'><img style='width:80px;height:80px' src='img/map/jiujiaota_gr.png'></img></a></div>"
+                     +"<a href='callHim.html?model="+app.currentModel+"&id="+vehicle.item.motorcadeKey+"'><img style='width:80px;height:80px' src='img/map/jiujiaota_gr.png'></img></a></div>"
                      +"<div>车牌号:"+vehicle.item.license_plate_number+"</div>"
                      +"<div>联系人:"+vehicle.name+"</div>"
                      +"<div>距离我:"+1.5+"公里</div>"
@@ -298,8 +322,8 @@ var app = {
       Action:"NVehicles",
       models:model,
       parameter:{
-        latitude:app.baiduPosition.latitude,
-        longitude:app.baiduPosition.longitude,
+        latitude:app.baiduPosition.lat,
+        longitude:app.baiduPosition.lng,
         page:1
       }
     }
@@ -307,7 +331,7 @@ var app = {
     var self = this;
     var url =  self.serverUrl + jsonStr;
     commonJS.get(url,function(data){ 
-      //alert(JSON.stringify(data));
+      alert(JSON.stringify(data));
       self.nVehicles = data.items;
       // alert("Got nVehicles count:"+self.nVehicles.length);
       for(var i in self.nVehicles)
@@ -319,14 +343,22 @@ var app = {
               title : "车牌号："+vehicle.license_plate_number, // 信息窗口标题
               enableAutoPan : true //自动平移
             };
-         //车辆位置为0,随机取一点
-          var bounds = app.map.getBounds();
-          var sw = bounds.getSouthWest();
-          var ne = bounds.getNorthEast();
-          var lngSpan = Math.abs(sw.lng - ne.lng);
-          var latSpan = Math.abs(ne.lat - sw.lat);
-          var point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
-          app.addVehicleMaker(point,false,opts,vehicle);  
+            var point ={};
+            if(vehicle.distance.longitude === 0|| vehicle.distance.latitude===0)
+            {
+             //车辆位置为0,随机取一点
+              var bounds = app.map.getBounds();
+              var sw = bounds.getSouthWest();
+              var ne = bounds.getNorthEast();
+              var lngSpan = Math.abs(sw.lng - ne.lng);
+              var latSpan = Math.abs(ne.lat - sw.lat);
+              point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
+            }
+            else
+            {
+               point = new BMap.Point(vehicle.distance.longitude,vehicle.distance.latitude);
+            }
+            app.addVehicleMaker(point,false,opts,vehicle);  
               
       }
       // $("body").trigger("create");
