@@ -66,6 +66,11 @@ var commonJS = {
     goback: function () {
         history.back();
     },
+
+    alertDeveloping: function () {
+        alert("正在加班加点，敬请期待！");
+    },
+
     /**
      * LL.json
      * JSON??
