@@ -48,22 +48,26 @@ var app = {
         app.usrImage = localStorage["usrImage"];
       }
 
-
-
-      if (app.token) {
-        //已登录
-        $("#usr-name").text("您好,"+app.usrName);
-      }
-      else
+      if(!app.token)
       {
-        //未登录
-        $("#usr-name").text('您尚未登录');
+        alert("请先登录");
+        window.location.href= "login.html";
       }
-      if(app.usrImage){
+
+      // if (app.token) {
+      //   //已登录
+      //   $("#usr-name").text("您好,"+app.usrName);
+      // }
+      // else
+      // {
+      //   //未登录
+      //   $("#usr-name").text('您尚未登录');
+      // }
+      // if(app.usrImage){
         
-        //$("#usr-image").src=app.usrImage;
-        document.getElementById("usr-image").src = app.usrImage;
-      }
+      //   //$("#usr-image").src=app.usrImage;
+      //   document.getElementById("usr-image").src = app.usrImage;
+      // }
      
       // alert("screen height:"+screen.availHeight);
       // alert("screen height:"+$(".ui-page").first().height());
@@ -84,11 +88,7 @@ var app = {
 
           });
 
-          // $(document).delegate(".vehicle-calling","click",function(){
-          //   //alert("clicked");
-          //   app.navigatorTo("requestDelivery.html");
-          // });
-          // alert("got locationService");
+
           //通过百度sdk来获取经纬度,并且alert出经纬度信息
           var noop = function(){};
           if(window.locationService)
@@ -107,54 +107,24 @@ var app = {
               window.locationService.getCurrentPosition(callback,function(e){
                 window.locationService.stop(noop,noop);
               });
-              //每60秒获取一次坐标
-              setInterval(function(){
-                window.locationService.getCurrentPosition(callback,function(e){
-                  window.locationService.stop(noop,noop);
-                });
-              },60000);
+              // //每60秒获取一次坐标
+              // setInterval(function(){
+              //   window.locationService.getCurrentPosition(callback,function(e){
+              //     window.locationService.stop(noop,noop);
+              //   });
+              // },60000);
 
             },3000);
           }
           else
           {
+            //just test
             app.loadMap();
           }
       });
 
       
   },
-
- 	//加载定位 
- 	loadNavigator : function() {
-    	// onSuccess Callback
-    	//   This method accepts a `Position` object, which contains
-    	//   the current GPS coordinates
-    	//
-    	var succ = function onSuccess(position) {
-    	   app.position = position;
-         if (app.map) {
-            app.refreshMap();
-         } else {
-            app.loadMap();
-         };
-         // app.addVehicleMaker(app.position.coords,true,null,"我的位置");    
-      }
-
-    	// onError Callback receives a PositionError object
-    	//
-    	var err = function onError(error) {
-    	    alert('code: '    + error.code    + '\n' +
-    	          'message: ' + error.message + '\n');
-    	}
-      // var option = { maximumAge: 10*60*1000, timeout: 2*60*1000, enableHighAccuracy: false }
-      // navigator.geolocation.getCurrentPosition(succ, err, option);
-
-    	// Options: throw an error if no update is received every 30 seconds.
-    	//
-  
-    	var watchID = navigator.geolocation.watchPosition(succ, err, {maximumAge: 10000, timeout: 10000, enableHighAccuracy: false});
- 	},
 
  	//加载地图
  	loadMap : function() {
@@ -175,16 +145,16 @@ var app = {
 
  	},
 
-  //刷新地图
-  refreshMap:function()
-  {
-    if (app.map) {
-      if (app.baiduPosition) {
-         app.map.centerAndZoom(app.baiduPosition, 14);
-         app.getNVehicles(app.currentModel);//默认获取两轮车
-      };
-    };
-  },
+  // //刷新地图
+  // refreshMap:function()
+  // {
+  //   if (app.map) {
+  //     if (app.baiduPosition) {
+  //        app.map.centerAndZoom(app.baiduPosition, 14);
+  //        app.getNVehicles(app.currentModel);//默认获取两轮车
+  //     };
+  //   };
+  // },
 
   addMyLocMaker:function(BMapPoint)
   {
@@ -208,23 +178,23 @@ var app = {
   addVehicleMaker:function(BMapPoint,isAnimated,opts,vehicle)  {
     if (!BMapPoint) { return;};
     if (app.map) {
-      var vehicleImg = "";//$("input[name='car-type'][value='"+app.currentModel+"']").attr('icon-path');
-      switch(vehicle.gid)
-      {
-        case 1:
-        vehicleImg = "img/map/gid_1.png";
-        break;
-        case 2:
-        vehicleImg = "img/map/gid_2.png";
-        break;
-        case 3:
-        vehicleImg = "img/map/gid_3.png";
-        break;
-        default:
-        vehicleImg = "img/map/gid_1.png";
-        break;
+      var vehicleImg = $("input[name='car-type'][value='"+app.currentModel+"']").attr('icon-path');
+      // switch(vehicle.gid)
+      // {
+      //   case 1:
+      //   vehicleImg = "img/map/gid_1.png";
+      //   break;
+      //   case 2:
+      //   vehicleImg = "img/map/gid_2.png";
+      //   break;
+      //   case 3:
+      //   vehicleImg = "img/map/gid_3.png";
+      //   break;
+      //   default:
+      //   vehicleImg = "img/map/gid_1.png";
+      //   break;
 
-      }
+      // }
       var vIcon = new BMap.Icon(vehicleImg,   
       new BMap.Size(50, 50), {      
        // 指定定位位置。     
@@ -245,23 +215,44 @@ var app = {
 
       };
       // var infoWindow = new BMap.InfoWindow(title?title:"车辆位置", opts);  // 创建信息窗口对象
+      var statusDesc = "";
+      switch(vehicle.motorcade.status)
+      {
+        case 0:
+        statusDesc = "未审核";
+        break;
+        case 1:
+        statusDesc = "空闲";
+        break;
+        case 2:
+        statusDesc = "运输中";
+        break;
+        case 3:
+        statusDesc = "停运";
+        break;
+        default:
+        statusDesc = "未审核";
+        break;
+      }
 
       //构造车辆信息窗口
       var content = "<div style='padding:2px 5px;font-size:.8em'>"
-                     + "<div><img style='width:38px;height:38px' src='"+vehicle.image+"' alt=''></img></div>"
+                     + "<div></div>"
                      +"<div style='position:relative;padding-right:55px'>"
                      +"<div style='position:absolute;right:0px;top:10px'>"
-                     +"<a href='callHim.html?model="+app.currentModel+"&id="+vehicle.item.motorcadeKey+"'><img style='width:80px;height:80px' src='img/map/jiujiaota_gr.png'></img></a></div>"
-                     +"<div>车牌号:"+vehicle.item.license_plate_number+"</div>"
-                     +"<div>联系人:"+vehicle.name+"</div>"
-                     +"<div>距离我:"+1.5+"公里</div>"
-                     +"<div>类型:"+vehicle.usertype+"</div>"
-                     +"<div>成交单数:"+vehicle.waybill_items+"</div>"
-                     +"<div>好评/差评次数:"+vehicle.haoping+"/"+vehicle.chaping+"</div></div></div>";
+                     +"<a href=''><img style='width:80px;height:80px' src='img/map/xclx.png'></img></a></div>"
+                     +"<div>订单信息</div>"
+                     +"<div>姓名:"+vehicle.user.name+"</div>"
+                     +"<div>离我距离:"+1.5+"公里</div>"
+                     +"<div>状态:"+statusDesc+"</div>"
+                     +"<div>发货时间:</div></div>"
+                     +"<div>发货地址:</div>"
+                     +"<div>送货地址:</div>"
+                     +"<div>车辆信息:</div></div>";
       // var html = [];
        
 
-      var infoWindow = new BMap.InfoWindow(content,{offset:new BMap.Size(0,-50)});            
+      var infoWindow = new BMap.InfoWindow(content,{offset:new BMap.Size(0,-50)});       
       marker.addEventListener("click", function(){          
         app.map.openInfoWindow(infoWindow,BMapPoint); //开启信息窗口
       });
@@ -304,7 +295,6 @@ var app = {
 
   //获取对应类型附近车辆
   getNVehicles:function(model) {
-    if (!app.baiduPosition) return;
     //清除车辆覆盖物
     // for(var i in app.vehicleMarkers)
     // {
@@ -314,17 +304,18 @@ var app = {
     // app.vehicleMarkers = [];
     app.map.clearOverlays();
     //alert("overlays count:"+app.map.getOverlays().length);
-    app.addMyLocMaker(app.baiduPosition); 
+    // app.addMyLocMaker(app.baiduPosition); 
 
     //请求附近车辆
     var param = {
-      Action:"NVehicles",
+      Action:"TeamItems",
       models:model,
-      parameter:{
-        latitude:app.baiduPosition.lat,
-        longitude:app.baiduPosition.lng,
-        page:1
-      }
+      // parameter:{
+      //   latitude:app.baiduPosition.lat,
+      //   longitude:app.baiduPosition.lng,
+      //   page:1
+      // }
+      Token:app.token
     }
     var jsonStr = JSON.stringify(param);
     var self = this;
@@ -341,23 +332,27 @@ var app = {
               height: 60,     // 信息窗口高度
               title : "车牌号："+vehicle.license_plate_number, // 信息窗口标题
               enableAutoPan : true //自动平移
-            };
-            var point ={};
-            if(vehicle.distance.longitude === 0|| vehicle.distance.latitude===0)
-            {
-             //车辆位置为0,随机取一点
-              var bounds = app.map.getBounds();
-              var sw = bounds.getSouthWest();
-              var ne = bounds.getNorthEast();
-              var lngSpan = Math.abs(sw.lng - ne.lng);
-              var latSpan = Math.abs(ne.lat - sw.lat);
-              point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
-            }
-            else
-            {
-               point = new BMap.Point(vehicle.distance.longitude,vehicle.distance.latitude);
-            }
-            app.addVehicleMaker(point,false,opts,vehicle);  
+        };
+        var point ={};
+        if(vehicle.motorcade.longitude === 0|| vehicle.motorcade.latitude===0)
+        {
+         //车辆位置为0,随机取一点
+          var bounds = app.map.getBounds();
+          var sw = bounds.getSouthWest();
+          var ne = bounds.getNorthEast();
+          var lngSpan = Math.abs(sw.lng - ne.lng);
+          var latSpan = Math.abs(ne.lat - sw.lat);
+          point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
+        }
+        else
+        {
+           point = new BMap.Point(vehicle.motorcade.longitude,vehicle.motorcade.latitude);
+        }
+        if(i === 0)
+        {
+          app.map.panTo(point); 
+        }
+        app.addVehicleMaker(point,false,opts,vehicle);  
               
       }
       // $("body").trigger("create");
