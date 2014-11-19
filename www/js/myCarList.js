@@ -114,6 +114,20 @@ var app = {
                     car.motorcade.status ="停运";
                 }
 
+                car.jiaoTa = function()
+                {
+                    var self = this;
+
+                    window.location.href = "requestDelivery.html?model="+self.motorcade.models+"&id="+self.motorcade.ID+"&identity='dfasdfasdfdsaaf'";
+
+                };
+                car.callHim = function()
+                {
+                    var self = this;
+                    alert(self.user.mobile_number);
+                    window.notificationClient.call(self.user.mobile_number);
+                };
+
                 if (model==="6"){
                     app.viewModel.cars1.push(car);
                 }else if (model==="7"){

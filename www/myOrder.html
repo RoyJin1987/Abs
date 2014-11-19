@@ -141,7 +141,68 @@
 			</div>	
 		</div>
 	</script>
-
+	<script type="text/html" id="confirm-template" >
+		<div class="order-info-block">
+			<div class="brief">
+		    	<div class="order-info-content">
+		    		<div class="order-info-brief-icon">
+						<a href="#" data-role="button" data-icon="carat-d" data-iconpos="notext" data-bind="attr:{id:orderId}" onclick="appMyOrder.showDetails(this,'SHDetails')"></a>
+					</div>
+		    		<div style="margin-top:5px">订单编号: <span data-bind="text:orderId"></span></div>
+		    		<div>日期: <span data-bind="text:orderDate"></span></div>
+		    		<div>发货人: <span data-bind="text:consignor"></span></div>
+		    		<div>从 <span data-bind="text:send_address.city"></span> 到 <span data-bind="text:shipping_address.city"></span></div>
+		    	</div>
+			</div>
+			<div class="details" style="display:none">
+				<div class="order-info-content description">
+					<div class="order-info-details-icon">
+						<a href="#" data-role="button" data-icon="carat-u" data-iconpos="notext" onclick="appMyOrder.hideDetails(this)"></a>
+					</div>
+		    		<div class="blue-strong-head">订单编号: <span data-bind="text:orderId">BX8739473</span></div>
+		    		<div>发货人姓名: <span data-bind="text:consignor"></span></div>
+		    		<div>货物类型: <span data-bind="text:type"></span></div>
+		    		<div>发货时间: <span data-bind="text:ship_date"></span></div>
+		    		<div>到货时间: <span data-bind="text:arrival_date"></span></div>
+		    		<div>货物重量: <span data-bind="text:weight"></span><span>kg</span></div>
+		    		<div>发货体积: <span data-bind="text:volume"></span><span>立方</span></div>
+		    		<div>发货地址: <span data-bind="text:send_address.city+send_address.address"></span></div>
+		    		<div>送货地址: <span data-bind="text:shipping_address.city+shipping_address.address"></span></div>
+		    	</div>
+		    	<hr style="background-color:#D3D3D3;border:0;height:1px;">
+		    	<div class="order-info-content" style="margin-bottom:15px">
+					<div class="blue-strong-head">运输方信息</div>
+				</div>
+				<div class="responser-list" data-bind="template: { name: 'carrier1-template', data:carrier }">
+			</div>	
+		</div>
+	</script>
+	<script type="text/html" id="carrier1-template" >
+		<div class="responser-list-item">
+			<div class="description">
+				<div style="float:left;">
+					<img style="width:35px;height:35px" src="" alt=""></img>
+				</div>
+				<div style="float:left;margin-left:15px">
+					<div>车牌号:  <span data-bind="text:motorcade.license_plate_number"></span></div>
+					<div>驾驶员: <span data-bind="text:pilot.name"></span></div>
+				</div>
+				<div style="float:right;width=120px"></div>
+				<div style="clear:both"></div>
+			</div>
+			<div class="ui-grid-b">
+				<div class="ui-block-a" style="text-align:center">
+					<a href="#" data-bind="click:callHim"><img src="img/dageita_gr.png" alt=""></img></a>
+				</div>
+				<div class="ui-block-b" style="text-align:center">
+					<a  href="#"><img src="img/zhifu_y.png" data-bind="click:commonJS.alertDeveloping" alt=""></img></a>	
+				</div>
+				<div class="ui-block-c" style="text-align:center">
+					<a  href="#" data-bind="click:inviteHim"><img src="img/joinmyteam.png" alt=""></img></a>		    			
+				</div>
+			</div>
+		</div>
+	</script> 
 	<script type="text/html" id="carrier-template" >
 		<div class="responser-list-item">
 			<div class="description">
@@ -160,7 +221,7 @@
 					<a href="#" data-bind="click:callHim"><img src="img/dageita_gr.png" alt=""></img></a>
 				</div>
 				<div class="ui-block-b" style="text-align:center">
-					<a  href="#"><img src="img/pingjia.png" alt=""></img></a>	
+					<a  href="#"><img src="img/pingjia.png" data-bind="click:commonJS.alertDeveloping" alt=""></img></a>	
 				</div>
 				<div class="ui-block-c" style="text-align:center">
 					<a  href="#" data-bind="click:inviteHim"><img src="img/joinmyteam.png" alt=""></img></a>		    			
@@ -218,7 +279,7 @@
 		    </div>
 		    <div id="cancel" class="ui-content" data-bind="template: { name: 'cancel-template', foreach: cancelOrders, as: 'order' }">
 		    </div>
-		    <div id="confirm" class="ui-content" data-bind="template: { name: 'waybill-template', foreach: confirmOrders, as: 'order' }">
+		    <div id="confirm" class="ui-content" data-bind="template: { name: 'confirm-template', foreach: confirmOrders, as: 'order' }">
 		    </div>
 		    <div id="completed" class="ui-content" data-bind="template: { name: 'waybill-template', foreach: completeOrders, as: 'order' }">
 		    </div>
