@@ -49,10 +49,15 @@ var app = {
       consignee_phone:"",  
       stars :"0",
       bid_item:{ // 出价项 车型选择非卡车时才有
-          freight:10,
-          truckage:24,
-          tipping:20,
+          freight:60,
+          truckage:74,
+          tipping:80,
       },
+    },
+    bid_item_tuijian:{ // 出价项 车型选择非卡车时才有
+          freight:60,
+          truckage:74,
+          tipping:80,
     },
     wenCengList :[],
     modelsList: [],
@@ -122,6 +127,10 @@ var app = {
           
       }else{
         $.mobile.changePage("#offer");
+        // alert(app.viewModel.orderInfo.bid_item.freight());
+        $("#slider1").val(app.viewModel.orderInfo.bid_item.freight()*1).slider("refresh");
+        $("#slider2").val(app.viewModel.orderInfo.bid_item.truckage()*1).slider("refresh");
+        $("#slider3").val(app.viewModel.orderInfo.bid_item.tipping()*1).slider("refresh");
       }
 
   },
@@ -185,6 +194,8 @@ var app = {
         alert("请先登录");
         window.location.href= "login.html";
       }
+
+      var defaultModel = commonJS.getUrlParam("model");
 
       //双向绑定可编辑字段
       app.viewModel.orderInfo.send_address.address = ko.observable(app.viewModel.orderInfo.send_address.address);
@@ -252,7 +263,11 @@ var app = {
  
       ko.applyBindings(app.viewModel);
       $('body').trigger("create");
-
+      if (defaultModel){
+        //$("#modelsList").val(defaultModel);
+        app.viewModel.selectedModels(defaultModel);
+        $("#modelsList").selectmenu("refresh"); 
+      }
     },
 
       //加载定位
@@ -361,7 +376,5 @@ var app = {
       alert("order info:"+JSON.stringify(order));
       return order;
   },
-
-  
 
 };
