@@ -193,8 +193,11 @@
 			 </div>
 		</div>
 		<hr />
-		<div  align="center">
+		<div  align="center" data-bind="visible:selectedModels=='8'">
 			<a onclick="app.sendClick()" href="#"><img src="img/bws.png" alt=""></img></a>  
+		</div>
+		<div  align="center">
+			<a onclick="app.sendClick()" data-role="button" data-ajax="false" data-bind="visible:selectedModels!=8" data-theme="f">下一步</a>  
 		</div>
    </div>
 </div><!-- /page -->  
@@ -320,9 +323,9 @@
 			 </div>
 		</div>
 		<hr/>
-			<div  align="center">
-				<a onclick="app.sendOrderClick()" data-role="button" data-ajax="false" data-theme="f">发送</a>  
-			</div>
+		<div  align="center">
+			<a onclick="app.sendOrderClick()" href="#"><img src="img/bws.png" alt=""></img></a>  
+		</div>
 		</form>
    </div>
 </div>
