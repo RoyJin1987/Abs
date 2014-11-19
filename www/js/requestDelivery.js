@@ -131,6 +131,7 @@ var app = {
         $("#slider1").val(app.viewModel.orderInfo.bid_item.freight()*1).slider("refresh");
         $("#slider2").val(app.viewModel.orderInfo.bid_item.truckage()*1).slider("refresh");
         $("#slider3").val(app.viewModel.orderInfo.bid_item.tipping()*1).slider("refresh");
+        $("#carType").text($("#modelsList").find("option:selected").text());
       }
 
   },
