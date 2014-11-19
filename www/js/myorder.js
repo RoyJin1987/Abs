@@ -370,13 +370,21 @@ var appMyOrder = {
                             Token:appMyOrder.token
                         };
                         var url = appMyOrder.serverUrl + JSON.stringify(request);
-                        alert(url);
+                        //alert(url);
                         commonJS.get(url,function(result){
                             if(result.status !== 0)
                             {
                                 alert(result.message);
                                 return;
                             }
+                            var message = { 
+                              type:"InviteTeam",
+                              usrName:appMyOrder.usrName
+                            };
+                            if (window.notificationClient){
+                                window.notificationClient.notify(self.user.identity,JSON.stringify(message));  
+                            }
+                            
                             alert("邀请成功，等待对方确认.");
                             
                         });   

@@ -77,7 +77,7 @@ public class PushCallback implements MqttCallback {
 
     	JSONObject json= new JSONObject(message);  
     	String type = json.getString("type");
-    	final String orderId = json.getString("orderId");
+    	
 		final Dialog dialog = new Dialog(Abs.context, R.style.JHDialog);
 		//设置它的ContentView
 		dialog.setContentView(R.layout.dialog_general);
@@ -91,6 +91,7 @@ public class PushCallback implements MqttCallback {
 		buttonCancel.setBackgroundResource(R.drawable.grey_style);
 		
 		if ("OrderCompleted".equals(type)){
+			final String orderId = json.getString("orderId");
 			buttonOK.setText("确定");
 			dialogTitle.setText("送货完成");
 			dialogMessage.setText("您的订单："+ orderId +"已送货完成。");
@@ -101,6 +102,7 @@ public class PushCallback implements MqttCallback {
 				}
 			});
 		}else if ("OrderConfirmed".equals(type)){
+			final String orderId = json.getString("orderId");
 			buttonOK.setText("查看我的运单");
 			buttonCancel.setText("取消");
 			dialogTitle.setText("运单被确定");
@@ -113,6 +115,7 @@ public class PushCallback implements MqttCallback {
 				}
 			});
 		}else if ("OrderGrabed".equals(type)){
+			final String orderId = json.getString("orderId");
 			buttonOK.setText("确定");
 			buttonCancel.setText("取消");
 			dialogTitle.setText("有新的抢单者");
@@ -124,7 +127,34 @@ public class PushCallback implements MqttCallback {
 					((CordovaActivity)Abs.context).loadUrl("file:///android_asset/www/myOrder.html");
 				}
 			});
+		}else if ("AcceptInviteTeam".equals(type)){
+			final String usrName = json.getString("usrName");
+			buttonOK.setText("确定");
+			buttonCancel.setText("取消");
+			dialogTitle.setText("消息提醒");
+			dialogMessage.setText(usrName +"已同意加入您的车队，去我的车队查看？");
+			buttonOK.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					dialog.dismiss();
+					((CordovaActivity)Abs.context).loadUrl("file:///android_asset/www/myCarList.html");
+				}
+			});
+		}else if ("InviteTeam".equals(type)){
+			final String usrName = json.getString("usrName");
+			buttonOK.setText("确定");
+			buttonCancel.setText("取消");
+			dialogTitle.setText("消息提醒");
+			dialogMessage.setText(usrName +"邀请您加入他的车队，去消息中心查看？");
+			buttonOK.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					dialog.dismiss();
+					((CordovaActivity)Abs.context).loadUrl("file:///android_asset/www/messageCenter.html");
+				}
+			});
 		}else{
+			final String orderId = json.getString("orderId");
 			buttonOK.setText("抢单");
 			buttonCancel.setText("取消");
 			dialogTitle.setText("有新的订单");
