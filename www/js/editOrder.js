@@ -56,13 +56,13 @@ var app = {
             Token:app.token,
             parameter:order
           };
-          alert(JSON.stringify(app.viewModel.orderInfo));
+          //alert(JSON.stringify(app.viewModel.orderInfo));
           var url = app.serverUrl + JSON.stringify(request);
           commonJS.get(url,function(data_){
             if (data_.status===0) {
               //提示用户
               alert("订单提交成功！");
-              window.location.href="myOrder.html";
+              window.location.href="pushing.html?orderId="+data_.orderId;
             }
             else{
               //提示用户
@@ -77,7 +77,7 @@ var app = {
     },
 
     sendOrderClick:function() {
-      alert(app.viewModel.selectedModels());
+      //alert(app.viewModel.selectedModels());
 
       var order = app.extractOrder();
 
@@ -156,7 +156,7 @@ var app = {
             url = app.serverUrl + JSON.stringify(request);
             // debugger;
             commonJS.get(url,function(data){
-                alert(JSON.stringify(data));
+                //alert(JSON.stringify(data));
                 app.viewModel.orderInfo = data.item;
 
                 app.viewModel.orderInfo.send_address.address = ko.observable(data.item.send_address.address);
