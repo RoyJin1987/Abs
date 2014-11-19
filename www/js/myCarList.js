@@ -18,6 +18,8 @@
  */
 
 var app = {
+    serverUrl:"http://112.124.122.107/Applications/web/?data=",
+    token:"",
     viewModel: {
             cars1:ko.observableArray([]),
             cars2:ko.observableArray([]),
@@ -59,19 +61,69 @@ var app = {
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
-    onDeviceReady: function() {
+    onDeviceReady: function(model) {
+
+        if(typeof localStorage === 'undefined' )
+        {
+          app.token = $.cookie("usrToken");
+          app.usrName = $.cookie("usrName");
+        }
+        else
+        {
+          app.token = localStorage["usrToken"];
+          app.usrName = localStorage["usrName"];
+        }
+
         app.receivedEvent('deviceready');
-        //some test data
-        var jsonStr = '{"Action":"getPilots","Token":"07b27a882cc721a9207250f1b6bd2868"}';
-        var url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
-        commonJS.get(url,function(data){
-                  
-           app.viewModel.cars1 = data.items;
-           app.viewModel.cars2 = data.items;
-           app.viewModel.cars3 = data.items;
-        });
+        
+        app.getcars("6");
             
         ko.applyBindings(app.viewModel);
+        $('body').trigger("create");
+    },
+
+    getcars: function(model) {
+
+        app.receivedEvent('deviceready');
+        
+        var request = {
+                Action:"TeamItems",
+                models:model,
+                Token:app.token
+            };
+        var url = app.serverUrl + JSON.stringify(request);
+
+        if (model==="6"){
+            app.viewModel.cars1.removeAll();
+        }else if (model==="7"){
+            app.viewModel.cars2.removeAll();
+        }else if (model==="8"){
+            app.viewModel.cars3.removeAll();
+        }
+        
+        commonJS.get(url,function(data){
+           for(var i in data.items){
+                var car = data.items[i];
+                if (car.motorcade.status==='0'){
+                    car.motorcade.status ="未审核";
+                }else if (car.motorcade.status==='1'){
+                    car.motorcade.status ="空闲";
+                }else if (car.motorcade.status==='2'){
+                    car.motorcade.status ="运输中";
+                }else if (car.motorcade.status==='3'){
+                    car.motorcade.status ="停运";
+                }
+
+                if (model==="6"){
+                    app.viewModel.cars1.push(car);
+                }else if (model==="7"){
+                    app.viewModel.cars2.push(car);
+                }else if (model==="8"){
+                    app.viewModel.cars3.push(car);
+                }
+                
+            }
+        });
         $('body').trigger("create");
     },
 

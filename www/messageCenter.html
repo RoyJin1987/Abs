@@ -3,114 +3,84 @@
 <head>  
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-	<meta http-equiv="Access-Control-Allow-Origin" content="*">
 	<style type="text/css">
 		body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;}
 		#golist {display: none;}
 		@media (max-device-width: 780px){#golist{display: block !important;}}
+		.order-info-block {border: 1px solid #66CCFF; border-radius:5px; margin:10px 10px 0 0; padding:5px 10px;}
+		.brief{height: 90px;}
+		.order-info-content {padding-right: 40px;position: relative;}
+		.order-info-brief-icon {width: 30px;height:30px;right: 5px;top:20px; position: absolute;}
+		.details{}
+		.order-info-details-content {}
+		.order-info-details-icon {width: 30px;height:30px;right: 2px;top:-5px; position: absolute;}
+		.responser-list{}
+		.responser-list-item{border-radius:5px;background-color:#E8E8E8;margin-bottom: 10px;padding: 3px}
+		.blue-strong-head{color: #00BFFF; font-size: 1.2em;}
+		.hide{display: none;}
 	</style>
 	<title>html app</title>
-	<link href="css/buttons.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" />
-	<link href="css/main.css" rel="stylesheet" type="text/css">
+<!-- 	<link href="css/main.css" rel="stylesheet" type="text/css"> -->
+	<link href="css/buttons.css" rel="stylesheet" type="text/css">
 	<script src="js/jquery.js"></script>
-	<script src="js/jquery.mobile-1.4.0-rc.1.js"></script> 
-	<script src="js/common.js"></script>
-	<style type="text/css">
-    .ui-listview.ui-icon-arrow-r {
-    background: transparent url(images/arrow_right.png) center center no-repeat !important;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    border-radius: 0;}
-    </style>
-	<script >  
-		/**  
-		这里为listview的ul标签事先设置一个模板，然后与后台的数据key相对应  
-		*/  
-		$(function(){  
-			var jsonStr = '{"Action":"OrderItems","status":0,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
-			var url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
-			
-			showList(url);
-			  
-		});  
-		
-		function showList(url){
-			var innerHtml = "";
-			var viewObj=$("#messageList");  
-
-			/*2、循环遍历数据，并克隆模板，将数据插入到模板dbField相对应的节点中，然后增加到listview上*/  
-			// for(var i=0; i<5; i++){  
-			// 	var messageId= 1;
-				
-			// 	innerHtml=innerHtml
-			// 	+"<li style=list-style:none;background:none;><a href='' messageId='"+messageId+"'><h2>加入车队</h2><p>XXX邀请您加入他的车队</p></a></li>";
-			// }  
-			
-			// viewObj.append(innerHtml);
-			//3、刷新 以上二种都可以刷新数据  
-			viewObj.listview("refresh");  
-		}
-		
-		var ordersInfo = {
-			id: null,
-			items: null
-		}
-			
-		function urnAction(obj){
-			var jsonStr = '{"Action":"OrderItems","status":0,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
-			var viewObj=$("#pushOrderList");  
-			if (obj.id=="btn_cancel"){
-				jsonStr = '{"Action":"OrderItems","status":1,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
-				viewObj=$("#canceledOrderList");  
-			}else if (obj.id=="btn_confirm"){
-				jsonStr = '{"Action":"OrderItems","status":2,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
-				viewObj=$("#confirmedOrderList");  
-			}else if (obj.id=="btn_completed"){
-				jsonStr = '{"Action":"OrderItems","status":3,"Token":"07b27a882cc721a9207250f1b6bd2868"}';
-				viewObj=$("#completedOrderList");  
-			}
-			var url = "http://112.124.122.107/Applications/web/?data=" + jsonStr;
-			showList(url,viewObj);
-		}
-		
-		$(document).on('vclick', '#pushOrderList li a', function () {
-		        ordersInfo.id = $(this).attr('orderId');
-		        $.mobile.changePage("#pushDetail", { transition: "slide", changeHash: false });
-				
-		    });
-			
-			$(document).on('pagebeforeshow', '#pushDetail', function () {
-		        $.each(ordersInfo.items, function (i, row) {
-		            if (row.orderId == ordersInfo.id) {
-					
-		                for(var key in row){  
-                            $("[dbField='"+key+"']").html(row[key]);  
-                        }       
-						$("[dbField='send_city_address']").html(row.send_address.city + row.send_address.address);
-						$("[dbField='shipping_city_address']").html(row.shipping_address.city + row.shipping_address.address);
-		            }
-		        });
-		    });
-        </script>  
+  	<script src="js/jquery.mobile-1.4.4.js"></script>
+  	<script src="js/jquery.tmpl.min.js"></script> 
+  	<script src="js/jquery.cookie.js"></script> 
+  	<script src="js/knockout-3.2.0.js"></script> 
+  	<script src="js/json2.js"></script>
+  	<script type="text/javascript" src="js/common.js"></script>
+  	<script type="text/javascript" src="js/messageCenter.js"></script>
+	<script type="text/html" id="invite-template" >
+		<div class="order-info-block">
+			<div class="brief">
+		    	<div class="order-info-content">
+		    		<div class="order-info-brief-icon">
+						<a href="#" data-role="button" data-icon="carat-d" data-iconpos="notext" onclick="app.showDetails(this)"></a>
+					</div>
+		    		<div style="margin-top:5px"><span data-bind="text:title"></span></div>
+		    	</div>
+			</div>
+			<div class="details" style="display:none">
+				<div class="order-info-content">
+					<div class="order-info-details-icon">
+						<a href="#" data-role="button" data-icon="carat-u" data-iconpos="notext" onclick="app.hideDetails(this)"></a>
+					</div>
+		    		<div class="blue-strong-head">邀请人: <span data-bind="text:name"></span></div>
+		    		<div>手机号码: <span data-bind="text:mobile_number"></span></div>
+		    		<div>公司名称: <span data-bind="text:company_name"></span></div>
+		    		<div>公司地址: <span data-bind="text:company_address"></span></div>
+		    		<div>公司电话: <span data-bind="text:company_tel"></span></div>
+		    		<div>公司/个人描述: <span data-bind="text:company_description"></span></div>
+		    		<div>申请时间: <span data-bind="text:date"></span></div>
+		    	</div>
+		    	
+		    	<hr style="background-color:#D3D3D3;border:0;height:1px;">
+		    	<div class="ui-grid-b">
+		    		<div class="ui-block-a"></div>
+		    		<div class="ui-block-b" style="font-size:.7em">
+		    			<a data-role="button" data-bind="click:accept">+同意加入他的车队</a>
+		    		</div>
+		    	</div>
+			</div>
+		</div>
+	</script>
+	<script type="text/javascript" src="cordova.js"></script>
 </head>  
-<body>  
-	<div data-role="page" id="messageCenter" >  
-		<div data-role="header" data-position="fixed" data-theme="f" >
-			<a data-iconpos="myleft" data-rel="back" data-role="button" data-icon="myback" data-rel="back" title="Home"  data-direction="reverse">返回</a>
-			<h1>消息中心</h1>
-			<a href="#" data-role="button" data-iconpos="notext" data-icon="search"></a>
-		</div>
-		<div class="uilist" data-role="content">
-			<ul data-role='listview' data-inset="true" id="messageList" class="ui-listview" data-theme="c">  
-				<li style="list-style:none;background:none;">
-					<a href='' messageId='dsfad'>
-						<h2>加入车队</h2>
-						<p>XXX邀请您加入他的车队</p></a></li>
-            </ul>  
-		</div>
+<body onload="app.onLoad()">
+	<div data-role="page" data-theme="f">  
+	  <div data-role="header" data-position="fixed" data-tap-toggle="false" class="header-extra-height">
+	    <a href="userCenter.html" data-role="button" data-ajax="false" data-rel="back" data-icon="back">返回</a>
+	    <h1>消息中心</h1>
+	    <a href="#" data-role="button" data-icon="info" data-iconpos="notext">  </a>
+	  </div>	  
+	  <div data-role="content">
+			
+		    <div id="push" class="ui-content" data-bind="template: { name: 'invite-template', foreach: invites}">
+		    </div>
+		
 	</div>
+</div>
 </body>  
 </html>
-
 

@@ -27,9 +27,9 @@
 				<img style="width:65px;height:65px" src="img/noPhoto.png" alt=""></img>
 			</div>
 			<div style="float:left;font-size:.8em;">
-				<div><strong>姓名: </strong> <span data-bind="text:name"></span></div>
-				<div><strong>车牌号: </strong> <span data-bind="text:identity"></span></div>
-				<div><strong>状态: </strong> <span data-bind="text:status"></span></div>
+				<div><strong>姓名: </strong> <span data-bind="text:user.name"></span></div>
+				<div><strong>车牌号: </strong> <span data-bind="text:motorcade.license_plate_number"></span></div>
+				<div><strong>状态: </strong> <span data-bind="text:motorcade.status"></span></div>
 			</div>
 			<div class="right-button-group-block ui-grid-a">
 				<div class="ui-block-a">
@@ -65,9 +65,9 @@
 					<td style="width:70%">
 						<div data-role="navbar">
 		      				<ul>
-		        			<li><a href="#view1" class="ui-btn-active" data-ajax="true">两轮类</a></li>
-		        			<li><a href="#view2" data-ajax="true">货的类</a></li>
-		        			<li><a href="#view3" data-ajax="true">卡车类</a></li>
+		        			<li><a href="#view1" onclick="app.getcars(6)" class="ui-btn-active" data-ajax="true">两轮类</a></li>
+		        			<li><a href="#view2" onclick="app.getcars(7)" data-ajax="true">货的类</a></li>
+		        			<li><a href="#view3" onclick="app.getcars(8)" data-ajax="true">卡车类</a></li>
 		      				</ul>
 		      			</div>	
 		    		</td>
