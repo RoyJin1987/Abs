@@ -227,7 +227,7 @@ var app = {
                      + "<div><img style='width:38px;height:38px' src='"+vehicle.image+"' alt=''></img></div>"
                      +"<div style='position:relative;padding-right:55px'>"
                      +"<div style='position:absolute;right:0px;top:10px'>"
-                     +"<a href='requestDelivery.html'><img style='width:80px;height:80px' src='img/map/jiujiaota_gr.png'></img></a></div>"
+                     +"<a href='callHim.html?model="+app.currentModel+"&id="+vehicle.item.id+"'><img style='width:80px;height:80px' src='img/map/jiujiaota_gr.png'></img></a></div>"
                      +"<div>车牌号:"+vehicle.item.license_plate_number+"</div>"
                      +"<div>联系人:"+vehicle.name+"</div>"
                      +"<div>距离我:"+1.5+"公里</div>"
