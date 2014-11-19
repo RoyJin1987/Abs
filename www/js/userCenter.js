@@ -27,12 +27,42 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+        document.addEventListener("backbutton", commonJS.goback(), false);
     },
     // deviceready Event Handler
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
+        if(typeof localStorage === 'undefined' )
+      {
+        app.token = $.cookie("usrToken");
+        app.usrName = $.cookie("usrName");
+        app.usrImage = $.cookie("usrImage");
+      }
+      else
+      {
+        app.token = localStorage["usrToken"];
+        app.usrName = localStorage["usrName"];
+        app.usrImage = localStorage["usrImage"];
+      }
+
+
+
+      if (app.token) {
+        //已登录
+        $("#usr-name").text("您好,"+app.usrName);
+      }
+      else
+      {
+        //未登录
+        $("#usr-name").text('您尚未登录');
+      }
+      if(app.usrImage){
+        
+        //$("#usr-image").src=app.usrImage;
+        document.getElementById("usr-image").src=app.usrImage;
+      }
         app.receivedEvent('deviceready');
     },
     // Update DOM on a Received Event

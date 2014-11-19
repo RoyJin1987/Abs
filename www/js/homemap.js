@@ -71,11 +71,11 @@ var app = {
 
       app.getModels(function(){
           app.currentModel = $("input[name='car-type'][checked='checked']").first().val();
-          alert("initmodels-->>current model:"+app.currentModel);
+          //alert("initmodels-->>current model:"+app.currentModel);
           //绑定页面事件
           $("input[name='car-type']").on('click',function()
           {
-            alert($(this).val());
+            //alert($(this).val());
             var selectedModel = $(this).val();
             if (app.currentModel != selectedModel) {
               app.currentModel =  selectedModel;
@@ -85,7 +85,7 @@ var app = {
           });
 
           $(document).delegate(".vehicle-calling","click",function(){
-            alert("clicked");
+            //alert("clicked");
             app.navigatorTo("requestDelivery.html");
           });
           // alert("got locationService");
@@ -155,7 +155,7 @@ var app = {
  		if (app.baiduPosition) {
         app.map.centerAndZoom(app.baiduPosition, 14); 
         // app.addMyLocMaker(app.baiduPosition); 
-        alert("loadmap-->>current model:"+app.currentModel);
+        //alert("loadmap-->>current model:"+app.currentModel);
         app.getNVehicles(app.currentModel);
  		} else {
         //test
@@ -290,7 +290,7 @@ var app = {
     // }
     // app.vehicleMarkers = [];
     app.map.clearOverlays();
-    alert("overlays count:"+app.map.getOverlays().length);
+    //alert("overlays count:"+app.map.getOverlays().length);
     app.addMyLocMaker(app.baiduPosition); 
 
     //请求附近车辆
@@ -307,7 +307,7 @@ var app = {
     var self = this;
     var url =  self.serverUrl + jsonStr;
     commonJS.get(url,function(data){ 
-      alert(JSON.stringify(data));
+      //alert(JSON.stringify(data));
       self.nVehicles = data.items;
       // alert("Got nVehicles count:"+self.nVehicles.length);
       for(var i in self.nVehicles)
@@ -335,7 +335,7 @@ var app = {
   },
   navigatorTo:function(url)
   {
-    alert("navigatorTo "+url);
+    //alert("navigatorTo "+url);
     if(app.token)
     {
       window.location.href = url;
@@ -343,6 +343,20 @@ var app = {
     else
     {
       alert("请先登录");
+      window.location.href = "login.html";
+    }
+  },
+
+  goto:function(url)
+  {
+    //alert("navigatorTo "+url);
+    if(app.token)
+    {
+      alert("个人设置部分正在加班加点，敬请期待！");
+    }
+    else
+    {
+      //alert("请先登录");
       window.location.href = "login.html";
     }
   }

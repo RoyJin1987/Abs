@@ -314,6 +314,7 @@ var appMyOrder = {
                 if (data.status !== 0) {
                     alert(data.message);
                 };  
+                //alert(JSON.stringify(data));
                 //抢单者
                 if (data.items){
                     
@@ -343,8 +344,7 @@ var appMyOrder = {
                     //     motorcade:data.motorcade,
                     //     user:data.user,
                     //     pilot:data.pilot
-                    // }
-                    
+                    // }alert()
                     
                     var carrier = order.carrier();
                     carrier.motorcade = data.motorcade;
@@ -366,7 +366,7 @@ var appMyOrder = {
                         var self = this;
                         var request = {
                             Action:"InviteTeam",
-                            motorcadekey:self.motorcade.motorcadekey,
+                            motorcadeKey:self.motorcade.motorcadekey,
                             Token:appMyOrder.token
                         };
                         var url = appMyOrder.serverUrl + JSON.stringify(request);

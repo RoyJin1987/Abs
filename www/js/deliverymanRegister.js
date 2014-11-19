@@ -21,7 +21,7 @@ var app = {
     newUser:{
         mobile_number:ko.observable(''),
         mobile_number_code:ko.observable(''),
-        name:ko.observable(''),
+        name:'',
         location:ko.observable(''),
         company_description:ko.observable(''),
         distribution_range:ko.observable(''),
@@ -30,7 +30,6 @@ var app = {
         company_name:'',
         company_address:ko.observable(''),
         company_tel:ko.observable(''),
-        business_license:ko.observable(''),
         //mobile_number:'',
         type: ko.observable("2"),
         model: ko.observable("7"),
@@ -40,6 +39,11 @@ var app = {
         hasStandard: ko.observable(false), 
         hasRefrigerate: ko.observable(false), 
         hasFrozen: ko.observable(false), 
+        image:"",
+        id_card:"",
+        driving_license:"",
+        driving_permits:"",
+        business_license:"",
         typeRadioClick: function () {
             if (app.newUser.type() == "2") {
                 app.newUser.showPersonal(true);
@@ -58,7 +62,7 @@ var app = {
             return true;
         }     
     },
-
+    uploadtype:"",
     onLoad:function() {
 
         if (!window.device) {
@@ -94,10 +98,6 @@ var app = {
         ko.applyBindings(app.newUser);
         $('body').trigger("create");
 
-    },
-
-    upload:function(type){
-        alert($("#file").value());
     },
 
     // Update DOM on a Received Event
@@ -146,12 +146,13 @@ var app = {
             type:usr.type(),
             deviceId:deviceId,
             parameter:{
-                image:"",
+                image:usr.image,
                 mobile_number:usr.mobile_number(),
                 mobile_number_code:usr.mobile_number_code(),
-                name:usr.name(),
+                name:usr.name,
                 location:"",
-                id_card:"",
+                id_card:usr.id_card,
+                //id_card:"",
                 company_description:usr.company_description(),
                 wenceng:[],
                 medels:usr.model(),
@@ -170,16 +171,20 @@ var app = {
         }
 
         if (usr.type() =="2"){
-            request.parameter.driving_license ="";
-            request.parameter.driving_permits ="";
+            request.parameter.driving_license =usr.driving_license;
+            request.parameter.driving_permits =usr.driving_permits;
+            // request.parameter.driving_license ="";
+            // request.parameter.driving_permits ="";
             request.parameter.license_plate_number =usr.license_plate_number();
             request.parameter.vehicle_description =usr.vehicle_description();
         }else{
             request.parameter.company_name =usr.company_name;
             request.parameter.company_address =usr.company_address();
             request.parameter.company_tel =usr.company_tel();
-            request.parameter.business_license ="";
+            request.parameter.business_license =usr.business_license;
         }
+
+        alert(JSON.stringify(request));
         var url = ABSApplication.ABSServer.url + JSON.stringify(request);
         commonJS.get(url,function(data){
            if (data.status === 0) {
@@ -234,8 +239,141 @@ var app = {
     validate:function()
     {
         return true;
+    },
+
+    //显示加载器
+    showLoader:function () {
+        //显示加载器.for jQuery Mobile 1.2.0
+        $.mobile.loading('show', {
+            text: '正在上传文件...', //加载器中显示的文字
+            textVisible: true, //是否显示文字
+            theme: 'a',        //加载器主题样式a-e
+            textonly: false,   //是否只显示文字
+            html: ""           //要显示的html内容，如图片等
+        });
+    },
+
+    //隐藏加载器.for jQuery Mobile 1.2.0
+    hideLoader:function ()
+    {
+        //隐藏加载器
+        $.mobile.loading('hide');
+    },
+
+    upload:function (type)
+    {
+        app.uploadtype =type;
+    },
+
+   onFaceImgClick:function(flag){
+    var w=440;
+    var h=440;
+    
+    var quality = 50;
+    var cameraOptions;
+    if(flag==0){
+        cameraOptions={ 
+                quality : quality,//ios为了避免部分设备上出现内存错误，quality的设定值要低于50。
+                destinationType : Camera.DestinationType.FILE_URI,//FILE_URI,DATA_URL
+                sourceType : Camera.PictureSourceType.CAMERA,//CAMERA,SAVEDPHOTOALBUM
+                allowEdit : true,
+                encodingType : Camera.EncodingType.JPEG,//JPEG,PNG
+                targetWidth : w,
+                targetHeight : h
+        };
+        navigator.camera.getPicture( app.onCameraSuccess, app.onCameraError, app.cameraOptions);
+    }else{
+        fileChooser.open(app.onCameraSuccess,app.onCameraError);
     }
+    },
 
+    onCameraSuccess:function(imageURI){//imageData
+        app.showLoader();
+        var imgOriginalUrl=imageURI;
+        
+        //拍照成功后，需要上传文件
+        var fileName=imageURI.substr(imageURI.lastIndexOf('/') + 1);
+        var options = new FileUploadOptions();
 
+        options.fileKey = "file";//图片域名！！！
+
+        if(fileName.indexOf('?')==-1){
+            options.fileName = fileName;
+        }else{
+            options.fileName = fileName.substr(0,fileName.indexOf('?'));
+        }
+       
+         options.mimeType = "image/jpeg";
+        //options.mimeType = "multipart/form-data";
+         options.chunkedMode = false;
+         
+         var params = {};
+         params.fileType = "customer";
+         options.params = params;
+       
+         var request = {
+            Action:"upFile",
+            type:"image" ,
+            Token:"",
+        }
+      
+         var uri = encodeURI(ABSApplication.ABSServer.url+JSON.stringify(request));
+        //alert(uri);
+         var ft = new FileTransfer();
+         ft.upload(imageURI, uri, app.onFileUploadSuccess, app.onFileUploadFail, options);
+    },
+
+    onCameraError:function(message){
+        alert(message);
+        log('Failed because: ' + message);
+    },
+
+    onFileUploadSuccess:function (result){
+        app.hideLoader();
+        var response = JSON.stringify(result.response);
+      
+        var pairs = response.split(",");
+        var filePath="";
+        for (var i in pairs){
+
+            var pair = pairs[i].split(":");
+            var tmpPath;
+            if (pair[0].indexOf("filepath")>-1){
+              
+                tmpPath = pair[1];
+                var paths= tmpPath.split("\\\/");
+                for (var j in paths){
+                    filePath =filePath +"/"+ paths[j];
+                }
+                filePath =filePath.substr(3);
+                filePath = filePath.replace("\\\"","");
+            }
+        }
+        
+        if(app.uploadtype=="1"){
+            app.newUser.image = filePath;
+            alert("头像上传成功");
+        }else if(app.uploadtype=="2"){
+            app.newUser.id_card = filePath;
+            alert("身份证上传成功");
+        }else if(app.uploadtype=="3"){
+            app.newUser.driving_license = filePath;
+            alert("驾驶证上传成功");
+        }else if(app.uploadtype=="4"){
+            app.newUser.driving_permits = filePath;
+            alert("行驶证上传成功");
+        }else if(app.uploadtype=="5"){
+            app.newUser.business_license = filePath;
+            alert("营业执照上传成功");
+        }
+        
+        
+        log("========onFileUploadSuccess===========");
+    },
+    onFileUploadFail:function (error){
+        app.hideLoader();
+        alert("上传出错");
+        log("code = "+error.code+";upload error source = " + error.source+";upload error target = " + error.target);
+    }
 
 };

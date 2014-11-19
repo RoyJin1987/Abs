@@ -30,8 +30,8 @@
 			<div >
 				<table>
 					<tr>
-						<td style="width:94%"><img class="center-align" style="width:40px" src="img/noPhoto.png"></img>上传头像</td>
-						<td style="width:6%"><a href="#" data-role="button" data-iconpos="notext" data-icon="flat-location" data-theme="f"></td>
+
+						<td style="width:94%"><a onclick="app.upload(1)" class="center-align" href="#select_pic_page" data-rel="popup" data-position-to="window" data-transition="pop"><img id="face" style="width:40px;height:40px;" src="img/noPhoto.png" /></a>上传头像</td>
 					</tr>
 				</table>
 				<hr/>
@@ -41,8 +41,8 @@
 				<table>
 					<tr>
 						<td style="width:25%"><label for="goodsType">手机号：</label></td>
-						<td style="width:30%"><input type="text" data-bind="value:mobile_number"/></td>
-						<td style="width:45%"><a href="#" data-role="button" data-iconpos="left" onclick="app.verificate()" data-icon="flat-location" data-theme="f">获取验证码</td>
+						<td style="width:40%"><input type="number" data-bind="value:mobile_number"/></td>
+						<td style="width:35%"><a href="#" data-role="button" data-iconpos="left" onclick="app.verificate()" data-icon="flat-location" data-theme="f">获取验证码</td>
 					</tr>
 					<tr>
 						<td style="width:25%"><label for="goodsType">验证码：</label></td>
@@ -109,18 +109,20 @@
       		<hr/>
       		<div data-bind="visible: showPersonal">
 				<table>
+				<tr>
+						<td style="width:25%"><label for="weight" data-inline="true">姓名：</label></td>
+						<td style="width:69%"><input type="text" data-bind="value:name" data-inline="true"></td><td style="width:6%"></td>
+					</tr>
 					<tr>
 						<td style="width:25%"><label for="weight" data-inline="true">身份证：</label></td>
-						<td style="width:69%"><div><input type="file" name="file" id="file" /> </div></img></td>
-						<td style="width:6%"><a href="#" onclick="app.upload(1)" data-role="button" data-iconpos="notext" data-icon="flat-location" data-theme="f"></td>
+						<td style="width:69%"><a onclick="app.upload(2)" class="center-align" href="#select_pic_page" data-rel="popup" data-position-to="window" data-transition="pop"><img id="face" style="width:40px;height:40px;" src="img/noPhoto.png" /></a></td>
 					</tr>
 				</table>
 				<hr/>
 				<table>
 					<tr>
 						<td style="width:25%"><label for="weight" data-inline="true">驾驶证：</label></td>
-						<td style="width:69%"><img class="center-align" style="width:40px" src="img/noPhoto.png"></img></td>
-						<td style="width:6%"><a href="#" data-role="button" data-iconpos="notext" data-icon="flat-location" data-theme="f"></td>
+						<td style="width:69%"><a onclick="app.upload(3)" class="center-align" href="#select_pic_page" data-rel="popup" data-position-to="window" data-transition="pop"><img id="face" style="width:40px;height:40px;" src="img/noPhoto.png" /></a></td>
 					</tr>
 				</table>
 				<hr/>
@@ -134,8 +136,8 @@
 				<table>
 					<tr>
 						<td style="width:55%"><label for="weight" data-inline="true">非两轮车上传行驶证：</label></td>
-						<td style="width:39%"><img class="center-align" style="width:40px" src="img/noPhoto.png"></img></td>
-						<td style="width:6%"><a href="#" data-role="button" data-iconpos="notext" data-icon="flat-location" data-theme="f"></td>
+						<td style="width:39%"><a onclick="app.upload(4)" class="center-align" href="#select_pic_page" data-rel="popup" data-position-to="window" data-transition="pop"><img id="face" style="width:40px;height:40px;" src="img/noPhoto.png" /></a></td>
+						
 					</tr>
 				</table>
 				<hr/>
@@ -173,23 +175,21 @@
 					</tr>
 					<tr>
 						<td style="width:25%"><label for="weight" data-inline="true">联系电话：</label></td>
-						<td style="width:69%"><input type="text" data-bind="value:company_tel" data-inline="true"></td><td style="width:6%"></td>
+						<td style="width:69%"><input type="number" data-bind="value:company_tel" data-inline="true"></td><td style="width:6%"></td>
 					</tr>
 				</table>
 				<hr/>
 				<table>
 					<tr>
 						<td style="width:25%"><label for="weight" data-inline="true">管理人身份证：</label></td>
-						<td style="width:69%"><img class="center-align" style="width:40px" src="img/noPhoto.png"></img></td>
-						<td style="width:6%"><a href="#" data-role="button" data-iconpos="notext" data-icon="flat-location" data-theme="f"></td>
+						<td style="width:69%"><a onclick="app.upload(2)" class="center-align" href="#select_pic_page" data-rel="popup" data-position-to="window" data-transition="pop"><img id="face" style="width:40px;height:40px;" src="img/noPhoto.png" /></a></td>
 					</tr>
 				</table>
 				<hr/>
 				<table>
 					<tr>
 						<td style="width:25%"><label for="weight" data-inline="true">营业执照：</label></td>
-						<td style="width:69%"><img class="center-align" style="width:40px" src="img/noPhoto.png"></img></td>
-						<td style="width:6%"><a href="#" data-role="button" data-iconpos="notext" data-icon="flat-location" data-theme="f"></td>
+						<td style="width:69%"><a onclick="app.upload(5)" class="center-align" href="#select_pic_page" data-rel="popup" data-position-to="window" data-transition="pop"><img id="face" style="width:40px;height:40px;" src="img/noPhoto.png" /></a></td>
 					</tr>
 				</table>
 				<hr/>
@@ -227,16 +227,14 @@
 				<table>
 					<tr>
 						<td style="width:25%"><label for="weight" data-inline="true">法人身份证：</label></td>
-						<td style="width:69%"><img class="center-align" style="width:40px" src="img/noPhoto.png"></img></td>
-						<td style="width:6%"><a href="#" data-role="button" data-iconpos="notext" data-icon="flat-location" data-theme="f"></td>
+						<td style="width:69%"><a onclick="app.upload(2)" class="center-align" href="#select_pic_page" data-rel="popup" data-position-to="window" data-transition="pop"><img id="face" style="width:40px;height:40px;" src="img/noPhoto.png" /></a></td>
 					</tr>
 				</table>
 				<hr/>
 				<table>
 					<tr>
 						<td style="width:25%"><label for="weight" data-inline="true">公司营业执照：</label></td>
-						<td style="width:69%"><img class="center-align" style="width:40px" src="img/noPhoto.png"></img></td>
-						<td style="width:6%"><a href="#" data-role="button" data-iconpos="notext" data-icon="flat-location" data-theme="f"></td>
+						<td style="width:69%"><a onclick="app.upload(5)" class="center-align" href="#select_pic_page" data-rel="popup" data-position-to="window" data-transition="pop"><img id="face" style="width:40px;height:40px;" src="img/noPhoto.png" /></a></td>
 					</tr>
 				</table>
 				<hr/>
@@ -263,5 +261,13 @@
 		</form>
    </div>
 </div><!-- /page -->  
+<div>
+	<div data-role="popup" id="select_pic_page" data-overlay-theme="c">
+		<ul data-role="listview" data-icon="false">
+			<li onclick="app.onFaceImgClick(0)" style="border-width:0;border-color:#666;border-bottom-width: 1px;"><a style="padding:16px;font-weight:normal;" href="#" data-rel="back">拍照</a></li>
+			<li onclick="app.onFaceImgClick(1)" style="border-width:0;"><a style="padding:16px;font-weight:normal;" href="#" data-rel="back">从已有照片选择</a></li>
+		</ul>
+	</div>			
+</div>
 </body>  
 </html> 

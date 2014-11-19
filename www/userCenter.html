@@ -4,6 +4,16 @@
 <head>  
 <meta charset="UTF-8">  
 <meta name="viewport" content="width=device-width, initial-scale=1">  
+<style type="text/css">
+    body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;}
+    #golist {display: none;}
+    @media (max-device-width: 780px){#golist{display: block !important;}}
+    .ui-header img{width: 40px;height: 40px;border-radius:20px;}
+    .ui-footer img{ width: 31px; height: 28px;margin:3px 5px;vertical-align: middle;}
+    .ui-footer div { line-height: 40px;}
+    .ui-footer a{height: :40px; line-height:40px; vertical-align: middle;}
+    .ui-footer a > span{height: :40px; font-size: 1.3em}
+  </style>
 <title>html app</title>  
     <link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" />
 	<link href="css/main.css" rel="stylesheet" type="text/css">
@@ -11,18 +21,35 @@
   <script src="js/jquery.mobile-1.4.0-rc.1.js"></script>
 </head>  
 <body>  
-<div data-role="page">  
+<div data-role="page" data-theme="f">  
 <!--   <div data-role="header" data-position="fixed">
     <a href="#" data-role="button" data-icon="btn_back">返回</a>
     <h1></h1>
     <a href="#" data-role="button" data-icon="search">搜索</a>
   </div> -->
   
-  <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="f">
-      <a data-iconpos="left" data-role="button" data-icon="back" href="homemap.html" title="Home">返回</a>
-      <h1>A</h1>
-    </div>
-  
+   <div data-role="header" data-position="fixed" data-tap-toggle="false" class="header-extra-height">
+    <table width="100%">
+    <tr>
+    <td width="10%">
+      <div style="margin:0 auto;text-align:left">
+           <a data-iconpos="left" data-role="button" data-icon="back" href="homemap.html" title="Home">返回</a>
+      </div>
+    </td>
+    <td width="90%">
+      <div style="margin:0 auto;text-align:center">
+        <a style="margin:0 auto;text-align:center" data-ajax="false" href="#" data-role="button" data-transition="slide" onclick="app.goto('settings.html')">
+          <img id="usr-image" class="icon-img" src="img/noPhoto.png" alt=""></img>
+        </a>
+        <span id="usr-name"></span>
+      </div>
+    </td>
+    </tr>
+    </table>
+      
+      
+  </div>
+
   <nav>
 	<ul>		
       <li><a data-ajax="false" href="myCarList.html"><img src="img/myCarList.png" alt=""><span>我的车队</span></a></li>
@@ -42,8 +69,8 @@
       <ul>
         <li><a href="#" data-icon="plus">收藏</a></li>
         <li><a href="#" data-icon="minus">社区</a></li>
-        <li><a href="#" data-icon="delete" class="ui-btn-active">设置</a></li>
-        <li><a href="#" data-icon="check">应用</a></li>
+        <li><a href="#" data-icon="delete" >设置</a></li>
+        <li><a href="#" data-icon="check" class="ui-btn-active">应用</a></li>
       </ul>
     </div>
   </div>

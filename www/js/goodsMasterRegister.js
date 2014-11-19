@@ -35,6 +35,7 @@ var app = {
             document.addEventListener('deviceready', this.onDeviceReady, false);
         }
 
+
     },
 
     // Application Constructor
@@ -70,9 +71,11 @@ var app = {
 
         console.log('Received Event: ' + id);
     },
+
     //获取验证码
     verificate:function()
     {
+        
         // debugger;
         if(!app.newUser.mobile())
         {
@@ -183,14 +186,30 @@ var app = {
         return true;
     },
 
+    //显示加载器
+    showLoader:function () {
+        //显示加载器.for jQuery Mobile 1.2.0
+        $.mobile.loading('show', {
+            text: '正在上传文件...', //加载器中显示的文字
+            textVisible: true, //是否显示文字
+            theme: 'a',        //加载器主题样式a-e
+            textonly: false,   //是否只显示文字
+            html: ""           //要显示的html内容，如图片等
+        });
+    },
+
+    //隐藏加载器.for jQuery Mobile 1.2.0
+    hideLoader:function ()
+    {
+        //隐藏加载器
+        $.mobile.loading('hide');
+    },
+
    onFaceImgClick:function(flag){
-//  var w=$("#my_profile_page #face").width();
-//  var h=$("#my_profile_page #face").height();
     var w=440;
     var h=440;
     
     var quality = 50;
-//  log("device.platform="+device.platform+";quality====="+quality);
     var cameraOptions;
     if(flag==0){
         cameraOptions={ 
@@ -204,31 +223,16 @@ var app = {
         };
         navigator.camera.getPicture( app.onCameraSuccess, app.onCameraError, app.cameraOptions);
     }else{
-        // alert(Camera.pictureSource.CAMERA);
-        // alert(Camera.pictureSource.PHOTOLIBRARY);
-        //window.open(app.onCameraSuccess,app.onCameraError);
-
         fileChooser.open(app.onCameraSuccess,app.onCameraError);
-        // cameraOptions={ 
-        //         quality : quality,//ios为了避免部分设备上出现内存错误，quality的设定值要低于50。
-        //         destinationType : Camera.DestinationType.FILE_URI,//FILE_URI,DATA_URL
-        //         sourceType : Camera.PictureSourceType.PHOTOLIBRARY,
-        //         saveToPhotoAlbum: true
-        // };
     }
-    // alert(JSON.stringify(cameraOptions));
-    
     },
 
     onCameraSuccess:function(imageURI){//imageData
-//  log("data==="+imageURI);
-//  $("#my_profile_page #face").attr("src","data:image/jpeg;base64," + imageData);
-		alert(imageURI);
+        app.showLoader();
         var imgOriginalUrl=imageURI;
         
         //拍照成功后，需要上传文件
         var fileName=imageURI.substr(imageURI.lastIndexOf('/') + 1);
-alert(fileName);
         var options = new FileUploadOptions();
 
         options.fileKey = "file";//图片域名！！！
@@ -254,7 +258,7 @@ alert(fileName);
         }
       
          var uri = encodeURI(ABSApplication.ABSServer.url+JSON.stringify(request));
-        alert(uri);
+        //alert(uri);
          var ft = new FileTransfer();
          ft.upload(imageURI, uri, app.onFileUploadSuccess, app.onFileUploadFail, options);
     },
@@ -265,7 +269,7 @@ alert(fileName);
     },
 
     onFileUploadSuccess:function (result){
-        
+        app.hideLoader();
         var response = JSON.stringify(result.response);
       
         var pairs = response.split(",");
@@ -277,9 +281,6 @@ alert(fileName);
             if (pair[0].indexOf("filepath")>-1){
               
                 tmpPath = pair[1];
-              
-               
-
                 var paths= tmpPath.split("\\\/");
                 for (var j in paths){
                     filePath =filePath +"/"+ paths[j];
@@ -292,11 +293,10 @@ alert(fileName);
         app.newUser.image = filePath;
         alert("头像上传成功");
         log("========onFileUploadSuccess===========");
-    //  log("Code = " + result.responseCode+";Response = " + result.response+";Sent = " + result.bytesSent);
     },
     onFileUploadFail:function (error){
-		alert("alert(error);");
-        alert(error);
+		app.hideLoader();
+        alert("上传出错");
         log("code = "+error.code+";upload error source = " + error.source+";upload error target = " + error.target);
     }
 

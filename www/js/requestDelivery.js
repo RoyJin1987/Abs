@@ -72,6 +72,7 @@ var app = {
           $(document).ready(this.onDeviceReady);
       } else {
           document.addEventListener('deviceready', this.onDeviceReady, false);
+          //document.addEventListener("backbutton", commonJS.goback(), false);
       }
       // document.addEventListener('deviceready', this.onDeviceReady, false);
 

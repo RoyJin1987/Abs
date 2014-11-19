@@ -226,7 +226,7 @@ public class Config {
 
     public static String getStartUrl() {
         if (self == null || self.startUrl == null) {
-            return "file:///android_asset/www/index.html";
+            return "file:///android_asset/www/homemap.html";
         }
         return self.startUrl;
     }
