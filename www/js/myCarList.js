@@ -118,7 +118,7 @@ var app = {
                 {
                     var self = this;
 
-                    window.location.href = "requestDelivery.html?model="+self.motorcade.models+"&id="+self.motorcade.ID+"&identity='dfasdfasdfdsaaf'";
+                    window.location.href = "callHim.html?model="+self.motorcade.models+"&id="+self.motorcade.ID+"&identity='dfasdfasdfdsaaf'";
 
                 };
                 car.callHim = function()
