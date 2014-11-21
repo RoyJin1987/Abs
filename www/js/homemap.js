@@ -97,32 +97,36 @@ var app = {
           // alert("got locationService");
           //通过百度sdk来获取经纬度,并且alert出经纬度信息
           var noop = function(){};
-          if(window.locationService)
+
+          var callback = function(pos){
+                app.baiduPosition = new BMap.Point(pos.coords.longitude,pos.coords.latitude);
+                 // $.cookie('baiduPosition', JSON.stringify(app.baiduPosition), { expires: 1, path: '/' });
+                localStorage.setItem('baiduPosition',JSON.stringify(app.baiduPosition));
+                // var location = JSON.parse(localStorage["baiduPosition"]);
+                // alert("baiduPosition："+ JSON.stringify(location));
+                app.loadMap();
+                window.locationService.stop(noop,noop);
+          }
+          setTimeout(function()
           {
-            var callback = function(pos){
-                  app.baiduPosition = new BMap.Point(pos.coords.longitude,pos.coords.latitude);
-                   // $.cookie('baiduPosition', JSON.stringify(app.baiduPosition), { expires: 1, path: '/' });
-                  localStorage.setItem('baiduPosition',JSON.stringify(app.baiduPosition));
-                  // var location = JSON.parse(localStorage["baiduPosition"]);
-                  // alert("baiduPosition："+ JSON.stringify(location));
-                  app.loadMap();
-                  window.locationService.stop(noop,noop);
-            }
-            setTimeout(function()
+            if(window.locationService)
             {
               window.locationService.getCurrentPosition(callback,function(e){
                 window.locationService.stop(noop,noop);
               });
-              //每60秒获取一次坐标
-              setInterval(function(){
+            }
+            //每60秒获取一次坐标
+            setInterval(function(){
+              if(window.locationService)
+              {
                 window.locationService.getCurrentPosition(callback,function(e){
                   window.locationService.stop(noop,noop);
                 });
-              },60000);
-
-            },3000);
-          }
-          else
+              }
+            },60000);
+          },3000);
+          
+          if(!window.locationService || typeof locationService == "undefined")
           {
             app.loadMap();
           }
