@@ -28,8 +28,8 @@ var app = {
   viewModel :{
     orderInfo:{
       send_address:{
-        longitude:"经度",
-        latitude:"纬度",
+        longitude:"",
+        latitude:"",
         city:"上海市",
         address:'',
       },
@@ -40,8 +40,8 @@ var app = {
       ship_date: '',
       arrival_date: '',
       shipping_address:{
-        longitude:"经度",
-        latitude:"纬度",
+        longitude:"",
+        latitude:"",
         city:"上海市",
         address:'',
       },
@@ -291,7 +291,10 @@ var app = {
       }
       else
       {
-           app.baiduPosition = localStorage['baiduPosition'];
+        //alert(localStorage['baiduPosition']);
+           //app.baiduPosition = JSON.parse(localStorage['baiduPosition']);
+           //app.baiduPosition = localStorage['baiduPosition'];
+           alert(JSON.stringify(app.baiduPosition));
       }
 
       var jsonStr = '{"Action":"getWenceng"}';
@@ -418,7 +421,7 @@ var app = {
         order.shipping_address.address = app.viewModel.orderInfo.shipping_address.address();
       }
       
-      //alert("order info:"+JSON.stringify(order));
+      alert("order info:"+JSON.stringify(order));
       return order;
   },
 

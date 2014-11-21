@@ -5,6 +5,7 @@
 var app = {
   serverUrl: "http://112.124.122.107/Applications/web/?data=",
   token:"",
+  identity:"",
   usrName:"",
   usrImage:"",
   models:[],//车型
@@ -40,12 +41,14 @@ var app = {
         app.token = $.cookie("usrToken");
         app.usrName = $.cookie("usrName");
         app.usrImage = $.cookie("usrImage");
+        app.identity = $.cookie("usrIdentity");
       }
       else
       {
         app.token = localStorage["usrToken"];
         app.usrName = localStorage["usrName"];
         app.usrImage = localStorage["usrImage"];
+        app.identity = localStorage["usrIdentity"];
       }
 
 
@@ -53,6 +56,9 @@ var app = {
       if (app.token) {
         //已登录
         $("#usr-name").text("您好,"+app.usrName);
+         if (window.notificationClient) {
+             window.notificationClient.startService(app.identity,app.token,true);
+         };
       }
       else
       {
