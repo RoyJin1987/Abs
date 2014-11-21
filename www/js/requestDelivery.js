@@ -111,7 +111,8 @@ var app = {
           request = {
             Action:"CalledTA",
             Token:app.token,
-            id:app.id
+            ID:app.id,
+            parameter:order
           };
         }else{
           request = {
@@ -120,7 +121,6 @@ var app = {
             parameter:order
           };
         }
-        
         var url = app.serverUrl + JSON.stringify(request);
         
         commonJS.get(url,function(data_){
@@ -170,7 +170,8 @@ var app = {
         request = {
           Action:"CalledTA",
           Token:app.token,
-          id:app.id
+          ID:app.id,
+          parameter:order
         };
       }else{
         request = {
@@ -179,7 +180,6 @@ var app = {
           parameter:order
         };
       }
-      //alert("订单创建:"+ JSON.stringify(request));
       var url = app.serverUrl + JSON.stringify(request);
       commonJS.get(url,function(data_){
         if (data_.status===0) {
@@ -190,14 +190,17 @@ var app = {
                   orderId:data_.orderId
               };
               //alert(app.identity);
+
               if (window.notificationClient){
                 window.notificationClient.notify(app.identity,JSON.stringify(message));  
               }
+              window.location.href="myOrder.html";
             }else{
               window.location.href="pushing.html?orderId="+data_.orderId;
             }
         }
         else{
+     
            //提示用户
           alert(data_.message);
         }
@@ -292,8 +295,10 @@ var app = {
       else
       {
         //alert(localStorage['baiduPosition']);
-           //app.baiduPosition = JSON.parse(localStorage['baiduPosition']);
-           //app.baiduPosition = localStorage['baiduPosition'];
+           app.baiduPosition = JSON.parse(localStorage['baiduPosition']);
+alert(JSON.stringify(app.baiduPosition));
+           app.baiduPosition = localStorage['baiduPosition'];
+           //app.baiduPosition = {lng:121.654443,lat:31.653235};
            alert(JSON.stringify(app.baiduPosition));
       }
 
@@ -421,7 +426,7 @@ var app = {
         order.shipping_address.address = app.viewModel.orderInfo.shipping_address.address();
       }
       
-      alert("order info:"+JSON.stringify(order));
+      //alert("order info:"+JSON.stringify(order));
       return order;
   },
 
