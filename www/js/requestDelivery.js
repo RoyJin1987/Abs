@@ -294,12 +294,26 @@ var app = {
       }
       else
       {
-        //alert(localStorage['baiduPosition']);
-           app.baiduPosition = JSON.parse(localStorage['baiduPosition']);
-alert(JSON.stringify(app.baiduPosition));
-           app.baiduPosition = localStorage['baiduPosition'];
-           //app.baiduPosition = {lng:121.654443,lat:31.653235};
-           alert(JSON.stringify(app.baiduPosition));
+        if(localStorage['baiduPosition'])
+        {
+          app.baiduPosition = JSON.parse(localStorage['baiduPosition']);
+        }
+        if (!app.baiduPosition){
+            var callback = function(pos){
+                app.baiduPosition = new BMap.Point(pos.coords.longitude,pos.coords.latitude);
+                 // $.cookie('baiduPosition', JSON.stringify(app.baiduPosition), { expires: 1, path: '/' });
+                localStorage.setItem('baiduPosition',JSON.stringify(app.baiduPosition));
+                alert(localStorage['baiduPosition']);
+                window.locationService.stop(noop,noop);
+            }
+            if(window.locationService)
+            {
+              window.locationService.getCurrentPosition(callback,function(e){
+                window.locationService.stop(noop,noop);
+              });
+            }
+
+        }
       }
 
       var jsonStr = '{"Action":"getWenceng"}';
