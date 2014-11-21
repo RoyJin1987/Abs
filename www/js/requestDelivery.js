@@ -111,7 +111,8 @@ var app = {
           request = {
             Action:"CalledTA",
             Token:app.token,
-            id:app.id
+            ID:app.id,
+            parameter:order
           };
         }else{
           request = {
@@ -120,7 +121,6 @@ var app = {
             parameter:order
           };
         }
-        
         var url = app.serverUrl + JSON.stringify(request);
         
         commonJS.get(url,function(data_){
@@ -170,7 +170,8 @@ var app = {
         request = {
           Action:"CalledTA",
           Token:app.token,
-          id:app.id
+          ID:app.id,
+          parameter:order
         };
       }else{
         request = {
@@ -179,7 +180,6 @@ var app = {
           parameter:order
         };
       }
-      //alert("订单创建:"+ JSON.stringify(request));
       var url = app.serverUrl + JSON.stringify(request);
       commonJS.get(url,function(data_){
         if (data_.status===0) {
@@ -190,14 +190,17 @@ var app = {
                   orderId:data_.orderId
               };
               //alert(app.identity);
+
               if (window.notificationClient){
                 window.notificationClient.notify(app.identity,JSON.stringify(message));  
               }
+              window.location.href="myOrder.html";
             }else{
               window.location.href="pushing.html?orderId="+data_.orderId;
             }
         }
         else{
+     
            //提示用户
           alert(data_.message);
         }
@@ -291,10 +294,26 @@ var app = {
       }
       else
       {
-        //alert(localStorage['baiduPosition']);
-           //app.baiduPosition = JSON.parse(localStorage['baiduPosition']);
-           //app.baiduPosition = localStorage['baiduPosition'];
-           alert(JSON.stringify(app.baiduPosition));
+        if(localStorage['baiduPosition'])
+        {
+          app.baiduPosition = JSON.parse(localStorage['baiduPosition']);
+        }
+        if (!app.baiduPosition){
+            var callback = function(pos){
+                app.baiduPosition = new BMap.Point(pos.coords.longitude,pos.coords.latitude);
+                 // $.cookie('baiduPosition', JSON.stringify(app.baiduPosition), { expires: 1, path: '/' });
+                localStorage.setItem('baiduPosition',JSON.stringify(app.baiduPosition));
+                alert(localStorage['baiduPosition']);
+                window.locationService.stop(noop,noop);
+            }
+            if(window.locationService)
+            {
+              window.locationService.getCurrentPosition(callback,function(e){
+                window.locationService.stop(noop,noop);
+              });
+            }
+
+        }
       }
 
       var jsonStr = '{"Action":"getWenceng"}';
@@ -421,7 +440,7 @@ var app = {
         order.shipping_address.address = app.viewModel.orderInfo.shipping_address.address();
       }
       
-      alert("order info:"+JSON.stringify(order));
+      //alert("order info:"+JSON.stringify(order));
       return order;
   },
 
