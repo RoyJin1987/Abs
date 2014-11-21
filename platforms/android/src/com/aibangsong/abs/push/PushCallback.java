@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -33,7 +34,8 @@ public class PushCallback implements MqttCallback {
 
     @Override
     public void connectionLost(Throwable cause) {
-        //We should reconnect here
+    	Intent intent = new Intent(context, MQTTService.class);
+    	context.startService(intent);
     }
 
     @Override

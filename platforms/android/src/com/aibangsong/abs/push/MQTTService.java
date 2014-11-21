@@ -48,13 +48,14 @@ public class MQTTService extends Service {
     http://android-developers.blogspot.de/2011/03/identifying-app-installations.html */
     public static final String clientId = "android-client1";
 
-    private String topic = "07b27a882cc721a9207250f1b6bd2868";
+    private String topic = "";
     private MqttClient mqttClient;
-    private String token;
+    private String token="";
     private boolean ifReportPos = false;
     private LocationClient mLocationClient = null; 
     private static final int REQUEST_TIMEOUT = 10*1000;//设置请求超时10秒钟  
 	private static final int SO_TIMEOUT = 10*1000;  //设置等待数据超时时间10秒钟  
+	private boolean connectSuccess = false;
 	
     public IBinder onBind(Intent intent) {
         return null;
@@ -62,9 +63,14 @@ public class MQTTService extends Service {
 
     @Override
     public void onStart(Intent intent, int startId) {
-    	topic = intent.getStringExtra("identity");
-    	token = intent.getStringExtra("token");
-    	ifReportPos = intent.getBooleanExtra("reportPos", false);
+    	if (topic.isEmpty()){
+    		topic = intent.getStringExtra("identity");
+    	}
+    	if (token.isEmpty()){
+    		token = intent.getStringExtra("token");
+    	}
+    	
+    	ifReportPos = intent.getBooleanExtra("reportPos", true);
         super.onStart(intent, startId);
         new Thread(runnable).start();
         
@@ -73,83 +79,83 @@ public class MQTTService extends Service {
         	try {
 
         		LocationClient mLocationClient = new LocationClient(MQTTService.this.getApplicationContext()); 
-        	        LocationClientOption option = new LocationClientOption(); 
-        	        option.setOpenGps(true);                                //打开gps 
-        	        option.setCoorType("bd09ll");                           //设置坐标类型为bd09ll 
-        	        option.setPriority(LocationClientOption.NetWorkFirst);  //设置网络优先 
-        	        option.setProdName("locSDKDemo2");                      //设置产品线名称 
-        	        option.setScanSpan(1000*60*10);                        
-        	        mLocationClient.setLocOption(option); 
-        	        mLocationClient.setAK("tUoYt61wcnunrkdGksApMwQt");
-        	        mLocationClient.start();
-        	        mLocationClient.requestLocation();
-        	        mLocationClient.registerLocationListener(new BDLocationListener() { 
-        	            @Override 
-        	            public void onReceiveLocation(final BDLocation location) { 
-        	                if (location == null) 
-        	                    return ; 
-        	            	new Thread(new Runnable() {
-        	        			@Override
-        	        			public void run() {
-        	        				String longitude =String.valueOf(location.getLongitude());
-        	        				String latitude =String.valueOf(location.getLatitude());
-        	        				String address =location.getAddrStr()==null? "":location.getAddrStr();
-        	        				String strurl = "http://112.124.122.107/Applications/web/?data={\"Action\":\"updateLocation\",\"Token\":\"" + token
-        	        							+ "\",\"parameter\":{\"longitude\":\""+  longitude
-        	        							+ "\",\"latitude\":\"" + latitude
-        	        							+ "\",\"address\":\"" + address + "\"}}";
-        	        		        
-        	                        URI uri = null;
-        	        				try {
-        	        					URL url = new URL(strurl);
-        	        					uri = new URI(url.getProtocol(), url.getHost(), url.getPath(), url.getQuery(), null);
-        	        				} catch (MalformedURLException e1) {
-        	        					// TODO Auto-generated catch block
-        	        					e1.printStackTrace();
-        	        				} catch (URISyntaxException e) {
-        	        					// TODO Auto-generated catch block
-        	        					e.printStackTrace();
-        	        				}
-        	                        
-        	            			HttpPost httpPost = new HttpPost(uri);
+        	    LocationClientOption option = new LocationClientOption(); 
+    	        option.setOpenGps(true);                                //打开gps 
+    	        option.setCoorType("bd09ll");                           //设置坐标类型为bd09ll 
+    	        option.setPriority(LocationClientOption.NetWorkFirst);  //设置网络优先 
+    	        option.setProdName("locSDKDemo2");                      //设置产品线名称 
+    	        option.setScanSpan(1000*60*10);                        
+    	        mLocationClient.setLocOption(option); 
+    	        mLocationClient.setAK("tUoYt61wcnunrkdGksApMwQt");
+    	        mLocationClient.start();
+    	        mLocationClient.requestLocation();
+    	        mLocationClient.registerLocationListener(new BDLocationListener() { 
+	            @Override 
+	            public void onReceiveLocation(final BDLocation location) { 
+	                if (location == null) 
+	                    return ; 
+	            	new Thread(new Runnable() {
+	        			@Override
+	        			public void run() {
+	        				String longitude =String.valueOf(location.getLongitude());
+	        				String latitude =String.valueOf(location.getLatitude());
+	        				String address =location.getAddrStr()==null? "":location.getAddrStr();
+	        				String strurl = "http://112.124.122.107/Applications/web/?data={\"Action\":\"updateLocation\",\"Token\":\"" + token
+	        							+ "\",\"parameter\":{\"longitude\":\""+  longitude
+	        							+ "\",\"latitude\":\"" + latitude
+	        							+ "\",\"address\":\"" + address + "\"}}";
+	        		        
+	                        URI uri = null;
+	        				try {
+	        					URL url = new URL(strurl);
+	        					uri = new URI(url.getProtocol(), url.getHost(), url.getPath(), url.getQuery(), null);
+	        				} catch (MalformedURLException e1) {
+	        					// TODO Auto-generated catch block
+	        					e1.printStackTrace();
+	        				} catch (URISyntaxException e) {
+	        					// TODO Auto-generated catch block
+	        					e.printStackTrace();
+	        				}
+	                        
+	            			HttpPost httpPost = new HttpPost(uri);
 
-        	            			List<NameValuePair> params = new ArrayList<NameValuePair>();
+	            			List<NameValuePair> params = new ArrayList<NameValuePair>();
 //        	            			params.add(new BasicNameValuePair("longitude", String.valueOf(location.getLongitude())));
 //        	            			params.add(new BasicNameValuePair("latitude", String.valueOf(location.getLatitude())));
 //        	            			params.add(new BasicNameValuePair("address", location.getAddrStr()==null? "":location.getAddrStr()));
-        	            			HttpClient httpclient = null;
-        	            			try {
-        	            				httpPost.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-        	            				
-        	            				BasicHttpParams httpParams = new BasicHttpParams();  
-        	            			    HttpConnectionParams.setConnectionTimeout(httpParams, REQUEST_TIMEOUT);  
-        	            			    HttpConnectionParams.setSoTimeout(httpParams, SO_TIMEOUT);  
-        	            				httpclient = new DefaultHttpClient(httpParams);
-        	            				HttpResponse httpResponse = httpclient.execute(httpPost);
-        	            				HttpEntity resEntity = httpResponse.getEntity();
-        	            				String result = EntityUtils.toString(resEntity);
-        	            				
-        	            				resEntity.consumeContent();
-        	            			} catch (UnsupportedEncodingException e) {
-        	            				e.printStackTrace();
-        	            			} catch (ClientProtocolException e) {
-        	            				e.printStackTrace();
-        	            			} catch (IOException e) {
-        	            				e.printStackTrace();
-        	            			} finally {
-        	            				if (httpclient!=null){
-        	            					httpclient.getConnectionManager().shutdown();
-        	            				}
-        	            			}
-        	        			}
-        	        		}).start();	
-        	    		
-        	            } 
+	            			HttpClient httpclient = null;
+	            			try {
+	            				httpPost.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+	            				
+	            				BasicHttpParams httpParams = new BasicHttpParams();  
+	            			    HttpConnectionParams.setConnectionTimeout(httpParams, REQUEST_TIMEOUT);  
+	            			    HttpConnectionParams.setSoTimeout(httpParams, SO_TIMEOUT);  
+	            				httpclient = new DefaultHttpClient(httpParams);
+	            				HttpResponse httpResponse = httpclient.execute(httpPost);
+	            				HttpEntity resEntity = httpResponse.getEntity();
+	            				String result = EntityUtils.toString(resEntity);
+	            				
+	            				resEntity.consumeContent();
+	            			} catch (UnsupportedEncodingException e) {
+	            				e.printStackTrace();
+	            			} catch (ClientProtocolException e) {
+	            				e.printStackTrace();
+	            			} catch (IOException e) {
+	            				e.printStackTrace();
+	            			} finally {
+	            				if (httpclient!=null){
+	            					httpclient.getConnectionManager().shutdown();
+	            				}
+	            			}
+	        			}
+	        		}).start();	
+	    		
+	            } 
         	             
-        	            public void onReceivePoi(BDLocation location){ 
-        	                //return ; 
-        	            } 
-        	        }); 
+	            public void onReceivePoi(BDLocation location){ 
+	                //return ; 
+	            } 
+	        }); 
          
         	}catch (Exception e) {
                 Toast.makeText(getApplicationContext(), "Something went wrong!" + e.getMessage(), Toast.LENGTH_LONG).show();
@@ -161,7 +167,9 @@ public class MQTTService extends Service {
     Runnable runnable = new Runnable(){
         @Override
         public void run() {
-        	try {
+        	do {
+        		try {
+        	
         		String deviceIdStr = ((TelephonyManager) getSystemService(TELEPHONY_SERVICE)).getDeviceId();
                 mqttClient = new MqttClient(BROKER_URL, deviceIdStr, new MemoryPersistence());
 
@@ -170,16 +178,24 @@ public class MQTTService extends Service {
 
                 //Subscribe to all subtopics of homeautomation
                 mqttClient.subscribe(topic);
-                
+      
+                break;
                 
             } catch (MqttException e) {
-                //Toast.makeText(getApplicationContext(), "Something went wrong!" + e.getMessage(), Toast.LENGTH_LONG).show();
-                e.printStackTrace();
+            	e.printStackTrace();
+            	try {
+					Thread.sleep(1000*30);
+				} catch (InterruptedException e1) {} 
+				continue;
+                
             }catch (Exception e) {
-                //Toast.makeText(getApplicationContext(), "Something went wrong!" + e.getMessage(), Toast.LENGTH_LONG).show();
                 e.printStackTrace();
+                try {
+					Thread.sleep(1000*30);
+				} catch (InterruptedException e1) {} 
+				continue;
             }
-
+        	}while(true);
         }
     };
     
