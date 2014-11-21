@@ -158,3 +158,42 @@ hr{
 
 .ui-icon-request-delivery {background:url('img/home/s_w.png') no-repeat 0 0;}
 
+/*导航栏*/
+.ui-header
+{
+	height: 44px
+}
+
+#back-btn
+{
+	display: block;
+	padding:10px 12px;
+	margin: auto 0;
+}
+
+#back-btn img
+{
+	float: left;
+	width: 15px;
+	height: 15px;
+	margin: auto 5px auto 0;
+}
+
+#back-btn span
+{
+	display: block;
+	float: right;
+	margin: auto 0;
+	/*font-size: 1.2em*/
+}
+
+.right-nav-btn 
+{
+	padding: 0;
+}
+.right-nav-btn img
+{
+	width: 60px;
+	height: 30px;
+}
+

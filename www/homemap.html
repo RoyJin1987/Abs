@@ -12,8 +12,10 @@
 		.ui-footer img{ width: 31px; height: 28px;margin:3px 5px;vertical-align: middle;}
 		.ui-footer div { line-height: 40px;}
 		.ui-footer a{height: :40px; line-height:40px; vertical-align: middle;}
-		.ui-footer a > span{height: :40px; font-size: 1.3em}
-		label img{width: 45px;height:30px;}
+		.ui-footer a > span{line-height:40px; font-size: 1.3em;}
+		a.bg-trasparent {display:block;height:60px;line-height:60px;width:100%;border:none;margin:0;padding:0;}
+		label.mini-padding {padding: 3px 15px}
+		label img{width: 45px;height:30px;padding-bottom: 5px}
 	</style>
 	<title>html app</title>  
     <link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" />
@@ -42,15 +44,15 @@
 		  <div style="position:fixed;bottom:80px;left:0;right:0;top:auto;margin:0 auto;text-align:center"> &nbsp;
 		  		<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
 				    <input type="radio" name="car-type" id="car-type-a" value="" checked="checked" icon-path="img/map/car_1.png" />
-				    <label for="car-type-a"><img src="img/car/m_w.png"></img></label>
-				    <input type="radio" name="car-type" id="car-type-b" value="" icon-path="img/map/car_2.png"/>
-				    <label for="car-type-b"><img src="img/car/hm_w.png"></label>
+				    <label class="mini-padding" for="car-type-a"><img src="img/car/m_w.png"></img></label>
+				    <input  type="radio" name="car-type" id="car-type-b" value="" icon-path="img/map/car_2.png"/>
+				    <label  class="mini-padding" for="car-type-b"><img src="img/car/hm_w.png"></label>
 				    <input type="radio" name="car-type" id="car-type-c" value="" icon-path="img/map/car_3.png"/>
-				    <label for="car-type-c"><img src="img/car/h_w.png"></label>
+				    <label  class="mini-padding" for="car-type-c"><img src="img/car/h_w.png"></label>
 				</fieldset>
 		  </div>
 
-		  <div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
+		  <div data-role="footer" data-position="fixed" data-tap-toggle="false" style="background:url(img/index_tool.png) no-repeat bottom;background-size:100% 100%;border:none">
 		  	<!-- <div data-role="navbar">
 			   <ul>
 		        <li><a data-ajax="false" href="requestDelivery.html" data-role="button" data-icon="search" data-iconpos="left">帮我送</a></li>
@@ -60,20 +62,21 @@
 		     </div> -->
 
 		     <div style="margin:0 auto;width:100%">
-		     	<div style="text-align:center;float:left;width:35%;height:60px">
-		     		<a data-ajax="false" href="#" data-role="button" style="height:60px" onclick="app.navigatorTo('requestDelivery.html')" data-theme="a">
+		     	<div style="text-align:center;float:left;width:39%;height:60px;vertical-align:middle">
+		     		<a class="bg-trasparent" data-ajax="false" href="#" data-role="button" style="background-color:rgba(255,0,0,0.0);padding:5px 5px 0 0" onclick="app.navigatorTo('requestDelivery.html')">
 		     			<span> </span>
 		     			<img  src="img/home/s_w.png" alt=""></img>
 		     			<span >帮我送 </span>
 		     		</a>
 		     	</div>
-		     	<div style="text-align:center;float:left;width:20%;margin:0 5%;height:60px">
-		     		<a style="height:60px" data-ajax="false" href="#" data-role="button" onclick="app.navigatorTo('userCenter.html')" data-theme="a">
-		     			<img  src="img/home/t_w_index.png" alt=""></img>
+		     	<div style="text-align:center;float:left;width:22%;margin:0;height:60px;vertical-align:middle">
+		     		<a class="bg-trasparent"  data-ajax="false" href="#" data-role="button" style="background-color:rgba(255,0,0,0.0);" onclick="app.navigatorTo('userCenter.html')">
+		     			<span></span>
+		     			<img  src="img/home/t_w_index.png" alt="" style="width:60px;height:60px"></img>
 		     		</a>
 		     	</div>
-		     	<div style="text-align:center;float:right;width:35%;height:60px">
-		     		<a data-ajax="false" href="#" data-role="button" style="height:60px" onclick="app.navigatorTo('wantDelivery.html')" data-theme="a">
+		     	<div style="text-align:center;float:right;width:39%;height:60px;vertical-align:middle">
+		     		<a class="bg-trasparent" data-ajax="false" href="#" data-role="button" style="background-color:rgba(255,0,0,0.0);padding:5px 0 0 5px" onclick="app.navigatorTo('wantDelivery.html')">
 		     			<span>我来送</span>
 		     			<img  src="img/home/t_w.png" alt=""></img>
 		     		</a>
