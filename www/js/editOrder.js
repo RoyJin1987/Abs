@@ -22,6 +22,7 @@ var app = {
   serverUrl:"http://112.124.122.107/Applications/web/?data=",
   token:"07b27a882cc721a9207250f1b6bd2868",
   orderId:"",
+  baiduPosition:"",
   viewModel :{
     orderInfo:{},
     wenCengList :ko.observableArray(),
@@ -29,7 +30,14 @@ var app = {
     selectedWenCeng:ko.observable(""),
     selectedModels:ko.observable(""),
     shipping_address:ko.observable(""),
-    send_address:ko.observable(""),  
+    send_address:ko.observable(""), 
+    send_city:"请点击选择城市", 
+    shipping_city:"请点击选择城市",
+    bid_item_tuijian:{ // 出价项 车型选择非卡车时才有
+          freight:60,
+          truckage:74,
+          tipping:80,
+    },  
   },
 
 
@@ -88,7 +96,9 @@ var app = {
         parameter:order
       };
       var url = app.serverUrl + JSON.stringify(request);
+      //alert(url);
       commonJS.get(url,function(data_){
+        //alert(JSON.stringify(data_));
         if (data_.status===0) {
           //提示用户
           // alert("订单提交成功！");
@@ -147,6 +157,38 @@ var app = {
           commonJS.get(url,function(text){      
             app.viewModel.modelsList = text.items;
           });
+
+          if(typeof localStorage === 'undefined' )
+          {
+              app.baiduPosition = {lng:121.654443,lat:31.653235};
+          }
+          else
+          {
+            if(localStorage['baiduPosition'])
+            {
+              app.baiduPosition = JSON.parse(localStorage['baiduPosition']);
+              //alert(localStorage['baiduPosition']);
+            }
+            if (!app.baiduPosition){
+                var callback = function(pos){
+                    app.baiduPosition = new BMap.Point(pos.coords.longitude,pos.coords.latitude);
+                     // $.cookie('baiduPosition', JSON.stringify(app.baiduPosition), { expires: 1, path: '/' });
+                    localStorage.setItem('baiduPosition',JSON.stringify(app.baiduPosition));
+                    //alert(localStorage['baiduPosition']);
+                    //alert(localStorage['baiduPosition']);
+                    window.locationService.stop(noop,noop);
+                }
+                if(window.locationService)
+                {
+                  window.locationService.getCurrentPosition(callback,function(e){
+                    window.locationService.stop(noop,noop);
+                  });
+                }
+
+            }else{
+              //alert(JSON.stringify(app.baiduPosition));
+            }
+          }
    
            var request = {
                 Action:"getOrderById",
@@ -174,11 +216,13 @@ var app = {
                 app.viewModel.orderInfo.bid_item.freight = ko.observable(data.item.bid_item.freight);
                 app.viewModel.orderInfo.bid_item.truckage = ko.observable(data.item.bid_item.truckage);
                 app.viewModel.orderInfo.bid_item.tipping = ko.observable(data.item.bid_item.tipping);
-
+                app.viewModel.send_city = data.item.send_address.city;
+                app.viewModel.shipping_city = data.item.shipping_address.city;
 
                 app.viewModel.orderInfo.ship_date =  ko.pureComputed(function() {
                    return commonJS.jsonDateFormat(data.item.ship_date_());
                 });
+
                 app.viewModel.orderInfo.arrival_date =  ko.pureComputed(function() {
                     return commonJS.jsonDateFormat(data.item.arrival_date_());
                 });
