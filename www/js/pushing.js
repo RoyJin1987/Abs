@@ -158,10 +158,12 @@ var app = {
     var jsonStr = JSON.stringify(param);
     var self = this;
     var url =  self.serverUrl + jsonStr;
-    alert(url);
+    // alert(url);
+    // window.location.href =url;
+    // return;
     commonJS.get(url,function(data){ 
       self.nVehicles = data.items;
-      alert(JSON.stringify(data));
+      //alert(JSON.stringify(data));
       app.push(self);
     });
   },
