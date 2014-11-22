@@ -124,7 +124,7 @@ var app = {
         var url = app.serverUrl + JSON.stringify(request);
         
         commonJS.get(url,function(data_){
-
+          //alert(JSON.stringify(data_));
           if (data_.status===0) {
             //提示用户
             // alert("订单提交成功！");
@@ -183,6 +183,7 @@ var app = {
       var url = app.serverUrl + JSON.stringify(request);
       commonJS.get(url,function(data_){
         if (data_.status===0) {
+          //alert(JSON.stringify(data_));
             if (app.id){
               alert("下单成功");
               var message = { 
@@ -192,6 +193,7 @@ var app = {
               //alert(app.identity);
 
               if (window.notificationClient){
+                //alert(app.identity);
                 window.notificationClient.notify(app.identity,JSON.stringify(message));  
               }
               window.location.href="myOrder.html";
@@ -297,13 +299,15 @@ var app = {
         if(localStorage['baiduPosition'])
         {
           app.baiduPosition = JSON.parse(localStorage['baiduPosition']);
+          //alert(localStorage['baiduPosition']);
         }
         if (!app.baiduPosition){
             var callback = function(pos){
                 app.baiduPosition = new BMap.Point(pos.coords.longitude,pos.coords.latitude);
                  // $.cookie('baiduPosition', JSON.stringify(app.baiduPosition), { expires: 1, path: '/' });
                 localStorage.setItem('baiduPosition',JSON.stringify(app.baiduPosition));
-                alert(localStorage['baiduPosition']);
+                //alert(localStorage['baiduPosition']);
+                //alert(localStorage['baiduPosition']);
                 window.locationService.stop(noop,noop);
             }
             if(window.locationService)
@@ -313,6 +317,8 @@ var app = {
               });
             }
 
+        }else{
+          //alert(JSON.stringify(app.baiduPosition));
         }
       }
 

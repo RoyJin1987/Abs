@@ -82,6 +82,7 @@ var app = {
             for(var i in data.items)
             {
                 var invite = data.items[i];
+                
                 //invite.date =commonJS.jsonDateFormat(data.items[i].date);
                 invite.title = invite.name + "邀请您加入他的车队";
                 invite.accept = function()
@@ -96,11 +97,13 @@ var app = {
                     url = app.serverUrl + JSON.stringify(request);
                     commonJS.get(url,function(data){  
                         if (data.status===0){
+                            //alert("已加入车队1");
                             if (window.notificationClient){
                                 var message = { 
                                     type:"AcceptInviteTeam",
-                                    usrName:appMyOrder.usrName
+                                    usrName:app.usrName
                                 };
+                                //alert(self.identity);
                                 window.notificationClient.notify(self.identity,JSON.stringify(message));  
                             }
                             alert("已加入车队");

@@ -9,7 +9,7 @@ var app = {
   baiduPosition:null,//当前百度坐标
   map:null,//百度地图对象
   orderId:"",
-  usrToken:"",
+  token:"",
   onLoad:function() {
     	if (!window.device) {
     		$(document).ready(this.onDeviceReady);
@@ -148,17 +148,20 @@ var app = {
    
     var param = {
       Action:"POSTList",
+      Token:app.token,
       parameter:{
         orderId:app.orderId,
         page:1
-      },
-      Token:app.usrToken
+      }
+      
     }
     var jsonStr = JSON.stringify(param);
     var self = this;
     var url =  self.serverUrl + jsonStr;
+    alert(url);
     commonJS.get(url,function(data){ 
       self.nVehicles = data.items;
+      alert(JSON.stringify(data));
       app.push(self);
     });
   },
