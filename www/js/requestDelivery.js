@@ -332,9 +332,21 @@ var app = {
       jsonStr = '{"Action":"getModels"}';
       url = app.serverUrl + jsonStr;
       commonJS.get(url,function(text){      
-        app.viewModel.modelsList = text.items;
+        if (defaultModel && app.id){
+          for (var i in text.items){
+            var model = text.items[i];
+            //alert(JSON.stringify(model));
+            if(model.id ==defaultModel){
+              app.viewModel.modelsList =[model];
+              break;
+            }
+          }
+        }else{
+          app.viewModel.modelsList = text.items;
+        }
+        
       });
- 
+      //alert(JSON.stringify(app.viewModel.modelsList ));
       ko.applyBindings(app.viewModel);
       $('body').trigger("create");
       if (defaultModel){
