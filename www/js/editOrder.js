@@ -27,8 +27,8 @@ var app = {
     orderInfo:{},
     wenCengList :ko.observableArray(),
     modelsList: ko.observableArray(),
-    selectedWenCeng:ko.observable(""),
-    selectedModels:ko.observable(""),
+    selectedWenCeng:ko.observable(''),
+    selectedModels:ko.observable(''),
     shipping_address:ko.observable(""),
     send_address:ko.observable(""), 
     send_city:"请点击选择城市", 
@@ -66,6 +66,7 @@ var app = {
           };
           //alert(JSON.stringify(app.viewModel.orderInfo));
           var url = app.serverUrl + JSON.stringify(request);
+          window.location.href = url;
           commonJS.get(url,function(data_){
             if (data_.status===0) {
               //提示用户
@@ -96,13 +97,14 @@ var app = {
         parameter:order
       };
       var url = app.serverUrl + JSON.stringify(request);
+      window.location.href = url;
       //alert(url);
       commonJS.get(url,function(data_){
         //alert(JSON.stringify(data_));
         if (data_.status===0) {
           //提示用户
           // alert("订单提交成功！");
-          window.location.href="pushing.html?orderId="+data_.orderId;
+          window.location.href="pushing.html?orderId="+app.orderId;
         }
         else{
           //提示用户
@@ -212,21 +214,24 @@ var app = {
                 app.viewModel.orderInfo.shipping_address.address = ko.observable(data.item.shipping_address.address);
                 app.viewModel.orderInfo.delivery_floor = ko.observable(data.item.delivery_floor);
                 app.viewModel.orderInfo.additional_information = ko.observable(data.item.additional_information);
-                app.viewModel.orderInfo.selectedModels = ko.observable(data.item.selectedModels);
+                app.viewModel.orderInfo.selectedModels = ko.observable(data.item.models);
                 app.viewModel.orderInfo.bid_item.freight = ko.observable(data.item.bid_item.freight);
                 app.viewModel.orderInfo.bid_item.truckage = ko.observable(data.item.bid_item.truckage);
                 app.viewModel.orderInfo.bid_item.tipping = ko.observable(data.item.bid_item.tipping);
                 app.viewModel.send_city = data.item.send_address.city;
                 app.viewModel.shipping_city = data.item.shipping_address.city;
 
-                app.viewModel.orderInfo.ship_date =  ko.pureComputed(function() {
-                   return commonJS.jsonDateFormat(data.item.ship_date_());
-                });
+                // app.viewModel.orderInfo.ship_date =  ko.pureComputed(function() {
+                //    return commonJS.jsonDateFormat(data.item.ship_date_());
+                // });
 
-                app.viewModel.orderInfo.arrival_date =  ko.pureComputed(function() {
-                    return commonJS.jsonDateFormat(data.item.arrival_date_());
-                });
-                app.viewModel.selectedWenCeng ="3";
+                // app.viewModel.orderInfo.arrival_date =  ko.pureComputed(function() {
+                //     return commonJS.jsonDateFormat(data.item.arrival_date_());
+                // });
+
+                app.viewModel.orderInfo.ship_date =  data.item.ship_date_();
+                app.viewModel.orderInfo.arrival_date =  data.item.arrival_date_();
+            
                 // app.viewModel.orderInfo.bid_item.total = 200;
                 app.viewModel.orderInfo.bid_item.total = ko.pureComputed(function() {
                     return app.viewModel.orderInfo.bid_item.freight()*1+app.viewModel.orderInfo.bid_item.tipping()*1+app.viewModel.orderInfo.bid_item.truckage()*1;
@@ -235,6 +240,16 @@ var app = {
                 ko.applyBindings(app.viewModel);
                 $('body').trigger("create");
 
+                if (data.item.selectedModels){
+                  //$("#modelsList").val(data.item.selectedModels);
+                  app.viewModel.selectedModels(data.item.models);
+                  //alert(app.viewModel.selectedModels());
+                  $("#modelsList").selectmenu("refresh"); 
+                }
+                if (data.item.selectedModels){
+                  app.viewModel.selectedWenCeng(data.item.wenceng);
+                  $("#wencengList").selectmenu("refresh"); 
+                }
                 // setTimeout(function(){
                 //   app.viewModel.orderInfo.bid_item.freight(100);
                 // },5000);
@@ -265,8 +280,8 @@ var app = {
         order.type = app.viewModel.orderInfo.type();
         order.weight = app.viewModel.orderInfo.weight();
         order.volume = app.viewModel.orderInfo.volume();
-        order.ship_date_ = app.viewModel.orderInfo.ship_date_();
-        order.arrival_date_ = app.viewModel.orderInfo.arrival_date_();
+        order.ship_date = app.viewModel.orderInfo.ship_date_();
+        order.arrival_date = app.viewModel.orderInfo.arrival_date_();
         order.consignee_name = app.viewModel.orderInfo.consignee_name();
         order.consignee_phone = app.viewModel.orderInfo.consignee_phone();
         order.shipping_address.address = app.viewModel.orderInfo.shipping_address.address();
