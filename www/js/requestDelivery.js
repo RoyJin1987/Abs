@@ -138,9 +138,13 @@ var app = {
               if (window.notificationClient){
                 window.notificationClient.notify(app.identity,JSON.stringify(message));  
               }
-              window.location.href="myOrder.html";
+              // window.location.href="myOrder.html";
+              $("#confirm-succ-dialog").find(".confirm-btn").attr("href","myOrder.html");
+              $.mobile.changePage("#confirm-succ-dialog");
             }else{
-              window.location.href="pushing.html?orderId="+data_.orderId;
+              $("#confirm-succ-dialog").find(".confirm-btn").attr("href","pushing.html?orderId="+data_.orderId);
+              $.mobile.changePage("#confirm-succ-dialog");
+              // window.location.href="pushing.html?orderId="+data_.orderId;
             }
             
           }
@@ -186,7 +190,7 @@ var app = {
         if (data_.status===0) {
           //alert(JSON.stringify(data_));
             if (app.id){
-              alert("下单成功");
+              // alert("下单成功");
               var message = { 
                   type:"newOrder",
                   orderId:data_.orderId
@@ -197,9 +201,13 @@ var app = {
                 //alert(app.identity);
                 window.notificationClient.notify(app.identity,JSON.stringify(message));  
               }
-              window.location.href="myOrder.html";
+              $("#confirm-succ-dialog").find(".confirm-btn").attr("href","myOrder.html");
+              $.mobile.changePage("#confirm-succ-dialog");
+              // window.location.href="myOrder.html";
             }else{
-              window.location.href="pushing.html?orderId="+data_.orderId;
+              $("#confirm-succ-dialog").find(".confirm-btn").attr("href","pushing.html?orderId="+data_.orderId);
+              $.mobile.changePage("#confirm-succ-dialog");
+              // window.location.href="pushing.html?orderId="+data_.orderId;
             }
         }
         else{
