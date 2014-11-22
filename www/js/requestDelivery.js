@@ -138,6 +138,7 @@ var app = {
               if (window.notificationClient){
                 window.notificationClient.notify(app.identity,JSON.stringify(message));  
               }
+              window.location.href="myOrder.html";
             }else{
               window.location.href="pushing.html?orderId="+data_.orderId;
             }
