@@ -197,3 +197,21 @@ hr{
 	height: 30px;
 }
 
+/*ui-navbar样式*/
+div.ui-navbar li>a.ui-btn
+{
+	background-color: #fff;
+	color: #3498db;
+}
+div.ui-navbar li>a.ui-btn.ui-btn-active
+{
+	background-color: #3498db;
+	color: #fff;
+}
+div.ui-navbar li>a.ui-btn:hover
+{
+	background-color: #A0D5F8;
+	border-color: #A0D5F8;
+	color: #fff;
+}
+
