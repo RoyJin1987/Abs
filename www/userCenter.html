@@ -9,15 +9,41 @@
     #golist {display: none;}
     @media (max-device-width: 780px){#golist{display: block !important;}}
     .ui-header img{width: 50px;height: 50px;border-radius:25px;border: 3px solid white}
-    .ui-footer img{ width: 31px; height: 28px;margin:3px 5px;vertical-align: middle;}
+    .ui-footer {height:60px;}
+    .ui-footer img{ width: 28px; height: 25px;margin:3px 5px;vertical-align: middle;display: block;margin:0 auto;}
     .ui-footer div { line-height: 40px;}
-    .ui-footer a{height: :40px; line-height:40px; vertical-align: middle;}
-    .ui-footer a > span{height: :40px; font-size: 1.3em}
+    .ui-footer .ui-navbar>ul>li>a {background-color:rgba(249,249,249,1.0);border: none}
+    .ui-footer a{line-height:28px; vertical-align: middle;display: block;}
+    .ui-footer a > span{height: :40px; font-size: 1.2em;display: block;color: rgb(158,160,160);}
+    .ui-footer a.active-link > span {color: rgb(0,195,255);}
     label img{width: 45px;height:30px;}
+    #back-btn
+    {
+      display: block;
+      padding: 10px 12px;
+      margin: auto 0;
+    }
+
+    #back-btn img
+    {
+      float: left;
+      width: 15px;
+      height: 15px;
+      margin: 13px 5px 13px 0;
+    }
+    #back-btn span
+    {
+      display: block;
+      float: right;
+      margin: auto 0;
+      /*font-size: 1.2em*/
+    }
+
   </style>
   <title>html app</title>  
     <link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" />
 	   <link href="css/main.css" rel="stylesheet" type="text/css">
+     <!-- <link href="css/widget.css" rel="stylesheet" type="text/css"> -->
 </head>  
 <body>  
 <div data-role="page" data-theme="f">  
@@ -28,7 +54,8 @@
   </div> -->
   
    <div data-role="header" data-position="fixed" data-tap-toggle="false" class="header-extra-height" style="vertical-align:middle">
-    <a style="line-height:42px" data-iconpos="left" data-role="button" data-icon="back" href="homemap.html" data-ajax="false"  title="Home">返回</a>
+    <!-- <a style="line-height:42px" data-iconpos="left" data-role="button" data-icon="back" href="homemap.html" data-ajax="false"  title="Home">返回</a> -->
+    <a style="line-height:42px" data-role="button" data-rel="back" id="back-btn" title="Home"><img src="img/left_arrow_w.png"></img><span>返回<span></a>
    <!--  <table width="100%">
     <tr>
     <td width="10%">
@@ -47,36 +74,33 @@
     </tr>
     </table> -->
     <div style="margin:0 auto;text-align:center">
-            <a style="padding:2px" data-ajax="false" href="#" data-role="button" data-transition="slide" onclick="app.goto('settings.html')">
-              <img id="usr-image" class="icon-img" src="img/noPhoto.png" alt=""></img>
-            </a>
-            <span id="usr-name"></span>
-          </div>
-      
-      
+      <a style="padding:2px" data-ajax="false" href="#" data-role="button" data-transition="slide" onclick="app.goto('settings.html')">
+        <img id="usr-image" class="icon-img" src="img/noPhoto.png" alt=""></img>
+      </a>
+      <span id="usr-name"></span>
+    </div>  
   </div>
-
   <nav>
-	<ul>		
-      <li><a data-ajax="false" href="myCarList.html"><img src="img/myCarList.png" alt=""><span>我的车队</span></a></li>
-      <li><a data-ajax="false" href="messageCenter.html"><img src="img/messageCenter.png" alt=""><span>消息中心</span></a></li>
-      <li><a data-ajax="false" href="myOrder.html"><img src="img/myOrder.png" alt=""><span>我的订单</span></a></li>
-      <li><a data-ajax="false" href="mywaybill.html"><img src="img/myWaybill.png" alt=""><span>我的运单</span></a></li>
-      <li><a data-ajax="false" onclick="commonJS.alertDeveloping()" href="#"><img src="img/gps.png" alt=""><span>导航</span></a></li>
-      <li><a data-ajax="false" onclick="commonJS.alertDeveloping()" href="#"><img src="img/benefit.png" alt=""><span>福利</span></a></li>
-      <li><a data-ajax="false" onclick="commonJS.alertDeveloping()" href="#"><img src="img/around.png" alt=""><span>周边</span></a></li>
-      <li><a data-ajax="false" onclick="commonJS.alertDeveloping()" href="#"><img src="img/insurance.png" alt=""><span>保险</span></a></li>
-      <li><a data-ajax="false" onclick="commonJS.alertDeveloping()" href="#"><img src="img/more.png" alt=""><span>更多</span></a></li>
-	</ul>
-</nav>
+  	<ul>		
+        <li><a data-ajax="false" href="myCarList.html"><img src="img/myCarList.png" alt=""><span>我的车队</span></a></li>
+        <li><a data-ajax="false" href="messageCenter.html"><img src="img/messageCenter.png" alt=""><span>消息中心</span></a></li>
+        <li><a data-ajax="false" href="myOrder.html"><img src="img/myOrder.png" alt=""><span>我的订单</span></a></li>
+        <li><a data-ajax="false" href="mywaybill.html"><img src="img/myWaybill.png" alt=""><span>我的运单</span></a></li>
+        <li><a data-ajax="false" onclick="commonJS.alertDeveloping()" href="#"><img src="img/gps.png" alt=""><span>导航</span></a></li>
+        <li><a data-ajax="false" onclick="commonJS.alertDeveloping()" href="#"><img src="img/benefit.png" alt=""><span>福利</span></a></li>
+        <li><a data-ajax="false" onclick="commonJS.alertDeveloping()" href="#"><img src="img/around.png" alt=""><span>周边</span></a></li>
+        <li><a data-ajax="false" onclick="commonJS.alertDeveloping()" href="#"><img src="img/insurance.png" alt=""><span>保险</span></a></li>
+        <li><a data-ajax="false" onclick="commonJS.alertDeveloping()" href="#"><img src="img/more.png" alt=""><span>更多</span></a></li>
+  	</ul>
+  </nav>
   
-  <div data-role="footer" data-position="fixed" data-theme="f">
+  <div data-role="footer" data-position="fixed"  style="border-color:rgb(158,160,160)">
     <div data-role="navbar">
       <ul>
-        <li><a href="#" onclick="commonJS.alertDeveloping()" href="#" data-icon="plus">收藏</a></li>
-        <li><a href="#" onclick="commonJS.alertDeveloping()" href="#" data-icon="minus">社区</a></li>
-        <li><a href="#" onclick="commonJS.alertDeveloping()" href="#" data-icon="delete" >设置</a></li>
-        <li><a href="#" data-icon="check" class="ui-btn-active">应用</a></li>
+        <li><a href="#" onclick="commonJS.alertDeveloping()" ><img src="img/sc_gr.png"></img><span>收藏</span></a></li>
+        <li><a href="#" onclick="commonJS.alertDeveloping()" ><img src="img/fx_gr.png"></img><span>社区</span></a></li>
+        <li><a href="#" onclick="commonJS.alertDeveloping()" ><img src="img/ss_gr.png"></img><span>设置</span></a></li>
+        <li><a href="#" class="active-link"><img src="img/bj_b.png"></img><span>应用</span></a></li>
       </ul>
     </div>
   </div>
