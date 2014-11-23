@@ -92,16 +92,17 @@ var app = {
                 Token:app.token
             };
         var url = app.serverUrl + JSON.stringify(request);
-
-        if (model==="6"){
+        //alert(url);
+        if (model=="6"){
             app.viewModel.cars1.removeAll();
-        }else if (model==="7"){
+        }else if (model=="7"){
             app.viewModel.cars2.removeAll();
-        }else if (model==="8"){
+        }else if (model=="8"){
             app.viewModel.cars3.removeAll();
         }
         
         commonJS.get(url,function(data){
+            //alert(JSON.stringify(data));
            for(var i in data.items){
                 var car = data.items[i];
                 if (car.motorcade.status==='0'){
@@ -124,15 +125,23 @@ var app = {
                 car.callHim = function()
                 {
                     var self = this;
-                    alert(self.user.mobile_number);
+                    //alert(self.user.mobile_number);
                     window.notificationClient.call(self.user.mobile_number);
                 };
-
-                if (model==="6"){
+                car.whereIs = function()
+                {
+                    var self = this;
+                    //alert(JSON.stringify(self));
+                    //alert(self.user.mobile_number);
+                    window.location.href = "myTeamMap.html?model="+self.motorcade.models+"&motorcadeKey=" + self.motorcade.motorcadeKey+"&longitude=" + self.motorcade.longitude+"&latitude=" + self.motorcade.latitude;
+                };
+                
+                if (model=="6"){
                     app.viewModel.cars1.push(car);
-                }else if (model==="7"){
+                }else if (model=="7"){
                     app.viewModel.cars2.push(car);
-                }else if (model==="8"){
+                    //alert(JSON.stringify(app.viewModel.cars2));
+                }else if (model=="8"){
                     app.viewModel.cars3.push(car);
                 }
                 

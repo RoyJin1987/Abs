@@ -91,9 +91,9 @@ var app = {
             {
                 var waybill = data.items[i];
                 waybill.canGrab = false;
-                waybill.ship_date =commonJS.jsonDateFormat(data.items[i].ship_date);
-                waybill.arrival_date =commonJS.jsonDateFormat(data.items[i].arrival_date);
-                waybill.orderDate = commonJS.jsonDateFormat(data.items[i].orderDate);
+                // waybill.ship_date =commonJS.jsonDateFormat(data.items[i].ship_date);
+                // waybill.arrival_date =commonJS.jsonDateFormat(data.items[i].arrival_date);
+                // waybill.orderDate = commonJS.jsonDateFormat(data.items[i].orderDate);
                 if (status === 0) {
                     waybill.grab = function()
                     {

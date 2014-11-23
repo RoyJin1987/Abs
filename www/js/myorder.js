@@ -212,9 +212,9 @@ var appMyOrder = {
             for(var i in data.items)
             {
                 var order = data.items[i];
-                order.ship_date =commonJS.jsonDateFormat(data.items[i].ship_date);
-                order.arrival_date =commonJS.jsonDateFormat(data.items[i].arrival_date);
-                order.orderDate = commonJS.jsonDateFormat(data.items[i].orderDate);
+                // order.ship_date =commonJS.jsonDateFormat(data.items[i].ship_date);
+                // order.arrival_date =commonJS.jsonDateFormat(data.items[i].arrival_date);
+                // order.orderDate = commonJS.jsonDateFormat(data.items[i].orderDate);
                 if (status === 0) {
                     order.cancel = function()
                     {

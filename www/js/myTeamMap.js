@@ -5,6 +5,8 @@
 var app = {
   serverUrl: "http://112.124.122.107/Applications/web/?data=",
   token:"",
+  motorcadeKey:"",
+  model:"",
   usrName:"",
   usrImage:"",
   models:[],//车型
@@ -13,6 +15,7 @@ var app = {
   currentModel:"",
 	position:null,//当前Gps位置
   baiduPosition:null,//当前百度坐标
+  vehiclePosition:null,//当前百度坐标
   map:null,//百度地图对象
   // Application Constructor
   initialize: function() {
@@ -54,6 +57,15 @@ var app = {
         window.location.href= "login.html";
       }
 
+      app.motorcadeKey =commonJS.getUrlParam("motorcadeKey");
+      app.model =commonJS.getUrlParam("model");
+      var longitude = commonJS.getUrlParam("longitude");
+      var latitude = commonJS.getUrlParam("latitude");
+       
+      if (app.motorcadeKey){
+          document.getElementById("carTypeSelector").style.visibility="hidden";
+          app.vehiclePosition = new BMap.Point(longitude,latitude);
+      }
       // if (app.token) {
       //   //已登录
       //   $("#usr-name").text("您好,"+app.usrName);
@@ -74,7 +86,12 @@ var app = {
       $("#allmap").css("height",$(".ui-page").first().height()+"px");
 
       app.getModels(function(){
+        if (app.model){
+          app.currentModel = app.model;
+        }else{
           app.currentModel = $("input[name='car-type'][checked='checked']").first().val();
+        }
+          
           //alert("initmodels-->>current model:"+app.currentModel);
           //绑定页面事件
           $("input[name='car-type']").on('click',function()
@@ -133,17 +150,31 @@ var app = {
  	loadMap : function() {
  		app.map = new BMap.Map("allmap");
  		if (app.baiduPosition) {
+      if (app.vehiclePosition){
+        app.map.centerAndZoom(app.vehiclePosition, 14); 
+      }else{
         app.map.centerAndZoom(app.baiduPosition, 14); 
-        // app.addMyLocMaker(app.baiduPosition); 
-        //alert("loadmap-->>current model:"+app.currentModel);
-        app.getNVehicles(app.currentModel);
+      }
+        
+      // app.addMyLocMaker(app.baiduPosition); 
+      //alert("loadmap-->>current model:"+app.currentModel);
+      app.getNVehicles(app.currentModel);
  		} else {
         //test
        var point = new BMap.Point(121.605368,31.203069);
-       app.map.centerAndZoom(point, 14); 
+       if (app.vehiclePosition){
+        app.map.centerAndZoom(app.vehiclePosition, 14); 
+      }else{
+        app.map.centerAndZoom(point, 14); 
+      }
+       
        app.baiduPosition = point;
        // app.addMyLocMaker(point);
-       app.getNVehicles(app.currentModel);             
+       app.getNVehicles(app.currentModel);           
+    }
+
+    if (app.vehiclePosition){
+      app.map.centerAndZoom(app.vehiclePosition, 14); 
     }
 
  	},
@@ -330,6 +361,12 @@ var app = {
       for(var i in self.nVehicles)
       {
         var vehicle = self.nVehicles[i];
+        //alert(JSON.stringify(vehicle));
+        if (app.motorcadeKey){
+          if (app.motorcadeKey != vehicle.motorcade.motorcadeKey){
+            continue;
+          }
+        }
         var opts = {
               width : 100,    // 信息窗口宽度
               height: 60,     // 信息窗口高度
@@ -351,8 +388,10 @@ var app = {
         {
            point = new BMap.Point(vehicle.motorcade.longitude,vehicle.motorcade.latitude);
         }
+
         if(i === 0)
         {
+          app.vehiclePosition= point;
           app.map.panTo(point); 
         }
         app.addVehicleMaker(point,false,opts,vehicle);  
