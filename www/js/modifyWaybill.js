@@ -94,10 +94,12 @@ var app = {
                     }
                 }else{
                     if (app.viewModel.models == "8"){
+                        pushType ="1";
                         app.viewModel.isIntercity = ko.observable(true);
                         app.viewModel.isNotIntercity = ko.observable(false);
                         app.viewModel.bid_item.freight = "";
                     }else{
+                        pushType ="0";
                         app.viewModel.isIntercity = ko.observable(false);
                         app.viewModel.isNotIntercity = ko.observable(true);
                     }
@@ -110,7 +112,7 @@ var app = {
                    
                     var request = {
                         Action:"OrderGrab",
-                        confirmType:1,
+                        confirmType:pushType,
                         Token:app.token,
                         parameter:{
                             orderId:app.viewModel.orderId,
