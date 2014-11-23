@@ -131,7 +131,10 @@ var app = {
                               type:"OrderGrabed",
                               orderId:app.viewModel.orderId
                             };
-                            window.notificationClient.notify(app.viewModel.identity,JSON.stringify(message));  
+                            if (window.notificationClient){
+                                window.notificationClient.notify(app.viewModel.identity,JSON.stringify(message));  
+                            }
+                            
                             window.history.back();         
                         }
                         else

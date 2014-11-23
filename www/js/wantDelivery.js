@@ -86,14 +86,17 @@ var app = {
             for(var i in data.items)
             {
                 var order = data.items[i];
-                order.ship_date =commonJS.jsonDateFormat(data.items[i].ship_date);
-                order.arrival_date =commonJS.jsonDateFormat(data.items[i].arrival_date);
-                order.orderDate = commonJS.jsonDateFormat(data.items[i].orderDate);
+                // order.ship_date =commonJS.jsonDateFormat(data.items[i].ship_date);
+                // order.arrival_date =commonJS.jsonDateFormat(data.items[i].arrival_date);
+                // order.orderDate = commonJS.jsonDateFormat(data.items[i].orderDate);
 
                 order.grabIntercity = function()
                 {
                     var self = this;
-                    window.notificationClient.call(self.mobile);
+                    if (window.notificationClient){
+                        window.notificationClient.call(self.mobile);
+                    }
+                    
                     //Ìøµ½ÐÞ¸ÄÔËµ¥
                     setTimeout(function(){
                         window.location.href="modifyWaybill.html?orderId="+self.orderId+ "&pushType=1";
@@ -117,9 +120,9 @@ var app = {
                 for(var i in data.items)
                 {
                     var order = data.items[i];
-                    order.ship_date =commonJS.jsonDateFormat(data.items[i].ship_date);
-                    order.arrival_date =commonJS.jsonDateFormat(data.items[i].arrival_date);
-                    order.orderDate = commonJS.jsonDateFormat(data.items[i].orderDate);
+                    // order.ship_date =commonJS.jsonDateFormat(data.items[i].ship_date);
+                    // order.arrival_date =commonJS.jsonDateFormat(data.items[i].arrival_date);
+                    // order.orderDate = commonJS.jsonDateFormat(data.items[i].orderDate);
                     order.grab = function()
                     {
                         var self = this;
