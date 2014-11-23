@@ -103,9 +103,9 @@ var app = {
                     }
                 }
                 
-                app.viewModel.ship_date =commonJS.jsonDateFormat(data.item.ship_date);
-                app.viewModel.arrival_date =commonJS.jsonDateFormat(data.item.arrival_date);
-                app.viewModel.orderDate = commonJS.jsonDateFormat(data.item.orderDate);
+                // app.viewModel.ship_date =commonJS.jsonDateFormat(data.item.ship_date);
+                // app.viewModel.arrival_date =commonJS.jsonDateFormat(data.item.arrival_date);
+                // app.viewModel.orderDate = commonJS.jsonDateFormat(data.item.orderDate);
                 app.viewModel.confirm = function (){
                    
                     var request = {

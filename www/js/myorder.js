@@ -254,6 +254,12 @@ var appMyOrder = {
                 };
                  if (status === 2 || status === 3) {
                     order.isCompleted = (status === 3);
+                    if (status===2){
+                        order.checkPosition =function(){
+                            var self = this;
+                            window.location.href = "myTeamMap.html?orderId="+self.orderId;
+                        }
+                    }
                     order.carrier = ko.observable({
                         freight:'',
                         motorcade:{},
