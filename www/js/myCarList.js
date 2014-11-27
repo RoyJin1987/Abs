@@ -62,7 +62,7 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function(model) {
-
+        document.addEventListener('backbutton', commonJS.gotoUesrCenter, false);
         if(typeof localStorage === 'undefined' )
         {
           app.token = $.cookie("usrToken");

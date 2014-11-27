@@ -4,6 +4,12 @@
 <head>  
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no" /> 
+
+  <title>html app</title>  <link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" />
+     <!-- <link href="css/widget.css" rel="stylesheet" type="text/css"> -->
+</head>  
+<body>  
+<div data-role="page" id="userCenter" data-theme="f">  
 <style type="text/css">
     body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;}
     #golist {display: none;}
@@ -40,13 +46,16 @@
     }
 
   </style>
-  <title>html app</title>  
-    <link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" />
-	  <link href="css/main.css" rel="stylesheet" type="text/css">
-     <!-- <link href="css/widget.css" rel="stylesheet" type="text/css"> -->
-</head>  
-<body>  
-<div data-role="page" data-theme="f">  
+  <link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" />
+  <link href="css/main.css" rel="stylesheet" type="text/css">
+  <script src="js/jquery.js"></script>
+  <script src="js/jquery.mobile-1.4.0-rc.1.js"></script>
+  <script type="text/javascript" src="cordova.js"></script>
+  <script type="text/javascript" src="js/userCenter.js"></script>
+  <script type="text/javascript" src="js/common.js"></script>
+  <script type="text/javascript">
+    app.initialize();
+  </script>
 <!--   <div data-role="header" data-position="fixed">
     <a href="#" data-role="button" data-icon="btn_back">返回</a>
     <h1></h1>
@@ -82,10 +91,10 @@
   </div>
   <nav>
   	<ul>		
-        <li><a data-ajax="false" href="myCarList.html"><img src="img/myCarList.png" alt=""><span>我的车队</span></a></li>
-        <li><a data-ajax="false" href="messageCenter.html"><img src="img/messageCenter.png" alt=""><span>消息中心</span></a></li>
-        <li><a data-ajax="false" href="myOrder.html"><img src="img/myOrder.png" alt=""><span>我的订单</span></a></li>
-        <li><a data-ajax="false" href="mywaybill.html"><img src="img/myWaybill.png" alt=""><span>我的运单</span></a></li>
+        <li><a data-ajax="false" href="myCarList.html"><img src="img/myCarList.png" data-transition="none"><span>我的车队</span></a></li>
+        <li><a data-ajax="false" href="messageCenter.html"><img src="img/messageCenter.png" data-transition="none"><span>消息中心</span></a></li>
+        <li><a data-ajax="false" href="myOrder.html"><img src="img/myOrder.png" data-transition="none"><span>我的订单</span></a></li>
+        <li><a data-ajax="false" href="mywaybill.html"><img src="img/myWaybill.png" data-transition="none"><span>我的运单</span></a></li>
         <li><a data-ajax="false" onclick="commonJS.alertDeveloping()" href="#"><img src="img/gps.png" alt=""><span>导航</span></a></li>
         <li><a data-ajax="false" onclick="commonJS.alertDeveloping()" href="#"><img src="img/benefit.png" alt=""><span>福利</span></a></li>
         <li><a data-ajax="false" onclick="commonJS.alertDeveloping()" href="#"><img src="img/around.png" alt=""><span>周边</span></a></li>
@@ -105,13 +114,5 @@
     </div>
   </div>
 </div><!-- /page -->  
-  <script src="js/jquery.js"></script>
-  <script src="js/jquery.mobile-1.4.0-rc.1.js"></script>
-  <script type="text/javascript" src="cordova.js"></script>
-  <script type="text/javascript" src="js/userCenter.js"></script>
-  <script type="text/javascript" src="js/common.js"></script>
-  <script type="text/javascript">
-    app.initialize();
-  </script>
 </body>  
 </html> 

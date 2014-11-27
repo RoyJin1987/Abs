@@ -64,9 +64,16 @@ var commonJS = {
         return new Date(jsonDate*1000).Format("yyyy-MM-dd hh:mm");
     },
     goback: function () {
-        history.back();
+        navigator.app.backHistory();  
     },
 
+    gotoUesrCenter: function () {
+        window.location.href = "userCenter.html";
+    },
+    gotoHome: function () {
+        window.location.href = "homemap.html";
+        //$.mobile.changePage("homemap.html");
+    },
     alertDeveloping: function () {
         alert("正在加班加点，敬请期待！");
     },

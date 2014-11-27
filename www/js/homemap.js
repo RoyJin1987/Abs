@@ -24,17 +24,66 @@ var app = {
   // Bind any events that are required on startup. Common events are:
   // 'load', 'deviceready', 'offline', and 'online'.
   bindEvents: function() {
-       if (!window.device) {
-            $(document).ready(this.onDeviceReady);
-        } else {
-            document.addEventListener('deviceready', this.onDeviceReady, false);
-        }
+     if (!window.device) {
+          $(document).ready(this.onDeviceReady);
+      } else {
+          document.addEventListener('deviceready', this.onDeviceReady, false);
+      }
   },
+
+  eventBackButton:function() {
+
+      
+        app.myAlert('再点击一次退出!');
+        document.removeEventListener("backbutton", app.eventBackButton, false); // 注销返回键
+        document.addEventListener("backbutton", app.exitApp, false);// 绑定退出事件
+        // 3秒后重新注册
+        var intervalID = window.setTimeout(function() {
+          window.clearTimeout(intervalID);
+          document.removeEventListener("backbutton", app.exitApp, false); // 注销返回键
+          document.addEventListener("backbutton", app.eventBackButton, false); // 返回键
+        }, 3000);
+  },
+        
+  //退出app
+  exitApp:function () {
+    navigator.app.exitApp();
+  },
+
+  // showMyAlert:function (text) {
+  //   $.mobile.loadingMessageTextVisible = true;
+  //   $.mobile.showPageLoadingMsg("a", text);
+  // },
+  myAlert:function (text) {
+    app.showMyAlert(text);
+    setTimeout(app.hideLoading, 2000);
+  },
+  // hideLoading:function () {
+  //   $.mobile.hidePageLoadingMsg();
+  // },
+  showMyAlert:function () {
+        //显示加载器.for jQuery Mobile 1.2.0
+        $.mobile.loading('show', {
+            text: '再点击一次退出', //加载器中显示的文字
+            textVisible: true, //是否显示文字
+            theme: 'a',        //加载器主题样式a-e
+            textonly: true,   //是否只显示文字
+            html: ""           //要显示的html内容，如图片等
+        });
+    },
+
+    //隐藏加载器.for jQuery Mobile 1.2.0
+    hideLoading:function ()
+    {
+        //隐藏加载器
+        $.mobile.loading('hide');
+    },
   // deviceready Event Handler
   //
   // The scope of 'this' is the event. In order to call the 'receivedEvent'
   // function, we must explicitly call 'app.receivedEvent(...);'
   onDeviceReady: function() {
+      document.addEventListener('backbutton', app.eventBackButton, false);
       //app.receivedEvent('deviceready');
       if(typeof localStorage === 'undefined' )
       {
