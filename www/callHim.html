@@ -8,9 +8,29 @@
     <link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" />
 	<link href="css/main.css" rel="stylesheet" type="text/css">
 	<link href="css/widget.css" rel="stylesheet" type="text/css">
+
+	<link href="css/mobiscroll/mobiscroll.widget.css" rel="stylesheet" type="text/css" />
+    <link href="css/mobiscroll/mobiscroll.widget.android.css" rel="stylesheet" type="text/css" />
+    <link href="css/mobiscroll/mobiscroll.widget.android-holo.css" rel="stylesheet" type="text/css" />
+    <link href="css/mobiscroll/mobiscroll.scroller.css" rel="stylesheet" type="text/css" />
+    <link href="css/mobiscroll/mobiscroll.android-holo-light.css" rel="stylesheet" type="text/css" />
+
 	<script type="text/javascript" src="cordova.js"></script>
 	<script src="js/jquery.js"></script>
 	<script src="js/jquery.mobile-1.4.0-rc.1.js"></script> 
+
+	<script src="js/mobiscroll/mobiscroll.core.js"></script>
+    <script src="js/mobiscroll/mobiscroll.widget.js"></script>
+    <script src="js/mobiscroll/mobiscroll.scroller.js"></script>
+    <script src="js/mobiscroll/mobiscroll.util.datetime.js"></script>
+    <script src="js/mobiscroll/mobiscroll.datetimebase.js"></script>
+    <script src="js/mobiscroll/mobiscroll.datetime.js"></script>
+    <script src="js/mobiscroll/mobiscroll.select.js"></script>
+    <script src="js/mobiscroll/mobiscroll.widget.android.js"></script>
+    <script src="js/mobiscroll/mobiscroll.widget.android-holo.js"></script>
+    <script src="js/mobiscroll/mobiscroll.android-holo-light.js"></script>
+    <script src="js/mobiscroll/i18n/mobiscroll.i18n.zh.js"></script>
+
 	<script src="js/knockout-3.2.0.js"></script> 
   	<script src="js/json2.js"></script>
   	<script src="js/jquery.cookie.js"></script>
@@ -89,7 +109,7 @@
 
 			<div class="form-line-wrapper">
 			 	<div class="left">
-				 	<label > 车型选择:</label>
+				 	<label > 配送范围:</label>
 				 </div>
 				 <div class="content">
 				 	<select id="modelsList" data-bind="options: modelsList,  optionsText: 'name', optionsValue: 'id',  value: selectedModels"  data-native-menu="false" data-theme="c">
@@ -122,10 +142,10 @@
 			 	<label > 发货日期:</label>
 			 </div>
 			 <div class="content" style="width:200px">
-			 	<input type="date" name="deliveryDate" id="deliveryDate" data-bind="value: orderInfo.ship_date_"/>
+			 	<input type="text" id="deliveryDate" data-bind="value: orderInfo.ship_date_"/>  
 			 </div>
 		</div>
-		<hr/>
+	<!-- 	<hr/>
 		<div class="form-line-wrapper">
 		 	<div class="left">
 			 	<label > 到货日期:</label>
@@ -133,7 +153,7 @@
 			 <div class="content" style="width:200px">
 			 	<input type="date" name="receiveDate" id="receiveDate" data-bind="value: orderInfo.arrival_date_"/>
 			 </div>
-		</div>
+		</div> -->
 		<hr/>
 		<div class="form-line-wrapper">
 		 	<div class="left">

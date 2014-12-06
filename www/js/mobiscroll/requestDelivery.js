@@ -138,13 +138,13 @@ var app = {
               if (window.notificationClient){
                 window.notificationClient.notify(app.identity,JSON.stringify(message));  
               }
-               window.location.href="myOrder.html";
-              // $("#confirm-succ-dialog").find(".confirm-btn").attr("href","myOrder.html");
-              // $.mobile.changePage("#confirm-succ-dialog");
+              // window.location.href="myOrder.html";
+              $("#confirm-succ-dialog").find(".confirm-btn").attr("href","myOrder.html");
+              $.mobile.changePage("#confirm-succ-dialog");
             }else{
-              // $("#confirm-succ-dialog").find(".confirm-btn").attr("href","pushing.html?orderId="+data_.orderId);
-              // $.mobile.changePage("#confirm-succ-dialog");
-              window.location.href="pushing.html?orderId="+data_.orderId;
+              $("#confirm-succ-dialog").find(".confirm-btn").attr("href","pushing.html?orderId="+data_.orderId);
+              $.mobile.changePage("#confirm-succ-dialog");
+              // window.location.href="pushing.html?orderId="+data_.orderId;
             }
             
           }
@@ -190,7 +190,7 @@ var app = {
         if (data_.status===0) {
           //alert(JSON.stringify(data_));
             if (app.id){
-              alert("下单成功");
+              // alert("下单成功");
               var message = { 
                   type:"newOrder",
                   orderId:data_.orderId
@@ -201,13 +201,13 @@ var app = {
                 //alert(app.identity);
                 window.notificationClient.notify(app.identity,JSON.stringify(message));  
               }
-              //$("#confirm-succ-dialog").find(".confirm-btn").attr("href","myOrder.html");
-              //$.mobile.changePage("#confirm-succ-dialog");
-              window.location.href="myOrder.html";
+              $("#confirm-succ-dialog").find(".confirm-btn").attr("href","myOrder.html");
+              $.mobile.changePage("#confirm-succ-dialog");
+              // window.location.href="myOrder.html";
             }else{
-              //$("#confirm-succ-dialog").find(".confirm-btn").attr("href","pushing.html?orderId="+data_.orderId);
-              //$.mobile.changePage("#confirm-succ-dialog");
-              window.location.href="pushing.html?orderId="+data_.orderId;
+              $("#confirm-succ-dialog").find(".confirm-btn").attr("href","pushing.html?orderId="+data_.orderId);
+              $.mobile.changePage("#confirm-succ-dialog");
+              // window.location.href="pushing.html?orderId="+data_.orderId;
             }
         }
         else{
@@ -236,17 +236,15 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
       document.addEventListener('backbutton', commonJS.goback, false);
-      var date = new Date();
-      date.setMinutes(date.getMinutes()+30);
-    
-      $('#deliveryDate').mobiscroll().datetime({
+
+      $('#demo_datetime').mobiscroll().datetime({
           theme: "android-holo-light",     // Specify theme like: theme: 'ios' or omit setting to use default 
           mode: "scroller",       // Specify scroller mode like: mode: 'mixed' or omit setting to use default 
           display: "modal", // Specify display mode like: display: 'bottom' or omit setting to use default 
           lang: "zh",       // Specify language like: lang: 'pl' or omit setting to use default
-          minDate: new Date(date.getFullYear(),date.getMonth(),date.getDate(),date.getHours(),date.getMinutes()),  // More info about minDate: http://docs.mobiscroll.com/2-14-0/datetime#!opt-minDate
-          maxDate: new Date(date.getFullYear()+1,date.getMonth(),date.getDate(),date.getHours(),date.getMinutes()),   // More info about maxDate: http://docs.mobiscroll.com/2-14-0/datetime#!opt-maxDate
-          stepMinute: 1  // More info about stepMinute: http://docs.mobiscroll.com/2-14-0/datetime#!opt-stepMinute
+          minDate: new Date(2014,12,6,9,22),  // More info about minDate: http://docs.mobiscroll.com/2-14-0/datetime#!opt-minDate
+          maxDate: new Date(2016,7,30,15,44),   // More info about maxDate: http://docs.mobiscroll.com/2-14-0/datetime#!opt-maxDate
+          stepMinute: 5  // More info about stepMinute: http://docs.mobiscroll.com/2-14-0/datetime#!opt-stepMinute
       });
 
       //app.loadNavigator();
@@ -275,8 +273,7 @@ var app = {
       app.viewModel.orderInfo.type = ko.observable(app.viewModel.orderInfo.type);
       app.viewModel.orderInfo.weight = ko.observable(app.viewModel.orderInfo.weight);
       app.viewModel.orderInfo.volume = ko.observable(app.viewModel.orderInfo.volume);
-      
-      app.viewModel.orderInfo.ship_date_ = ko.observable( commonJS.jsonDateFormat(Date.parse(date)/1000));
+      app.viewModel.orderInfo.ship_date_ = ko.observable( Date.parse(new Date())/1000);
       app.viewModel.orderInfo.arrival_date_ = ko.observable( Date.parse(new Date())/1000);
       app.viewModel.orderInfo.consignee_name = ko.observable(app.viewModel.orderInfo.consignee_name);
       app.viewModel.orderInfo.consignee_phone = ko.observable(app.viewModel.orderInfo.consignee_phone);
@@ -288,16 +285,16 @@ var app = {
       app.viewModel.orderInfo.bid_item.truckage = ko.observable(app.viewModel.orderInfo.bid_item.truckage);
       app.viewModel.orderInfo.bid_item.tipping = ko.observable(app.viewModel.orderInfo.bid_item.tipping);
 
-      //  app.viewModel.orderInfo.ship_date =  ko.pureComputed({
-      //   read:function() {
-      //    return commonJS.jsonDateFormat(app.viewModel.orderInfo.ship_date_());
-      //   },
-      //   write:function(value)
-      //   {
-      //     app.viewModel.orderInfo.ship_date_(value);
-      //   },
-      //   owner:app.viewModel.orderInfo
-      // });
+       app.viewModel.orderInfo.ship_date =  ko.pureComputed({
+        read:function() {
+         return commonJS.jsonDateFormat(app.viewModel.orderInfo.ship_date_());
+        },
+        write:function(value)
+        {
+          app.viewModel.orderInfo.ship_date_(value);
+        },
+        owner:app.viewModel.orderInfo
+      });
       app.viewModel.orderInfo.arrival_date =  ko.pureComputed({
         read:function() {
           return commonJS.jsonDateFormat(app.viewModel.orderInfo.arrival_date_());
