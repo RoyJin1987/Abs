@@ -237,7 +237,7 @@ var app = {
     onDeviceReady: function() {
       document.addEventListener('backbutton', commonJS.goback, false);
 
-      $('#deliveryDate').mobiscroll().datetime({
+      $('#demo_datetime').mobiscroll().datetime({
           theme: "android-holo-light",     // Specify theme like: theme: 'ios' or omit setting to use default 
           mode: "scroller",       // Specify scroller mode like: mode: 'mixed' or omit setting to use default 
           display: "modal", // Specify display mode like: display: 'bottom' or omit setting to use default 
@@ -273,9 +273,7 @@ var app = {
       app.viewModel.orderInfo.type = ko.observable(app.viewModel.orderInfo.type);
       app.viewModel.orderInfo.weight = ko.observable(app.viewModel.orderInfo.weight);
       app.viewModel.orderInfo.volume = ko.observable(app.viewModel.orderInfo.volume);
-      var date = new Date();
-      date.setMinutes(date.getMinutes()+30);
-      app.viewModel.orderInfo.ship_date_ = ko.observable( commonJS.jsonDateFormat(Date.parse(date)/1000));
+      app.viewModel.orderInfo.ship_date_ = ko.observable( Date.parse(new Date())/1000);
       app.viewModel.orderInfo.arrival_date_ = ko.observable( Date.parse(new Date())/1000);
       app.viewModel.orderInfo.consignee_name = ko.observable(app.viewModel.orderInfo.consignee_name);
       app.viewModel.orderInfo.consignee_phone = ko.observable(app.viewModel.orderInfo.consignee_phone);
@@ -287,16 +285,16 @@ var app = {
       app.viewModel.orderInfo.bid_item.truckage = ko.observable(app.viewModel.orderInfo.bid_item.truckage);
       app.viewModel.orderInfo.bid_item.tipping = ko.observable(app.viewModel.orderInfo.bid_item.tipping);
 
-      //  app.viewModel.orderInfo.ship_date =  ko.pureComputed({
-      //   read:function() {
-      //    return commonJS.jsonDateFormat(app.viewModel.orderInfo.ship_date_());
-      //   },
-      //   write:function(value)
-      //   {
-      //     app.viewModel.orderInfo.ship_date_(value);
-      //   },
-      //   owner:app.viewModel.orderInfo
-      // });
+       app.viewModel.orderInfo.ship_date =  ko.pureComputed({
+        read:function() {
+         return commonJS.jsonDateFormat(app.viewModel.orderInfo.ship_date_());
+        },
+        write:function(value)
+        {
+          app.viewModel.orderInfo.ship_date_(value);
+        },
+        owner:app.viewModel.orderInfo
+      });
       app.viewModel.orderInfo.arrival_date =  ko.pureComputed({
         read:function() {
           return commonJS.jsonDateFormat(app.viewModel.orderInfo.arrival_date_());
