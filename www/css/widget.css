@@ -85,7 +85,7 @@ a > img
 .blue-strong-head,.blue-strong-head > span {color: #00BFFF; font-size: 1.2em; font-weight: bold;}
 .red-strong,.red-strong > span {color:#FF6A6A; font-size:1.2em; font-weight: bold;}
 
-
+/*无边框表单行*/
 .form-line-wrapper{
 	float: left;
 	width: 100%;
@@ -95,7 +95,7 @@ a > img
 
 .form-line-wrapper > .left{
 	float: left;
-	width: 75;
+	width: 75px;
 	padding: 6px 0px;
 }
 
@@ -143,11 +143,50 @@ a > img
 	margin-bottom:  12px;
 }
 
+
+/*个人设置表单行*/
+.settings-line-wrapper{
+	float: left;
+	width: 100%;
+	line-height: 25px;
+	font-size: 16px;
+}
+
+.settings-line-wrapper > .left{
+	float: left;
+	width: 10%;
+}
+.settings-line-wrapper > .left > img{
+	width: 25px;
+	height: 25px;
+	padding: 6px 0px;
+}
+
+.settings-line-wrapper > .content{
+	float: left;
+	width: 40%;
+	margin: 0 5px;
+}
+.settings-line-wrapper > .content > label{
+	margin: 0;
+	height: 25px;
+	font-size:.8em;
+	font-weight: bold;
+	padding: 6px 0px;
+}
+.settings-line-wrapper > .right {
+	float: right;
+	width: 30%;
+	text-align: right;
+}
+
+
 hr{
 	width: 100%;
 	background-color:#D3D3D3;
 	border:0;
 	height:1px;
+	line-height: 5px;
 }
 
 
