@@ -17,16 +17,51 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 var app = {
-    newUser: {
-            name:ko.observable(''),
-            mobile:ko.observable(''),
-            verificationCode:ko.observable(''),
-            address:ko.observable(''),
-            image:""    
-        },
-
+    newUser:{
+        location:ko.observable(''),
+        company_description:ko.observable(''),
+        distribution_range:ko.observable(''),
+        license_plate_number:ko.observable(''),
+        vehicle_description:ko.observable(''),
+        company_name:'',
+        company_address:ko.observable(''),
+        company_tel:ko.observable(''),
+        //mobile_number:'',
+        type: ko.observable("2"),
+        model: ko.observable("7"),
+        showPersonal: ko.observable(true), 
+        showAgency: ko.observable(false), 
+        showCompany: ko.observable(false),  
+        hasStandard: ko.observable(false), 
+        hasRefrigerate: ko.observable(false), 
+        hasFrozen: ko.observable(false), 
+        model6: ko.observable(false), 
+        model7: ko.observable(true), 
+        model8: ko.observable(false), 
+        id_card:"",
+        driving_license:"",
+        driving_permits:"",
+        business_license:"",
+        typeRadioClick: function () {
+            if (app.newUser.type() == "2") {
+                app.newUser.showPersonal(true);
+                app.newUser.showAgency(false);
+                app.newUser.showCompany(false);
+            }
+            else  if (app.newUser.type() == "3") {
+                app.newUser.showAgency(true);
+                app.newUser.showCompany(false);
+                app.newUser.showPersonal(false);
+            }else{
+                app.newUser.showCompany(true);
+                app.newUser.showPersonal(false);
+                app.newUser.showAgency(false);
+            }
+            return true;
+        }     
+    },
+    uploadtype:"",
     onLoad:function() {
 
         if (!window.device) {
@@ -34,7 +69,6 @@ var app = {
         } else {
             document.addEventListener('deviceready', this.onDeviceReady, false);
         }
-
 
     },
 
@@ -56,9 +90,7 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
-        document.addEventListener('backbutton', commonJS.goback, false);
         if (window.device) {
-            alert(device.model +"----"+device.cordova +"------"+ device.uuid +"-----"+device.version+"----"+device.platform);
         };
         
         
@@ -73,30 +105,6 @@ var app = {
         console.log('Received Event: ' + id);
     },
 
-    //获取验证码
-    verificate:function()
-    {
-        
-        // debugger;
-        if(!app.newUser.mobile())
-        {
-            alert("请先输入手机号");
-            return;
-        }
-        var request = {
-            Action:"getcode",
-            parameter:{
-                mobile:app.newUser.mobile()
-            }
-        };
-
-        var url = ABSApplication.ABSServer.url + JSON.stringify(request);
-        commonJS.get(url,function(data){
-           if (data.status === 0) {
-                app.newUser.verificationCode(data.code);
-           };
-        });
-    },
     //注册
     register:function()
     {
@@ -105,81 +113,110 @@ var app = {
             return;
         }
         var usr = app.newUser;
-        var deviceId ="TestDeviceId";
+        var deviceId ="";
         if (window.device) {
             deviceId = window.device.uuid;
-
         };
 
+        var token;
+         if(typeof localStorage === 'undefined' )
+        {
+            token = $.cookie("usrToken");
+        }else{
+            token = localStorage["usrToken"];
+        }
         var request = {
             Action:"register",
-            type:1,
-            deviceId:deviceId,
+            type:usr.type(),
+            Token:token,
             parameter:{
-                mobile_number:usr.mobile(),
-                mobile_number_code:usr.verificationCode(),
-                name:usr.name(),
-                location:usr.address(),
-                image:usr.image
+                location:"",
+                id_card:usr.id_card,
+                //id_card:"",
+                company_description:usr.company_description(),
+                wenceng:[],
+                medels:[],
+                distribution_range:usr.distribution_range()
             }
         }
+        
+        if (usr.hasStandard()){
+            request.parameter.wenceng.push("2");
+        }
+        if (usr.hasRefrigerate()){
+            request.parameter.wenceng.push("3");
+        }
+        if (usr.hasFrozen()){
+            request.parameter.wenceng.push("4");
+        }
+
+        if (usr.type() =="2"){
+            request.parameter.medels.push(usr.model());
+            request.parameter.driving_license =usr.driving_license;
+            request.parameter.driving_permits =usr.driving_permits;
+            // request.parameter.driving_license ="";
+            // request.parameter.driving_permits ="";
+            request.parameter.license_plate_number =usr.license_plate_number();
+            request.parameter.vehicle_description =usr.vehicle_description();
+        }else{
+            if (usr.model6()){
+                request.parameter.medels.push("6");
+            }
+            if (usr.model7()){
+                request.parameter.medels.push("7");
+            }
+            if (usr.model8()){
+                request.parameter.medels.push("8");
+            }
+            request.parameter.company_name =usr.company_name;
+            request.parameter.company_address =usr.company_address();
+            request.parameter.company_tel =usr.company_tel();
+            request.parameter.business_license =usr.business_license;
+        }
+
+        //alert(JSON.stringify(request));
         var url = ABSApplication.ABSServer.url + JSON.stringify(request);
-        //alert(url);
         commonJS.get(url,function(data){
-            // alert(JSON.stringify(data));
+            //alert(JSON.stringify(data));
            if (data.status === 0) {
-               
-                if(typeof localStorage === 'undefined' )
-                {
-                    $.cookie('usrToken', data.Token, { expires: 7, path: '/' });
-                }
-                else
-                {
-                    localStorage.setItem('usrToken',data.Token);
-                }
-               request = {
+                request = {
                     Action:"UserInformation",
-                    Token:data.Token,
+                    Token:token,
                 }
                 url = ABSApplication.ABSServer.url + JSON.stringify(request);
-                var token = data.Token;
+
                 commonJS.get(url,function(data){
-                    
+                    //alert(JSON.stringify(data));
                     if (data.status === 0) {
                         if(typeof localStorage === 'undefined' )
                         {
                             $.cookie('usrName', data.parameter.name, { expires: 7, path: '/' });
                             $.cookie('usrIdentity', data.parameter.identity, { expires: 7, path: '/' });
                             $.cookie('usrImage', ABSApplication.ABSServer.host +data.parameter.image, { expires: 7, path: '/' });
-                            $.cookie('gid', "1", { expires: 7, path: '/' });
+                            $.cookie('gid', usr.type(), { expires: 7, path: '/' });
                         }
                         else
                         {
-                            
                             localStorage.setItem('usrName',data.parameter.name);
                             localStorage.setItem('usrIdentity',data.parameter.identity);
                             localStorage.setItem('usrImage',ABSApplication.ABSServer.host +data.parameter.image);
-                            localStorage.setItem('gid',"1");
+                            localStorage.setItem('gid',usr.type());
                         }
                         
                         // console.log('usrName = '+ localStorage['usrName']);
                         if (window.notificationClient) {
-                            
                             window.notificationClient.startService(data.parameter.identity,token,true);
                         };
-                        
-                        window.location.href="registerCompleted.html";
+                        alert("申请已提交！");
+                        window.location.href="homemap.html";
                     }else{
-
                         alert(JSON.stringify(data.message));
                     }
                 });
-
-               //alert("恭喜您，注册成功！");
-               window.location.href="registerCompleted.html";
+               window.location.href="homemap.html";
            }else{
-            alert(data.message);
-           };
+                alert(data.message);
+           }
         });
 
     },
@@ -206,6 +243,11 @@ var app = {
     {
         //隐藏加载器
         $.mobile.loading('hide');
+    },
+
+    upload:function (type)
+    {
+        app.uploadtype =type;
     },
 
    onFaceImgClick:function(flag){
@@ -292,13 +334,29 @@ var app = {
                 filePath = filePath.replace("\\\"","");
             }
         }
-  
-        app.newUser.image = filePath;
-        alert("头像上传成功");
+        
+        if(app.uploadtype=="1"){
+            app.newUser.image = filePath;
+            alert("头像上传成功");
+        }else if(app.uploadtype=="2"){
+            app.newUser.id_card = filePath;
+            alert("身份证上传成功");
+        }else if(app.uploadtype=="3"){
+            app.newUser.driving_license = filePath;
+            alert("驾驶证上传成功");
+        }else if(app.uploadtype=="4"){
+            app.newUser.driving_permits = filePath;
+            alert("行驶证上传成功");
+        }else if(app.uploadtype=="5"){
+            app.newUser.business_license = filePath;
+            alert("营业执照上传成功");
+        }
+        
+        
         log("========onFileUploadSuccess===========");
     },
     onFileUploadFail:function (error){
-		app.hideLoader();
+        app.hideLoader();
         alert("上传出错");
         log("code = "+error.code+";upload error source = " + error.source+";upload error target = " + error.target);
     }

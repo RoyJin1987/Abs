@@ -223,7 +223,7 @@ var app = {
                         if (window.notificationClient) {
                             window.notificationClient.startService(data.parameter.identity,token,true);
                         };
-                        alert("注册成功！");
+                        //alert("注册成功！");
                         window.location.href="homemap.html";
                     }else{
                         alert(JSON.stringify(data.message));

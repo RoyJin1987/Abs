@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>  
+<html>  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1">  
+<title>html app</title>  
+    <link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" />
+	<link href="css/main.css" rel="stylesheet" type="text/css">
+	<link href="css/widget.css" rel="stylesheet" type="text/css">
+	<script src="js/jquery.js"></script>
+	<script src="js/jquery.cookie.js"></script>
+  	<script src="js/jquery.mobile-1.4.4.js"></script>
+  	<script src="js/jquery.tmpl.min.js"></script> 
+  	<script src="js/knockout-3.2.0.js"></script> 
+  	<script src="js/json2.js"></script>
+  	<script type="text/javascript" src="js/app.js"></script>
+  	<script type="text/javascript" src="js/common.js"></script>
+  	<script type="text/javascript" src="js/deliveryApply.js"></script>
+	<script type="text/javascript" src="cordova.js"></script>
+</head>  
+<body onload="app.onLoad()">  
+	<div data-role="page">  
+	<div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="f">
+			<a data-role="button" data-rel="back" id="back-btn" title="Home"><img src="img/left_arrow_w.png"></img><span>返回<span></a>
+			<h1>我来送申请</h1>
+	 </div>	
+	<div data-role="content">
+		<form method="get" action="">
+			<!-- <div >
+				<table>
+					<tr>
+
+						<td style="width:94%"><a onclick="app.upload(1)" class="center-align" href="#select_pic_page" data-rel="popup" data-position-to="window" data-transition="pop"><img id="face" style="width:40px;height:40px;" src="img/noPhoto.png" /></a>上传头像</td>
+					</tr>
+				</table>
+				<hr/>
+			</div>
+			
+			<div >
+				<table>
+					<tr>
+						<td style="width:25%"><label for="goodsType">手机号：</label></td>
+						<td style="width:40%"><input type="number" data-bind="value:mobile_number"/></td>
+						<td style="width:35%"><a href="#" data-role="button" data-iconpos="left" onclick="app.verificate()" data-icon="flat-location" data-theme="f">获取验证码</td>
+					</tr>
+					<tr>
+						<td style="width:25%"><label for="goodsType">验证码：</label></td>
+						<td style="width:30%"><input type="text" data-bind="value:mobile_number_code"/></td>
+					</tr>
+				</table>
+				<hr/>
+			</div> -->
+			
+			<div data-role="fieldcontain">
+        		<fieldset data-role="controlgroup" class="ui-grid-b">
+        			<div class="ui-block-a">
+			          <input type="radio" name="radio-choice-a" data-theme="c" id="radio-choice-1-a" data-bind="checked:type,click:typeRadioClick" value="2" checked="checked" />
+			          <label for="radio-choice-1-a">个人</label>
+			        </div>
+			        <div class="ui-block-b">
+			          <input type="radio" name="radio-choice-a" data-theme="c" id="radio-choice-1-b" data-bind="checked:type,click:typeRadioClick" value="3"  />
+			          <label for="radio-choice-1-b">代理</label>
+          			</div>
+			        <div class="ui-block-c">
+			          <input type="radio" name="radio-choice-a" data-theme="c" id="radio-choice-1-c" data-bind="checked:type,click:typeRadioClick" value="4"  />
+			          <label for="radio-choice-1-c">物流公司</label>
+			        </div>
+        		</fieldset>
+      		</div>
+      		<div data-role="fieldcontain">
+        		<fieldset data-role="controlgroup" class="ui-grid-b">
+        			<div class="ui-block-a">
+			          	<label class="checkbox checkbox-inline" for="checkbox5a">
+                		<input type="checkbox" data-toggle="checkbox" data-bind="checked: hasStandard" id="checkbox5a" data-theme="c" required checked>常温
+              			</label>
+			        </div>
+			        <div class="ui-block-b">
+			          	<label class="checkbox checkbox-inline" for="checkbox5b">
+                		<input type="checkbox" data-toggle="checkbox" data-bind="checked: hasRefrigerate" id="checkbox5b" data-theme="c" required > 冷藏
+              			</label>
+          			</div>
+			        <div class="ui-block-c">
+			          	<label class="checkbox checkbox-inline" for="checkbox5c">
+                		<input type="checkbox" data-toggle="checkbox" data-bind="checked: hasFrozen" id="checkbox5c" data-theme="c" required > 冷冻
+              			</label>
+			        </div>
+        		</fieldset>
+      		</div>
+      		<div data-role="fieldcontain">
+        		<fieldset data-role="controlgroup" class="ui-grid-b" data-bind="visible: showPersonal">
+        			<div class="ui-block-a">
+			          	<label class="checkbox checkbox-inline" for="checkbox5a">
+                		<input type="radio" name="models-choice" data-bind="checked: model" value="6" data-theme="c" required checked>社区
+              			</label>
+			        </div>
+			        <div class="ui-block-b">
+			          	<label class="checkbox checkbox-inline" for="checkbox5b">
+                		<input type="radio" name="models-choice" data-bind="checked: model" value="7" data-theme="c" required > 同城
+              			</label>
+          			</div>
+			        <div class="ui-block-c">
+			          	<label class="checkbox checkbox-inline" for="checkbox5c">
+                		<input type="radio" name="models-choice" data-bind="checked: model" value="8" data-theme="c" required > 城际
+              			</label>
+			        </div>
+        		</fieldset>
+        		<fieldset data-role="controlgroup" class="ui-grid-b" data-bind="visible: showAgency||showCompany">
+        			<div class="ui-block-a">
+			          	<label class="checkbox checkbox-inline" for="checkbox5a">
+                		<input type="checkbox" name="models-choice" data-bind="checked: model6" value="6" data-theme="c" required checked>社区
+              			</label>
+			        </div>
+			        <div class="ui-block-b">
+			          	<label class="checkbox checkbox-inline" for="checkbox5b">
+                		<input type="checkbox" name="models-choice" data-bind="checked: model7" value="7" data-theme="c" required > 同城
+              			</label>
+          			</div>
+			        <div class="ui-block-c">
+			          	<label class="checkbox checkbox-inline" for="checkbox5c">
+                		<input type="checkbox" name="models-choice" data-bind="checked: model8" value="8" data-theme="c" required > 城际
+              			</label>
+			        </div>
+        		</fieldset>
+      		</div>
+      		<hr/>
+      		<div data-bind="visible: showPersonal">
+				<table>
+<!-- 				<tr>
+						<td style="width:25%"><label for="weight" data-inline="true">姓名：</label></td>
+						<td style="width:69%"><input type="text" data-bind="value:name" data-inline="true"></td><td style="width:6%"></td>
+					</tr> -->
+					<tr>
+						<td style="width:25%"><label for="weight" data-inline="true">身份证：</label></td>
+						<td style="width:69%"><a onclick="app.upload(2)" class="center-align" href="#select_pic_page" data-rel="popup" data-position-to="window" data-transition="pop"><img id="face" style="width:40px;height:40px;" src="img/noPhoto.png" /></a></td>
+					</tr>
+				</table>
+				<hr/>
+				<table>
+					<tr>
+						<td style="width:25%"><label for="weight" data-inline="true">驾驶证：</label></td>
+						<td style="width:69%"><a onclick="app.upload(3)" class="center-align" href="#select_pic_page" data-rel="popup" data-position-to="window" data-transition="pop"><img id="face" style="width:40px;height:40px;" src="img/noPhoto.png" /></a></td>
+					</tr>
+				</table>
+				<hr/>
+				<table>
+					<tr>
+						<td style="width:25%"><label for="weight" data-inline="true">车牌号：</label></td>
+						<td style="width:69%"><input type="text"  data-bind="value:license_plate_number" data-inline="true"></td><td style="width:6%"></td>
+					</tr>
+				</table>
+				<hr/>
+				<table>
+					<tr>
+						<td style="width:55%"><label for="weight" data-inline="true">非两轮车上传行驶证：</label></td>
+						<td style="width:39%"><a onclick="app.upload(4)" class="center-align" href="#select_pic_page" data-rel="popup" data-position-to="window" data-transition="pop"><img id="face" style="width:40px;height:40px;" src="img/noPhoto.png" /></a></td>
+						
+					</tr>
+				</table>
+				<hr/>
+				<table>
+					<tr>
+						<td style="width:25%"><label for="weight" data-inline="true">车型描述：</label></td>
+						<td style="width:69%"><input type="text" data-bind="value:vehicle_description" data-inline="true"></td><td style="width:6%"></td>
+					</tr>
+				</table>
+				<hr/>
+				<table>
+					<tr>
+						<td style="width:25%"><label for="weight" data-inline="true">个人描述：</label></td>
+						<td style="width:69%"><input type="text" data-bind="value:company_description" data-inline="true"></td><td style="width:6%"></td>
+					</tr>
+				</table>
+				<hr/>
+			</div>
+			<div data-bind="visible: showAgency">
+				<table>
+					<tr>
+						<td style="width:25%"><label for="weight" data-inline="true">代理机构名称：</label></td>
+						<td style="width:69%"><input type="text" data-bind="value:company_name" data-inline="true"></td><td style="width:6%"></td>
+					</tr>
+					<tr>
+						<td style="width:25%"><label for="weight" data-inline="true">机构地址：</label></td>
+						<td style="width:69%"><input type="text" data-bind="value:company_address" data-inline="true"></td><td style="width:6%"></td>
+					</tr>
+				</table>
+				<hr/>
+				<table>
+					<tr>
+						<td style="width:25%"><label for="weight" data-inline="true">管理人姓名：</label></td>
+						<td style="width:69%"><input type="text" data-bind="value:name" data-inline="true"></td><td style="width:6%"></td>
+					</tr>
+					<tr>
+						<td style="width:25%"><label for="weight" data-inline="true">联系电话：</label></td>
+						<td style="width:69%"><input type="number" data-bind="value:company_tel" data-inline="true"></td><td style="width:6%"></td>
+					</tr>
+				</table>
+				<hr/>
+				<table>
+					<tr>
+						<td style="width:25%"><label for="weight" data-inline="true">管理人身份证：</label></td>
+						<td style="width:69%"><a onclick="app.upload(2)" class="center-align" href="#select_pic_page" data-rel="popup" data-position-to="window" data-transition="pop"><img id="face" style="width:40px;height:40px;" src="img/noPhoto.png" /></a></td>
+					</tr>
+				</table>
+				<hr/>
+				<table>
+					<tr>
+						<td style="width:25%"><label for="weight" data-inline="true">营业执照：</label></td>
+						<td style="width:69%"><a onclick="app.upload(5)" class="center-align" href="#select_pic_page" data-rel="popup" data-position-to="window" data-transition="pop"><img id="face" style="width:40px;height:40px;" src="img/noPhoto.png" /></a></td>
+					</tr>
+				</table>
+				<hr/>
+				<table>
+					<tr>
+						<td style="width:25%"><label for="weight" data-inline="true">管理机构描述：</label></td>
+						<td style="width:69%"><input type="text" data-bind="value:company_description" data-inline="true"></td><td style="width:6%"></td>
+					</tr>
+				</table>
+				<hr/>
+			</div>
+			<div data-bind="visible: showCompany">
+				<table>
+					<tr>
+						<td style="width:25%"><label for="weight" data-inline="true">公司名称：</label></td>
+						<td style="width:69%"><input type="text" data-bind="value:company_name" data-inline="true"></td><td style="width:6%"></td>
+					</tr>
+					<tr>
+						<td style="width:25%"><label for="weight" data-inline="true">公司地址：</label></td>
+						<td style="width:69%"><input type="text" data-bind="value:company_address" data-inline="true"></td><td style="width:6%"></td>
+					</tr>
+				</table>
+				<hr/>
+				<table>
+					<tr>
+						<td style="width:25%"><label for="weight" data-inline="true">管理人姓名：</label></td>
+						<td style="width:69%"><input type="text" data-bind="value:name" data-inline="true"></td><td style="width:6%"></td>
+					</tr>
+					<tr>
+						<td style="width:25%"><label for="weight" data-inline="true">联系电话：</label></td>
+						<td style="width:69%"><input type="text" data-bind="value:company_tel" data-inline="true"></td><td style="width:6%"></td>
+					</tr>
+				</table>
+				<hr/>
+				<table>
+					<tr>
+						<td style="width:25%"><label for="weight" data-inline="true">法人身份证：</label></td>
+						<td style="width:69%"><a onclick="app.upload(2)" class="center-align" href="#select_pic_page" data-rel="popup" data-position-to="window" data-transition="pop"><img id="face" style="width:40px;height:40px;" src="img/noPhoto.png" /></a></td>
+					</tr>
+				</table>
+				<hr/>
+				<table>
+					<tr>
+						<td style="width:25%"><label for="weight" data-inline="true">公司营业执照：</label></td>
+						<td style="width:69%"><a onclick="app.upload(5)" class="center-align" href="#select_pic_page" data-rel="popup" data-position-to="window" data-transition="pop"><img id="face" style="width:40px;height:40px;" src="img/noPhoto.png" /></a></td>
+					</tr>
+				</table>
+				<hr/>
+				<table>
+					<tr>
+						<td style="width:25%"><label for="weight" data-inline="true">物流公司描述：</label></td>
+						<td style="width:69%"><input type="text" data-bind="value:company_description" data-inline="true"></td><td style="width:6%"></td>
+					</tr>
+				</table>
+				<hr/>
+			</div>
+			<div >
+				<table>
+					<tr>
+						<td style="width:25%"><label for="weight" data-inline="true">配送范围：</label></td>
+						<td style="width:69%"><input type="text" data-bind="value:distribution_range" data-inline="true"></td><td style="width:6%"></td>
+					</tr>
+				</table>
+			</div>
+			<hr/>
+			<div  align="center">
+				<a href="#" data-role="button" data-theme="f" onclick="app.register()">确定</a>  
+			</div>
+		</form>
+   </div>
+</div><!-- /page -->  
+<div>
+	<div data-role="popup" id="select_pic_page" data-overlay-theme="c">
+		<ul data-role="listview" data-icon="false">
+			<li onclick="app.onFaceImgClick(0)" style="border-width:0;border-color:#666;border-bottom-width: 1px;"><a style="padding:16px;font-weight:normal;" href="#" data-rel="back">拍照</a></li>
+			<li onclick="app.onFaceImgClick(1)" style="border-width:0;"><a style="padding:16px;font-weight:normal;" href="#" data-rel="back">从已有照片选择</a></li>
+		</ul>
+	</div>			
+</div>
+</body>  
+</html> 
