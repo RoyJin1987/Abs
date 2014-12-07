@@ -31,6 +31,7 @@ var app = {
         type: ko.observable("2"),
         model: ko.observable("7"),
         showPersonal: ko.observable(true), 
+        notShowPersonal: ko.observable(false), 
         showAgency: ko.observable(false), 
         showCompany: ko.observable(false),  
         hasStandard: ko.observable(false), 
@@ -48,15 +49,18 @@ var app = {
                 app.newUser.showPersonal(true);
                 app.newUser.showAgency(false);
                 app.newUser.showCompany(false);
+                app.newUser.notShowPersonal(false);
             }
             else  if (app.newUser.type() == "3") {
                 app.newUser.showAgency(true);
                 app.newUser.showCompany(false);
                 app.newUser.showPersonal(false);
+                app.newUser.notShowPersonal(true);
             }else{
                 app.newUser.showCompany(true);
                 app.newUser.showPersonal(false);
                 app.newUser.showAgency(false);
+                app.newUser.notShowPersonal(true);
             }
             return true;
         }     
@@ -130,12 +134,11 @@ var app = {
             type:usr.type(),
             Token:token,
             parameter:{
-                location:"",
                 id_card:usr.id_card,
                 //id_card:"",
                 company_description:usr.company_description(),
                 wenceng:[],
-                medels:[],
+                models:[],
                 distribution_range:usr.distribution_range()
             }
         }
@@ -151,7 +154,7 @@ var app = {
         }
 
         if (usr.type() =="2"){
-            request.parameter.medels.push(usr.model());
+            request.parameter.models.push(usr.model());
             request.parameter.driving_license =usr.driving_license;
             request.parameter.driving_permits =usr.driving_permits;
             // request.parameter.driving_license ="";
@@ -160,13 +163,13 @@ var app = {
             request.parameter.vehicle_description =usr.vehicle_description();
         }else{
             if (usr.model6()){
-                request.parameter.medels.push("6");
+                request.parameter.models.push("6");
             }
             if (usr.model7()){
-                request.parameter.medels.push("7");
+                request.parameter.models.push("7");
             }
             if (usr.model8()){
-                request.parameter.medels.push("8");
+                request.parameter.models.push("8");
             }
             request.parameter.company_name =usr.company_name;
             request.parameter.company_address =usr.company_address();
@@ -176,8 +179,11 @@ var app = {
 
         //alert(JSON.stringify(request));
         var url = ABSApplication.ABSServer.url + JSON.stringify(request);
+        // window.location.href = url;
+        // return;
         commonJS.get(url,function(data){
-            //alert(JSON.stringify(data));
+            // alert("aa");
+            // alert(JSON.stringify(data));
            if (data.status === 0) {
                 request = {
                     Action:"UserInformation",
