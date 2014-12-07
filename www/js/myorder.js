@@ -240,6 +240,12 @@ var appMyOrder = {
 
                     };
 
+                    order.edit = function()
+                    {
+                        var self = this;
+                        window.location.href="editOrder.html?orderId="+self.orderId;
+                    };
+
                     order.responsers = ko.observableArray([]);
                     orders.pushedOrders.push(order);
                 };

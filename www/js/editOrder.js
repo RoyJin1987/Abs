@@ -85,6 +85,9 @@ var app = {
 
     },
 
+    selectCity:function(type){
+      window.notificationClient.selectCity(type);
+    },
     sendOrderClick:function() {
       //alert(app.viewModel.selectedModels());
 
@@ -287,7 +290,30 @@ var app = {
           return myNewObj; 
         } 
 
-
+        if (app.viewModel.orderInfo.consignee_name()){
+            order.consignee_name = app.viewModel.orderInfo.consignee_name();
+        }else{
+            if (window.notificationClient){
+              window.notificationClient.showToast("请输入收货人姓名");  
+              $("#receiver").focus();
+            }
+            return null;
+        }
+        if (app.viewModel.orderInfo.consignee_phone()){
+            var regPartton=/1[3-8]+\d{9}/;
+            if(!regPartton.test(app.viewModel.orderInfo.consignee_phone())){
+              window.notificationClient.showToast("手机号码格式不正确！");  
+              $("#tel").focus();
+              return null;
+            }
+            order.consignee_phone = app.viewModel.orderInfo.consignee_phone();
+        }else{
+            if (window.notificationClient){
+              window.notificationClient.showToast("请输入收货人电话");  
+              $("#tel").focus();
+            }
+            return null;
+        }
         var order = clone(app.viewModel.orderInfo);
         order.send_address.address = app.viewModel.orderInfo.send_address.address();
         order.type = app.viewModel.orderInfo.type();

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>  
 <html>  
 <head>  
@@ -75,7 +76,7 @@
 					 	<label > 详细地址:</label>
 					 </div>
 					 <div class="content" style="width:200px">
-					 	<input type="text" name="address" id="address" enabled="false" data-bind="value: orderInfo.send_address.address" required="required"/>
+					 	<input type="text" name="send_address" id="send_address" data-bind="value: orderInfo.send_address.address" required="required"/>
 					 </div>
 					 <div class="right">
 					 	<a href="#" data-role="button" data-iconpos="notext" data-icon="flat-location" data-theme="f" ></a>
@@ -122,7 +123,10 @@
 				 	<label > 货物重量:</label>
 				 </div>
 				 <div class="content">
-				 	<input type="number" name="weight" id="weight" data-bind="value: orderInfo.weight" data-inline="true">
+				 	<input type="number" maxlength="4" name="weight" id="weight" data-bind="value: orderInfo.weight" data-inline="true"/>
+				 </div>
+				 <div class="left">
+				 	<label >千克</label>
 				 </div>
 			</div>
 			<hr / >
@@ -131,7 +135,10 @@
 				 	<label > 货物体积:</label>
 				 </div>
 				 <div class="content">
-				 	<input type="number" name="volume" id="volume" data-bind="value: orderInfo.volume"/>
+				 	<input type="number" maxlength="3" name="volume" id="volume" data-bind="value: orderInfo.volume"/>
+				 </div>
+				 <div class="left">
+				 	<label >立方</label>
 				 </div>
 			</div>
 			<hr/>
@@ -168,7 +175,7 @@
 				 	<label > 联系电话:</label>
 				 </div>
 				 <div class="content">
-				 	<input id="tel" type="tel" data-bind="value: orderInfo.consignee_phone"></input>
+				 	<input id="tel" type="tel" maxlength="11" data-bind="value: orderInfo.consignee_phone"></input>
 				 </div>
 			</div>
 			<hr/>
@@ -186,7 +193,7 @@
 				 	<label > 详细地址:</label>
 				 </div>
 				 <div class="content" style="width:200px">
-				 	<input type="text" name="address" id="address" enabled="false" data-bind="value:orderInfo.shipping_address.address" required="required"/>
+				 	<input type="text" name="address" id="shipping_address" data-bind="value:orderInfo.shipping_address.address" required="required"/>
 				 </div>
 			</div>
 			<hr />

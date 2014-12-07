@@ -1,0 +1,68 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<title>html app</title>  
+	<!-- <link href="css/widget.css" rel="stylesheet" type="text/css" /> -->
+</head>  
+<body>  
+	<div data-role="page" data-theme="f">  
+	<link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" />
+	<link href="css/main.css" rel="stylesheet" type="text/css" />
+	<link href="css/buttons.css" rel="stylesheet" type="text/css" />
+	<style type="text/css">
+		body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;}
+		#golist {display: none;}
+		@media (max-device-width: 780px){#golist{display: block !important;}}
+		.ui-header a{padding: 2px;}
+		.ui-header img{width: 50px;height: 50px;border-radius:25px;border: 3px solid white}
+		.ui-footer img{ width: 31px; height: 28px;margin:3px 5px;vertical-align: middle;}
+		.ui-footer div { line-height: 40px;}
+		.ui-footer a{height: :40px; line-height:40px; vertical-align: middle;}
+		.ui-footer a > span{line-height:40px; font-size: 1.3em;}
+		a.bg-trasparent {display:block;height:60px;line-height:60px;width:100%;border:none;margin:0;padding:0;}
+		label.mini-padding {padding: 0px 15px}
+		label img{width: 45px;height:30px;}
+	</style>
+	<script type="text/javascript" src="cordova.js"></script>
+	<script src="js/jquery.js"></script>
+  	<script src="js/jquery.mobile-1.4.4.js"></script>
+  	<script src="js/jquery.cookie.js"></script>
+  	<script src="js/jquery.tmpl.min.js"></script> 
+  	<script src="js/knockout-3.2.0.js"></script>
+  	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/homemap.js"></script> 
+		<script type="text/javascript">
+        app.initialize();
+    </script>
+		  <div data-role="header" data-position="fixed" data-tap-toggle="false" class="header-extra-height">
+		    <div>
+		    	<div style="margin:0 auto;text-align:center">
+		     		<a data-ajax="false" href="#" data-role="button" data-transition="slide">
+		     			<img id="usr-image" class="icon-img" src="img/noPhoto.png" alt=""></img>
+		     		</a>
+		     		<span id="usr-name"></span>
+		     	</div>
+		    </div>
+		  </div>
+		  <div data-role="content">
+		  	<strong>注册成功！</strong>
+		  	<span>如果您是货主，请点击“返回首页”</span>
+		  	<div class="container-line">
+	  			<div class="center-align" style="width:90%;overflow:visible" >	  				
+	  				<a data-role="button" style="font-size:1.5em" href="homemap.html" data-ajax="false">返回首页</a>
+	  			</div>
+	  		</div>
+	  		<span>如果您是车主，代理或物流公司，请点击“申请送货”完成补充资料，通过系统审批之后方可接单送货</span>
+		  	<div class="container-line">
+	  			<div class="center-align" style="width:90%;overflow:visible" >	  				
+	  				<a data-role="button" style="font-size:1.5em" href="deliveryApply.html" data-ajax="false">申请送货</a>
+	  			</div>
+	  		</div>
+		  </div>
+	</div><!-- /page --> 
+	
+</body>  
+</html>
+

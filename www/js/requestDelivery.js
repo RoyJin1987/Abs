@@ -105,6 +105,10 @@ var app = {
       // app.viewModel.orderInfo.consignor = $.cookie("usrName");
 
       var order = app.extractOrder(false);
+      if(order==null){
+        return;
+      }
+
       if (app.viewModel.selectedModels() == '8'){
         var request;
         if (app.id){
@@ -170,6 +174,9 @@ var app = {
     },
     sendOrderClick:function() {
       var order = app.extractOrder(true);
+      if(order==null){
+        return;
+      }
       var request;
       if (app.id){
         request = {
@@ -432,14 +439,80 @@ var app = {
       }     
       
       var order = clone(app.viewModel.orderInfo);
-  
+
+      var cityCounty = $("#send_city_county_hidden").text().split(",");
+      if (cityCounty[1]){
+        if (app.viewModel.orderInfo.send_address.address()){
+          order.send_address.address = cityCounty[1] + app.viewModel.orderInfo.send_address.address();
+          order.send_address.city = cityCounty[0];
+        }else{
+          if (window.notificationClient){
+            window.notificationClient.showToast("请输入发货地址");  
+            $("#send_address").focus();
+          }
+          return null;
+        }
+        
+      }else{
+        if (window.notificationClient){
+          window.notificationClient.showToast("请选择发货城市");  
+          window.notificationClient.selectCity(0);
+        }
+        return null;
+      }
+      
+      if (app.viewModel.orderInfo.consignee_name()){
+          order.consignee_name = app.viewModel.orderInfo.consignee_name();
+      }else{
+          if (window.notificationClient){
+            window.notificationClient.showToast("请输入收货人姓名");  
+            $("#receiver").focus();
+          }
+          return null;
+      }
+      if (app.viewModel.orderInfo.consignee_phone()){
+          var regPartton=/1[3-8]+\d{9}/;
+          if(!regPartton.test(app.viewModel.orderInfo.consignee_phone())){
+            window.notificationClient.showToast("手机号码格式不正确！");  
+            $("#tel").focus();
+            return null;
+          }
+          order.consignee_phone = app.viewModel.orderInfo.consignee_phone();
+      }else{
+          if (window.notificationClient){
+            window.notificationClient.showToast("请输入收货人电话");  
+            $("#tel").focus();
+          }
+          return null;
+      }
+
+      var shipCityCounty = $("#shipping_city_county_hidden").text().split(",");
+      if (shipCityCounty[1]){
+        if (app.viewModel.orderInfo.shipping_address.address()){
+          order.shipping_address.address = shipCityCounty[1] + app.viewModel.orderInfo.shipping_address.address();
+          order.shipping_address.city = shipCityCounty[0];
+        }else{
+          if (window.notificationClient){
+            window.notificationClient.showToast("请输入收货地址");  
+            $("#shipping_address").focus();
+          }
+          return null;
+        }
+        
+      }else{
+        if (window.notificationClient){
+          window.notificationClient.showToast("请选择收货城市");  
+          window.notificationClient.selectCity(1);
+        }
+        return null;
+      }
+
       order.type = app.viewModel.orderInfo.type();
       order.weight = app.viewModel.orderInfo.weight();
       order.volume = app.viewModel.orderInfo.volume();
       order.ship_date = formatDate(app.viewModel.orderInfo.ship_date_());
       order.arrival_date = formatDate(app.viewModel.orderInfo.arrival_date_());
-      order.consignee_name = app.viewModel.orderInfo.consignee_name();
-      order.consignee_phone = app.viewModel.orderInfo.consignee_phone();
+      
       order.delivery_floor = app.viewModel.orderInfo.delivery_floor();
       order.additional_information = app.viewModel.orderInfo.additional_information();
       // order.selectedModels = app.viewModel.orderInfo.selectedModels();
@@ -466,21 +539,6 @@ var app = {
       order.send_address.latitude = app.baiduPosition.lat;
       order.wenceng = app.viewModel.selectedWenCeng();
       order.models = app.viewModel.selectedModels();
-      var cityCounty = $("#send_city_county_hidden").text().split(",");
-      if (cityCounty){
-        order.send_address.address = cityCounty[1] + app.viewModel.orderInfo.send_address.address();
-        order.send_address.city = cityCounty[0];
-      }else{
-        order.send_address.address = app.viewModel.orderInfo.send_address.address();
-      }
-      
-      var shipCityCounty = $("#shipping_city_county_hidden").text().split(",");
-      if (shipCityCounty){
-        order.shipping_address.city = shipCityCounty[0];
-        order.shipping_address.address = shipCityCounty[1] + app.viewModel.orderInfo.shipping_address.address();
-      }else{
-        order.shipping_address.address = app.viewModel.orderInfo.shipping_address.address();
-      }
       
       //alert("order info:"+JSON.stringify(order));
       return order;

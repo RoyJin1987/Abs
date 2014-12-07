@@ -117,12 +117,14 @@ var app = {
                    $.cookie('usrToken', data.Token, { expires: 7, path: '/' });
                    $.cookie('usrIdentity', data.identity, { expires: 7, path: '/' });
                    $.cookie('usrImage', ABSApplication.ABSServer.host +data.image, { expires: 7, path: '/' });
+                   $.cookie('gid', data.gid, { expires: 7, path: '/' });
                }
                else
                {
                     localStorage.setItem('usrToken',data.Token);
                     localStorage.setItem('usrIdentity',data.identity);
                     localStorage.setItem('usrImage',ABSApplication.ABSServer.host +data.image);
+                    localStorage.setItem('gid',data.gid);
                }
                
 
