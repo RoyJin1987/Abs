@@ -52,6 +52,7 @@
         </script>
 </head>  
 <body onload="app.onLoad()">  
+	<div id="abs-map"></div>
 	<div data-role="page" id="requestDelivery">  
 		<div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="f">
 			<a data-role="button" data-rel="back" id="back-btn" title="Home"><img src="img/left_arrow_w.png"></img><span>返回<span></a>
@@ -73,10 +74,12 @@
 				</div>
 				<div class="form-line-wrapper">
 				 	<div class="left">
-					 	<label > 详细地址:</label>
+					 	<label>详细地址:</label>
 					 </div>
-					 <div class="content" style="width:200px">
-					 	<input type="text" name="send_address" id="send_address" data-bind="value: orderInfo.send_address.address" required="required"/>
+					 <div class="content" style="width:150px">
+					 	<!-- <input type="text" name="send_address" id="send_address" data-bind="value: orderInfo.send_address.address" required="required"/> -->
+				 		<ul id="send_address" data-role="listview" data-inset="true" required="required" data-filter="true" data-filter-reveal="true" data-filter-placeholder="请输入地址" data-theme="f">
+						</ul>
 					 </div>
 					 <div class="right">
 					 	<a href="#" data-role="button" data-iconpos="notext" data-icon="flat-location" data-theme="f" ></a>
@@ -275,7 +278,7 @@
 				 	<label > 总计里程数:</label>
 				 </div>
 				 <div class="content">
-				 	<label id="mileage">1500米</label>
+				 	<label id="mileage" data-bind="text:orderInfo.distance+'米'"></label>
 				 </div>
 			</div>
 			<hr />

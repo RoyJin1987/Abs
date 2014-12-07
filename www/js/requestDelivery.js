@@ -25,6 +25,8 @@ var app = {
   baiduPosition:{},
   serverUrl:"http://112.124.122.107/Applications/web/?data=",
   token:"",
+  map:{},
+  loacalSearch:{},
   viewModel :{
     orderInfo:{
       send_address:{
@@ -321,9 +323,9 @@ var app = {
           return app.viewModel.orderInfo.bid_item.freight()*1+app.viewModel.orderInfo.bid_item.tipping()*1+app.viewModel.orderInfo.bid_item.truckage()*1;
       });
 
-      if(typeof localStorage === 'undefined' )
+      if(typeof localStorage === 'undefined' || typeof locationService === 'undefined' )
       {
-          app.baiduPosition = {lng:121.654443,lat:31.653235};
+          app.baiduPosition = {lng:121.608557,lat:31.209932};
       }
       else
       {
@@ -352,6 +354,30 @@ var app = {
           //alert(JSON.stringify(app.baiduPosition));
         }
       }
+      app.map = new BMap.Map("abs-map");        
+      app.map.centerAndZoom(app.baiduPosition, 11);
+
+      var options = {
+        onSearchComplete: function(results){
+          // 判断状态是否正确
+          if (app.loacalSearch.getStatus() == BMAP_STATUS_SUCCESS){
+            // var s = [];
+            var html = "";
+            for (var i = 0; i < results.getCurrentNumPois(); i ++){
+              // s.push(results.getPoi(i).title + ", " + results.getPoi(i).address);
+               html += "<li><a href='#' onclick='app.bindAdrress(this)' lat="+results.getPoi(i).point.lat+" lng="+results.getPoi(i).point.lng+">" +  results.getPoi(i).title + "</a></li>";
+            }
+             var $ul = $("#send_address");
+
+              $ul.html( html );
+              $ul.listview( "refresh" );
+              $ul.trigger( "updatelayout");
+          }
+        },
+        pageCapacity:10
+
+      };
+      app.loacalSearch = new BMap.LocalSearch(app.map, options);
 
       var jsonStr = '{"Action":"getWenceng"}';
       var url = app.serverUrl +  jsonStr;
@@ -384,6 +410,18 @@ var app = {
         app.viewModel.selectedModels(defaultModel);
         $("#modelsList").selectmenu("refresh"); 
       }
+     $( "#send_address" ).on("filterablebeforefilter", function ( e, data ) {
+      var $ul = $( this ),
+          $input = $( data.input ),
+          value = $input.val(),
+          html = "";
+      $ul.html( "" );
+      if ( value && value.length > 2 ) {
+          $ul.html( "<li><div class='ui-loader'><span class='ui-icon ui-icon-loading'></span></div></li>" );
+          $ul.listview( "refresh" );
+          app.loacalSearch.search($input.val());
+      }
+     });
     },
 
       //加载定位
@@ -543,5 +581,37 @@ var app = {
       //alert("order info:"+JSON.stringify(order));
       return order;
   },
+
+  bindAdrress:function(btn)
+  {
+    var $li = $(btn).parent();
+    var $ul = $("#send_address")
+    $ul.prev().find("input").val($(btn).text());
+    $ul.html( "" );
+    $ul.listview( "refresh" );
+    $ul.trigger( "updatelayout");
+    var point =  {
+      lng:$(btn).attr("lng"),
+      lat:$(btn).attr("lat")
+    }
+    app.viewModel.send_address.address = $(btn).text();
+    app.viewModel.send_address.longitude = point.lng;
+    app.viewModel.send_address.latitude = point.lat;
+    app.viewModel.orderInfo.distance = app.getDistance(app.baiduPosition,point).toFixed(0);
+  },
+
+  getDistance:function(p1,p2)
+  {
+      var pk = 180 / 3.1415927;
+      a1 = p1.lat / pk;
+      a2 = p1.lng / pk;
+      b1 = p2.lat / pk;
+      b2 = p2.lng / pk;
+      t1 = Math.cos(a1) * Math.cos(a2) * Math.cos(b1) * Math.cos(b2);
+      t2 = Math.cos(a1) * Math.sin(a2) * Math.cos(b1) * Math.sin(b2);
+      t3 = Math.sin(a1) * Math.sin(b1);
+      tt = Math.acos(t1 + t2 + t3);
+      return 6366000 * tt;
+  }
 
 };
