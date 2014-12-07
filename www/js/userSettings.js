@@ -98,11 +98,11 @@ var app = {
         app.receivedEvent('deviceready');
     },
 
-    showDetails:function(btn){
-        var $orderblk = $(btn).parents(".order-info-block");
-        $orderblk.find(".brief").hide();
-        $orderblk.find(".details").show();     
-    },
+    // showDetails:function(btn){
+    //     var $orderblk = $(btn).parents(".order-info-block");
+    //     $orderblk.find(".brief").hide();
+    //     $orderblk.find(".details").show();     
+    // },
 
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -118,5 +118,38 @@ var app = {
              $("#personal-info").show();
         }  
 
+    },
+    edit:function()
+    {
+    // POST|GET data={Action: "UserInformationEdit", Token:”身份令牌”, switch :{
+    // location_stars:”是否可以被定位”, 
+    // phone_stars:” 是否可以接听电话”,
+    // orders_stars:” 是否可以接订单”,
+    // },
+    // parameter:{
+    //          //同接口7.1.
+    // }}
+
+        var request = {
+            Action:"UserInformationEdit",
+            switch:{
+                location_stars: $("#locator-switch").parent().hasClass("ui-flipswitch-active")?1:0,
+                phone_stars:  $("#calling-switch").parent().hasClass("ui-flipswitch-active")?1:0,
+                orders_stars: $("#order-switch").parent().hasClass("ui-flipswitch-active")?1:0,
+            },
+            parameter:app.viewModel.parameter,
+            Token:app.token
+        };
+        // alert(JSON.stringify(request));
+        var url = app.serverUrl + JSON.stringify(request);
+        commonJS.get(url,function(data){
+            // alert(JSON.stringify(data));
+           if(data.status !== 0)
+           {
+                alert(data.message);
+                return;
+            }
+            alert("修改成功");
+        });
     }
 };
