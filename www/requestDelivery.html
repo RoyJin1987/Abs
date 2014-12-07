@@ -126,7 +126,7 @@
 				 	<label > 货物重量:</label>
 				 </div>
 				 <div class="content">
-				 	<input type="number" maxlength="4" name="weight" id="weight" data-bind="value: orderInfo.weight" data-inline="true"/>
+				 	<input type="number" max="100000" name="weight" id="weight" data-bind="value: orderInfo.weight" data-inline="true"/>
 				 </div>
 				 <div class="left">
 				 	<label >千克</label>
@@ -138,7 +138,7 @@
 				 	<label > 货物体积:</label>
 				 </div>
 				 <div class="content">
-				 	<input type="number" maxlength="3" name="volume" id="volume" data-bind="value: orderInfo.volume"/>
+				 	<input type="number" max="1000" name="volume" id="volume" data-bind="value: orderInfo.volume"/>
 				 </div>
 				 <div class="left">
 				 	<label >立方</label>
@@ -205,7 +205,7 @@
 				 	<label > 送货楼层:</label>
 				 </div>
 				 <div class="content">
-				 	<input type="number" name="floor" id="floor" data-bind="value: orderInfo.delivery_floor"/>
+				 	<input type="number" max="1000" name="floor" id="floor" data-bind="value: orderInfo.delivery_floor"/>
 				 </div>
 			</div>
 			<hr/>
@@ -304,7 +304,7 @@
 				 	<label > 调整运费:</label>
 				 </div>
 				 <div class="content" style="width:200px">
-				 	<input type="range" name="slider1" id="slider1" data-bind="value: orderInfo.bid_item.freight" min="0" max="100"  />
+				 	<input type="range" name="slider1" id="slider1" data-bind="value: orderInfo.bid_item.freight" min="0" max="500"  />
 				 </div>
 			</div>
 			<hr />
@@ -321,7 +321,7 @@
 				 	<label > 调整搬运费:</label>
 				 </div>
 				 <div class="content" style="width:200px">
-				 	<input type="range" name="slider2" id="slider2" data-bind="value: orderInfo.bid_item.truckage" min="0" max="100"  />
+				 	<input type="range" name="slider2" id="slider2" data-bind="value: orderInfo.bid_item.truckage" min="0" max="200"  />
 				 </div>
 			</div>
 			<hr />
@@ -338,7 +338,7 @@
 				 	<label > 调整小费:</label>
 				 </div>
 				 <div class="content" style="width:200px">
-				 	<input type="range" name="slider3" id="slider3" data-bind="value: orderInfo.bid_item.tipping" min="0" max="100"  />
+				 	<input type="range" name="slider3" id="slider3" data-bind="value: orderInfo.bid_item.tipping" min="0" max="200"  />
 				 </div>
 			</div>
 			<hr />

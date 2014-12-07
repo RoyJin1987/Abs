@@ -69,7 +69,7 @@ public class Abs extends CordovaActivity
 					country = addressUtils.getCountry(inputStream);
 				}
 			} catch (IOException e) {
-			// TODO Auto-generated catch block
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

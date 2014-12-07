@@ -66,11 +66,11 @@ var app = {
           };
           //alert(JSON.stringify(app.viewModel.orderInfo));
           var url = app.serverUrl + JSON.stringify(request);
-          window.location.href = url;
+          //window.location.href = url;
           commonJS.get(url,function(data_){
             if (data_.status===0) {
               //提示用户
-              alert("订单提交成功！");
+              //alert("订单提交成功！");
               window.location.href="pushing.html?orderId="+data_.orderId;
             }
             else{
@@ -290,6 +290,8 @@ var app = {
           return myNewObj; 
         } 
 
+        var order = clone(app.viewModel.orderInfo);
+
         if (app.viewModel.orderInfo.consignee_name()){
             order.consignee_name = app.viewModel.orderInfo.consignee_name();
         }else{
@@ -314,15 +316,13 @@ var app = {
             }
             return null;
         }
-        var order = clone(app.viewModel.orderInfo);
+
         order.send_address.address = app.viewModel.orderInfo.send_address.address();
         order.type = app.viewModel.orderInfo.type();
         order.weight = app.viewModel.orderInfo.weight();
         order.volume = app.viewModel.orderInfo.volume();
         order.ship_date = app.viewModel.orderInfo.ship_date_();
         order.arrival_date = app.viewModel.orderInfo.arrival_date_();
-        order.consignee_name = app.viewModel.orderInfo.consignee_name();
-        order.consignee_phone = app.viewModel.orderInfo.consignee_phone();
         order.shipping_address.address = app.viewModel.orderInfo.shipping_address.address();
         order.delivery_floor = app.viewModel.orderInfo.delivery_floor();
         order.additional_information = app.viewModel.orderInfo.additional_information();

@@ -20,7 +20,9 @@
 var app = {
     serverUrl:"http://112.124.122.107/Applications/web/?data=",
     token:"",
+    gid:"",
     viewModel: {
+        isGoodsMaster:ko.observable(false),  
     },
 
     onLoad:function() {
@@ -50,16 +52,18 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function(model) {
-        // document.addEventListener('backbutton', commonJS.gotoUesrCenter, false);
+        document.addEventListener('backbutton', commonJS.goback, false);
         if(typeof localStorage === 'undefined' )
         {
           app.token = $.cookie("usrToken");
           app.usrName = $.cookie("usrName");
+          app.gid = $.cookie("gid");
         }
         else
         {
           app.token = localStorage["usrToken"];
           app.usrName = localStorage["usrName"];
+          app.gid = localStorage["gid"];
         }
 
         var request = {
@@ -69,7 +73,7 @@ var app = {
         var url = app.serverUrl + JSON.stringify(request);
         
         commonJS.get(url,function(data){
-            // alert(JSON.stringify(data));
+             //alert(JSON.stringify(data));
            if(data.status !== 0)
             {
                 alert(data.message);
@@ -79,22 +83,26 @@ var app = {
                 canBeLocated : data.switch.location_stars,
                 canBeCalled : data.switch.phone_stars,
                 canGrabOrder :  data.switch.orders_stars,
-                personalInfo:data.parameter
+                personalInfo:data.parameter,
+                isGoodsMaster:false,
             };
-            if (data.switch.location_stars) {
+            alert(app.gid);
+            if (app.gid=="1"){
+                app.viewModel.isGoodsMaster=true;
+            }
+            if (data.switch.location_stars==1) {
                 $("#locator-switch").parent().addClass("ui-flipswitch-active");
             };
-            if (data.switch.phone_stars) {
+            if (data.switch.phone_stars==1) {
                 $("#calling-switch").parent().addClass("ui-flipswitch-active");
             };
-            if (data.switch.orders_stars) {
+            if (data.switch.orders_stars==1) {
                 $("#order-switch").parent().addClass("ui-flipswitch-active");
             };
-             ko.applyBindings(app.viewModel);
-            $('body').trigger("create");
-
 
         });  
+        ko.applyBindings(app.viewModel);
+        $('body').trigger("create");
         app.receivedEvent('deviceready');
     },
 
@@ -119,6 +127,11 @@ var app = {
         }  
 
     },
+
+    gotoApply:function(){
+        window.location.href = "deliveryApply.html";
+    },
+
     edit:function()
     {
     // POST|GET data={Action: "UserInformationEdit", Token:”身份令牌”, switch :{
@@ -137,10 +150,10 @@ var app = {
                 phone_stars:  $("#calling-switch").parent().hasClass("ui-flipswitch-active")?1:0,
                 orders_stars: $("#order-switch").parent().hasClass("ui-flipswitch-active")?1:0,
             },
-            parameter:app.viewModel.parameter,
+            parameter:app.viewModel.personalInfo,
             Token:app.token
         };
-        // alert(JSON.stringify(request));
+         //alert(JSON.stringify(request));
         var url = app.serverUrl + JSON.stringify(request);
         commonJS.get(url,function(data){
             // alert(JSON.stringify(data));
@@ -150,6 +163,7 @@ var app = {
                 return;
             }
             alert("修改成功");
+            window.location.href="userCenter.html";
         });
     }
 };

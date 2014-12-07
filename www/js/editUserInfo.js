@@ -19,11 +19,12 @@
  */
 
 var app = {
-    newUser: {
+    serverUrl:"http://112.124.122.107/Applications/web/?data=",
+    switch:{},
+    personalInfo: {
             name:ko.observable(''),
-            mobile:ko.observable(''),
-            verificationCode:ko.observable(''),
-            address:ko.observable(''),
+            mobile_number:ko.observable(''),
+            location:ko.observable(''),
             image:""    
         },
 
@@ -62,8 +63,41 @@ var app = {
         };
         
         
-        ko.applyBindings(app.newUser);
-        $('body').trigger("create");
+        if(typeof localStorage === 'undefined' )
+        {
+          app.token = $.cookie("usrToken");
+          app.usrName = $.cookie("usrName");
+        }
+        else
+        {
+          app.token = localStorage["usrToken"];
+          app.usrName = localStorage["usrName"];
+        }
+
+        var request = {
+                Action:"UserInformation",
+                Token:app.token
+            };
+        var url = app.serverUrl + JSON.stringify(request);
+        //alert(url);
+        commonJS.get(url,function(data){
+             //alert(JSON.stringify(data));
+           if(data.status !== 0)
+            {
+                alert(data.message);
+                return;
+            }
+            app.personalInfo=data.parameter;
+            app.switch=data.switch;
+            if (data.parameter.image){
+                document.getElementById("face").src =ABSApplication.ABSServer.host + data.parameter.image;
+            }
+            
+            ko.applyBindings(app.personalInfo);
+            $('body').trigger("create");
+
+
+        });  
 
     },
 
@@ -73,37 +107,9 @@ var app = {
         console.log('Received Event: ' + id);
     },
 
-    //获取验证码
-    verificate:function()
-    {
-        
-        // debugger;
-        if(!app.newUser.mobile())
-        {
-            alert("请先输入手机号");
-            return;
-        }
-        var request = {
-            Action:"getcode",
-            parameter:{
-                mobile:app.newUser.mobile()
-            }
-        };
-
-        var url = ABSApplication.ABSServer.url + JSON.stringify(request);
-        commonJS.get(url,function(data){
-           if (data.status === 0) {
-                app.newUser.verificationCode(data.code);
-           };
-        });
-    },
     //注册
     register:function()
     {
-        if(!app.validate())
-        {
-            return;
-        }
         var usr = app.newUser;
         var deviceId ="TestDeviceId";
         if (window.device) {
@@ -112,71 +118,29 @@ var app = {
         };
 
         var request = {
-            Action:"register",
-            type:1,
-            deviceId:deviceId,
-            parameter:{
-                mobile_number:usr.mobile(),
-                mobile_number_code:usr.verificationCode(),
-                name:usr.name(),
-                location:usr.address(),
-                image:usr.image
-            }
+            Action:"UserInformationEdit",
+            Token:app.token,
+            switch:app.switch,
+            parameter:app.personalInfo,
         }
         var url = ABSApplication.ABSServer.url + JSON.stringify(request);
         //alert(url);
         commonJS.get(url,function(data){
-            // alert(JSON.stringify(data));
+             //alert(JSON.stringify(data));
            if (data.status === 0) {
-               
                 if(typeof localStorage === 'undefined' )
                 {
-                    $.cookie('usrToken', data.Token, { expires: 7, path: '/' });
+                    $.cookie('usrName', app.personalInfo.name, { expires: 7, path: '/' });
+                    $.cookie('usrImage', ABSApplication.ABSServer.host +app.personalInfo.image, { expires: 7, path: '/' });
                 }
                 else
                 {
-                    localStorage.setItem('usrToken',data.Token);
+                    localStorage.setItem('usrName',app.personalInfo.name);
+                    localStorage.setItem('usrImage',ABSApplication.ABSServer.host +app.personalInfo.image);
                 }
-               request = {
-                    Action:"UserInformation",
-                    Token:data.Token,
-                }
-                url = ABSApplication.ABSServer.url + JSON.stringify(request);
-                var token = data.Token;
-                commonJS.get(url,function(data){
-                    
-                    if (data.status === 0) {
-                        if(typeof localStorage === 'undefined' )
-                        {
-                            $.cookie('usrName', data.parameter.name, { expires: 7, path: '/' });
-                            $.cookie('usrIdentity', data.parameter.identity, { expires: 7, path: '/' });
-                            $.cookie('usrImage', ABSApplication.ABSServer.host +data.parameter.image, { expires: 7, path: '/' });
-                            $.cookie('gid', "1", { expires: 7, path: '/' });
-                        }
-                        else
-                        {
-                            
-                            localStorage.setItem('usrName',data.parameter.name);
-                            localStorage.setItem('usrIdentity',data.parameter.identity);
-                            localStorage.setItem('usrImage',ABSApplication.ABSServer.host +data.parameter.image);
-                            localStorage.setItem('gid',"1");
-                        }
-                        
-                        // console.log('usrName = '+ localStorage['usrName']);
-                        if (window.notificationClient) {
-                            
-                            window.notificationClient.startService(data.parameter.identity,token,true);
-                        };
-                        
-                        window.location.href="registerCompleted.html";
-                    }else{
 
-                        alert(JSON.stringify(data.message));
-                    }
-                });
-
-               //alert("恭喜您，注册成功！");
-               window.location.href="registerCompleted.html";
+               alert("修改成功");
+               navigator.app.backHistory();  
            }else{
             alert(data.message);
            };
@@ -293,7 +257,7 @@ var app = {
             }
         }
   
-        app.newUser.image = filePath;
+        app.personalInfo.image = filePath;
         document.getElementById("face").src =ABSApplication.ABSServer.host + filePath;
         alert("头像上传成功");
         log("========onFileUploadSuccess===========");

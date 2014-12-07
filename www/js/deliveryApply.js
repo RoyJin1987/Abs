@@ -93,6 +93,7 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
+        document.addEventListener('backbutton', commonJS.goback, false);
         app.receivedEvent('deviceready');
         if (window.device) {
         };
@@ -343,18 +344,26 @@ var app = {
         
         if(app.uploadtype=="1"){
             app.newUser.image = filePath;
+            document.getElementById("face").src =ABSApplication.ABSServer.host + filePath;
             alert("头像上传成功");
         }else if(app.uploadtype=="2"){
             app.newUser.id_card = filePath;
+            document.getElementById("image_identity").src =ABSApplication.ABSServer.host + filePath;
+            document.getElementById("image_identity1").src =ABSApplication.ABSServer.host + filePath;
+            document.getElementById("image_identity2").src =ABSApplication.ABSServer.host + filePath;
             alert("身份证上传成功");
         }else if(app.uploadtype=="3"){
             app.newUser.driving_license = filePath;
+            document.getElementById("image_driving_license").src =ABSApplication.ABSServer.host + filePath;
             alert("驾驶证上传成功");
         }else if(app.uploadtype=="4"){
             app.newUser.driving_permits = filePath;
+            document.getElementById("image_driving_permit").src =ABSApplication.ABSServer.host + filePath;
             alert("行驶证上传成功");
         }else if(app.uploadtype=="5"){
             app.newUser.business_license = filePath;
+            document.getElementById("image_business_license").src =ABSApplication.ABSServer.host + filePath;
+            document.getElementById("image_business_license1").src =ABSApplication.ABSServer.host + filePath;
             alert("营业执照上传成功");
         }
         
