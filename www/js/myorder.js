@@ -413,21 +413,21 @@ var appMyOrder = {
                 return order;
             };
         }
-         for(var i in orders.cancelOrders())
+        for(var i in orders.cancelOrders())
         {
             var order = orders.cancelOrders()[i];
             if (order.orderId === id) {
                 return order;
             };
         }
-         for(var i in orders.confirmOrders())
+        for(var i in orders.confirmOrders())
         {
             var order = orders.confirmOrders()[i];
             if (order.orderId === id) {
                 return order;
             };
         }
-         for(var i in orders.completeOrders())
+        for(var i in orders.completeOrders())
         {
             var order = orders.completeOrders()[i];
             if (order.orderId === id) {

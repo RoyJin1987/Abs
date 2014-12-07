@@ -1,0 +1,165 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1">  
+<title>html app</title>  
+    <link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" />
+	<link href="css/main.css" rel="stylesheet" type="text/css">
+	<link href="css/widget.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="cordova.js"></script>
+	<script src="js/jquery.js"></script>
+	<script src="js/jquery.mobile-1.4.0-rc.1.js"></script> 
+	<script src="js/knockout-3.2.0.js"></script> 
+  	<script src="js/json2.js"></script>
+  	<script src="js/jquery.cookie.js"></script>
+  	<script type="text/javascript" src="http://api.map.baidu.com/api?type=quick&ak=tUoYt61wcnunrkdGksApMwQt&v=1.0"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/userSettings.js"></script>
+	<script type="text/javascript">
+        function show(city,county,type){   
+	        if (type =="0"){
+	        	$("#send_city_county").text(city+county);
+	        	$("#send_city_county_hidden").text(city + "," + county);
+	        } else{
+	        	$("#shipping_city_county").text(city+county);
+	        	$("#shipping_city_county_hidden").text(city + "," + county);
+	        }	
+        }
+    </script>
+    <style type="text/css">
+    	#personal-info span
+    	{
+    		display: inline;
+    		font-size: .8em;
+    		font-weight: bold;
+    	}
+	</style>
+</head>  
+<body onload="app.onLoad()">  
+	<div data-role="page" id="requestDelivery">  
+		<div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="f">
+			<a data-role="button" data-rel="back" id="back-btn" title="Home"><img src="img/left_arrow_w.png"></img><span>返回<span></a>
+			<h1>个人设置</h1>
+			<a class="right-nav-btn" data-ajax="false" href="userCenter.html"><img src="img/tah.png"></img></a>
+		</div>
+		<div data-role="content">
+			<div class="settings-line-wrapper">
+				<div class="left">
+				 	<img src="img/settings/t_b_24.png"></img>
+				 </div>
+			 	<div class="content">
+				 	<label>是否可以被定位</label>
+				 </div>
+				 <div class="right">
+				 	<input type="checkbox" id="locator-switch" data-role="flipswitch" data-mini="true" data-theme="b"  />
+				 </div>
+			</div>
+			<hr />
+			<div class="settings-line-wrapper">
+				<div class="left">
+				 	<img src="img/settings/tel_b_24.png"></img>
+				 </div>
+			 	<div class="content">
+				 	<label>是否可以接听电话</label>
+				 </div>
+				 <div class="right">
+				 	<input type="checkbox" id="calling-switch" data-role="flipswitch" data-mini="true" data-theme="b" />
+				 </div>
+			</div>
+			<hr />
+			<div>
+				<div class="settings-line-wrapper">
+					<div class="left">
+					 	<img src="img/settings/wenben_b_24.png"></img>
+					 </div>
+				 	<div class="content">
+					 	<label>是否接单</label>
+					 </div>
+					 <div class="right" >
+					 	<input type="checkbox" id="order-switch" data-role="flipswitch" data-mini="true" data-theme="b" />
+					 </div>
+				</div>
+			</div>
+			<hr />
+			<div class="settings-line-wrapper">
+				<div class="left">
+				 	<img src="img/settings/wenben_b_24.png"></img>
+				 </div>
+			 	<div class="content">
+				 	<label>修改个人注册信息</label>
+				 </div>
+				 <div class="right">
+				 	<a href="#" data-role="button" data-icon="carat-d" data-iconpos="notext" style="float:right" data-theme="f" data-mini="true"  onclick="app.togglePersonalInfo(this)"></a>
+				 </div>
+			</div>
+			<div id="personal-info" style="display:none">
+				<div class="settings-line-wrapper">
+					<div class="left">
+						<label></label>
+					 </div>
+				 	<div class="content">
+					 	<span style="padding:0">姓名:</label>
+					 	<span data-bind="text:personalInfo.name"></span>
+					 </div>
+				</div>
+				<div class="settings-line-wrapper">
+					<div class="left">
+						<label></label>
+					 </div>
+				 	<div class="content">
+					 	<span style="padding:0">手机号:</label>
+					 	<span data-bind="text:personalInfo.mobile_number"></span>
+					 </div>
+				</div>
+				<div class="settings-line-wrapper">
+					<div class="left">		
+						<label></label>		 	
+					 </div>
+				 	<div class="content">
+					 	<span style="padding:0">所属地:</label>
+					 	<span data-bind="text:personalInfo.location"></span>
+					 </div>
+				</div>
+			</div>
+			<hr/>
+			<div class="settings-line-wrapper">
+				<div class="left">
+				 	<img src="img/settings/setting_b_24.png"></img>
+				 </div>
+			 	<div class="content">
+				 	<label>更改状态页</label>
+				 </div>
+			</div>
+			<hr/>
+			<div class="settings-line-wrapper">
+				<div class="left">
+				 	<img src="img/settings/time_b_24.png"></img>
+				 </div>
+			 	<div class="content">
+				 	<label>预设接单状态</label>
+				 </div>
+			</div>
+			<hr / >
+			<div class="settings-line-wrapper">
+				<div class="left">
+				 	<img src="img/settings/sm_b_24.png"></img>
+				 </div>
+			 	<div class="content">
+				 	<label>我的二维码</label>
+				 </div>
+			</div>
+			<hr/>
+			<div class="settings-line-wrapper">
+				<div class="left">
+				 	<img src="img/settings/plus_b_24.png"></img>
+				 </div>
+			 	<div class="content">
+				 	<label > 扫描加入我的车队</label>
+				 </div>
+			</div>
+			<hr/>
+	   </div>
+	</div><!-- /page -->  
+</body>  
+</html> s
