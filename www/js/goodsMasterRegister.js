@@ -294,6 +294,7 @@ var app = {
         }
   
         app.newUser.image = filePath;
+        document.getElementById("face").src =ABSApplication.ABSServer.host + filePath;
         alert("头像上传成功");
         log("========onFileUploadSuccess===========");
     },

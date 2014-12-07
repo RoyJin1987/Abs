@@ -442,7 +442,7 @@ var app = {
     //alert("navigatorTo "+url);
     if(app.token)
     {
-      alert("个人设置部分正在加班加点，敬请期待！");
+      window.location.href = "userSettings.html";
     }
     else
     {
