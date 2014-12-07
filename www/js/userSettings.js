@@ -69,7 +69,7 @@ var app = {
         var url = app.serverUrl + JSON.stringify(request);
         
         commonJS.get(url,function(data){
-            // alert(JSON.stringify(data));
+             //alert(JSON.stringify(data));
            if(data.status !== 0)
             {
                 alert(data.message);
@@ -81,13 +81,13 @@ var app = {
                 canGrabOrder :  data.switch.orders_stars,
                 personalInfo:data.parameter
             };
-            if (data.switch.location_stars) {
+            if (data.switch.location_stars==1) {
                 $("#locator-switch").parent().addClass("ui-flipswitch-active");
             };
-            if (data.switch.phone_stars) {
+            if (data.switch.phone_stars==1) {
                 $("#calling-switch").parent().addClass("ui-flipswitch-active");
             };
-            if (data.switch.orders_stars) {
+            if (data.switch.orders_stars==1) {
                 $("#order-switch").parent().addClass("ui-flipswitch-active");
             };
              ko.applyBindings(app.viewModel);
@@ -137,10 +137,10 @@ var app = {
                 phone_stars:  $("#calling-switch").parent().hasClass("ui-flipswitch-active")?1:0,
                 orders_stars: $("#order-switch").parent().hasClass("ui-flipswitch-active")?1:0,
             },
-            parameter:app.viewModel.parameter,
+            parameter:app.viewModel.personalInfo,
             Token:app.token
         };
-        // alert(JSON.stringify(request));
+         //alert(JSON.stringify(request));
         var url = app.serverUrl + JSON.stringify(request);
         commonJS.get(url,function(data){
             // alert(JSON.stringify(data));
@@ -150,6 +150,7 @@ var app = {
                 return;
             }
             alert("修改成功");
+            window.location.href="userCenter.html";
         });
     }
 };
