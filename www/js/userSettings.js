@@ -86,7 +86,7 @@ var app = {
                 personalInfo:data.parameter,
                 isGoodsMaster:false,
             };
-            alert(app.gid);
+            //alert(app.gid);
             if (app.gid=="1"){
                 app.viewModel.isGoodsMaster=true;
             }
@@ -129,7 +129,7 @@ var app = {
     },
 
     gotoApply:function(){
-        window.location.href = "deliveryApply.html";
+        window.location.href = "deliveryApply.html?goback=1";
     },
 
     edit:function()
