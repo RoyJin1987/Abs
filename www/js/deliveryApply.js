@@ -66,6 +66,7 @@ var app = {
         }     
     },
     uploadtype:"",
+    ifGoBack:"",
     onLoad:function() {
 
         if (!window.device) {
@@ -94,6 +95,7 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         document.addEventListener('backbutton', commonJS.goback, false);
+        app.ifGoBack = commonJS.getUrlParam("goback");
         app.receivedEvent('deviceready');
         if (window.device) {
         };
@@ -215,12 +217,19 @@ var app = {
                             window.notificationClient.startService(data.parameter.identity,token,true);
                         };
                         alert("申请已提交！");
-                        window.location.href="homemap.html";
+
+                        if (app.ifGoBack){
+                            //alert(app.ifGoBack);
+                            window.location.href="userSettings.html";
+                        }else{
+                            window.location.href="homemap.html";
+                        }
+                        
                     }else{
                         alert(JSON.stringify(data.message));
                     }
                 });
-               window.location.href="homemap.html";
+               //window.location.href="homemap.html";
            }else{
                 alert(data.message);
            }
