@@ -19,12 +19,30 @@
 
 
 var app = {
+  map:{},
+  loacalSearch:{},
+  $addressList :{},
   serverUrl:"http://112.124.122.107/Applications/web/?data=",
   token:"07b27a882cc721a9207250f1b6bd2868",
   orderId:"",
   baiduPosition:"",
   viewModel :{
-    orderInfo:{},
+    orderInfo:{
+      send_address:{
+        longitude:"",
+        latitude:"",
+        city:"上海市",
+        address:'',
+      },
+      shipping_address:{
+        longitude:"",
+        latitude:"",
+        city:"上海市",
+        address:'',
+      },
+      distance:ko.observable(-1),
+
+    },
     wenCengList :ko.observableArray(),
     modelsList: ko.observableArray(),
     selectedWenCeng:ko.observable(''),
@@ -34,10 +52,10 @@ var app = {
     send_city:"请点击选择城市", 
     shipping_city:"请点击选择城市",
     bid_item_tuijian:{ // 出价项 车型选择非卡车时才有
-          freight:60,
-          truckage:74,
-          tipping:80,
-    },  
+          freight:ko.observable(0),
+          truckage:ko.observable(0),
+          tipping:ko.observable(0),
+    }, 
   },
 
 
@@ -162,7 +180,7 @@ var app = {
           // alert(JSON.stringify(app.baiduPosition));
         }
         app.orderId = app.getUrlParam("orderId");
-         if (app.orderId) {
+        if (app.orderId) {
 
           var jsonStr = '{"Action":"getWenceng"}';
           var url = app.serverUrl +  jsonStr;
@@ -219,7 +237,9 @@ var app = {
                 //alert(JSON.stringify(data));
                 app.viewModel.orderInfo = data.item;
 
-                app.viewModel.orderInfo.send_address.address = ko.observable(data.item.send_address.address);
+                app.viewModel.orderInfo.send_address.address = ko.observable("");
+                app.viewModel.orderInfo.send_address.longitude = ko.observable("");
+                app.viewModel.orderInfo.send_address.latitude = ko.observable("");
                 app.viewModel.orderInfo.type = ko.observable(data.item.type);
                 app.viewModel.orderInfo.weight = ko.observable(data.item.weight);
                 app.viewModel.orderInfo.volume = ko.observable(data.item.volume);
@@ -227,7 +247,11 @@ var app = {
                 app.viewModel.orderInfo.arrival_date_ = ko.observable(data.item.arrival_date);
                 app.viewModel.orderInfo.consignee_name = ko.observable(data.item.consignee_name);
                 app.viewModel.orderInfo.consignee_phone = ko.observable(data.item.consignee_phone);
-                app.viewModel.orderInfo.shipping_address.address = ko.observable(data.item.shipping_address.address);
+
+                app.viewModel.orderInfo.shipping_address.address = ko.observable("");
+                app.viewModel.orderInfo.shipping_address.longitude = ko.observable("");
+                app.viewModel.orderInfo.shipping_address.latitude = ko.observable("");
+                app.viewModel.orderInfo.distance = ko.observable(-1);
                 app.viewModel.orderInfo.delivery_floor = ko.observable(data.item.delivery_floor);
                 app.viewModel.orderInfo.additional_information = ko.observable(data.item.additional_information);
                 app.viewModel.orderInfo.selectedModels = ko.observable(data.item.models);
@@ -266,6 +290,9 @@ var app = {
                   app.viewModel.selectedWenCeng(data.item.wenceng);
                   $("#wencengList").selectmenu("refresh"); 
                 }
+
+
+              
                 // setTimeout(function(){
                 //   app.viewModel.orderInfo.bid_item.freight(100);
                 // },5000);
@@ -274,6 +301,57 @@ var app = {
                 // app.viewModel.consignee_name = app.viewModel.orderInfo.consignee_name();
                 // app.viewModel.consignee_phone = app.viewModel.orderInfo.consignee_phone();
             });
+
+            app.map = new BMap.Map("abs-map");        
+            app.map.centerAndZoom(app.baiduPosition, 11);
+            var options = {
+                onSearchComplete: function(results){
+                  // 判断状态是否正确
+                  if (app.loacalSearch.getStatus() == BMAP_STATUS_SUCCESS){
+                    // var s = [];
+                    var html = "";
+                    for (var i = 0; i < results.getCurrentNumPois(); i ++){
+                      // s.push(results.getPoi(i).title + ", " + results.getPoi(i).address);
+                       html += "<li><a href='#' onclick='app.bindAdrress(this)' lat="+results.getPoi(i).point.lat+" lng="+results.getPoi(i).point.lng+">" +  results.getPoi(i).title + "</a></li>";
+                    }
+                    var $ul = app.$addressList;
+                    $ul.html( html );
+                    $ul.listview( "refresh" );
+                    $ul.trigger( "updatelayout");
+                  }
+                },
+                pageCapacity:20
+
+              };
+              app.loacalSearch = new BMap.LocalSearch(app.map, options);
+
+             $( "#send_address" ).on("filterablebeforefilter", function ( e, data ) {
+              var $ul = $( this ),
+                  $input = $( data.input ),
+                  value = $input.val(),
+                  html = "";
+                  $ul.html( "" );
+                  if ( value && value.length > 2 ) {
+                      $ul.html( "<li><div class='ui-loader'><span class='ui-icon ui-icon-loading'></span></div></li>" );
+                      $ul.listview( "refresh" );
+                      app.$addressList = $ul;
+                      app.loacalSearch.search($input.val());
+                  }
+             });
+
+             $( "#shipping_address" ).on("filterablebeforefilter", function ( e, data ) {
+              var $ul = $( this ),
+                  $input = $( data.input ),
+                  value = $input.val(),
+                  html = "";
+                  $ul.html( "" );
+                  if ( value && value.length > 2 ) {
+                      $ul.html( "<li><div class='ui-loader'><span class='ui-icon ui-icon-loading'></span></div></li>" );
+                      $ul.listview( "refresh" );
+                      app.$addressList = $ul;
+                      app.loacalSearch.search($input.val());
+                  }
+             });
         }
        
 
@@ -342,5 +420,59 @@ var app = {
         var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
         var r = window.location.search.substr(1).match(reg);  //匹配目标参数
         if (r!=null) return unescape(r[2]); return null; //返回参数值
+    },
+      bindAdrress:function(btn)
+  {
+    var $li = $(btn).parent();
+    var $ul = $li.parent();
+    $ul.prev().find("input").val($(btn).text());
+    $ul.html( "" );
+    $ul.listview( "refresh" );
+    $ul.trigger( "updatelayout");
+    var point =  {
+      lng:$(btn).attr("lng"),
+      lat:$(btn).attr("lat")
     }
+    if ($ul.attr("id") === "send_address") {
+      app.viewModel.orderInfo.send_address.address ($(btn).text());
+      app.viewModel.orderInfo.send_address.longitude(point.lng);
+      app.viewModel.orderInfo.send_address.latitude (point.lat);
+    }
+    else if($ul.attr("id") === "shipping_address")
+    {
+      app.viewModel.orderInfo.shipping_address.address ($(btn).text());
+      app.viewModel.orderInfo.shipping_address.longitude(point.lng);
+      app.viewModel.orderInfo.shipping_address.latitude(point.lat);
+    }
+    if (app.viewModel.orderInfo.send_address.longitude() 
+       && app.viewModel.orderInfo.send_address.latitude() 
+        && app.viewModel.orderInfo.shipping_address.longitude() 
+        && app.viewModel.orderInfo.shipping_address.latitude()) {
+      var start = {
+        lng:app.viewModel.orderInfo.send_address.longitude() ,
+        lat:app.viewModel.orderInfo.send_address.latitude() 
+      };
+      var destination = {
+        lng:app.viewModel.orderInfo.shipping_address.longitude(),
+        lat:app.viewModel.orderInfo.shipping_address.latitude()
+      }
+      app.viewModel.orderInfo.distance(app.getDistance(start,destination).toFixed(0));
+    };
+  },
+
+  getDistance:function(p1,p2)
+  {
+      var pk = 180 / 3.1415927;
+      a1 = p1.lat / pk;
+      a2 = p1.lng / pk;
+      b1 = p2.lat / pk;
+      b2 = p2.lng / pk;
+      t1 = Math.cos(a1) * Math.cos(a2) * Math.cos(b1) * Math.cos(b2);
+      t2 = Math.cos(a1) * Math.sin(a2) * Math.cos(b1) * Math.sin(b2);
+      t3 = Math.sin(a1) * Math.sin(b1);
+      tt = Math.acos(t1 + t2 + t3);
+      return 6366000 * tt;
+  }
+
+
 };

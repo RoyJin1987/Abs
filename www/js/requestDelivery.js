@@ -27,6 +27,7 @@ var app = {
   token:"",
   map:{},
   loacalSearch:{},
+  $addressList :{},
   viewModel :{
     orderInfo:{
       send_address:{
@@ -57,11 +58,12 @@ var app = {
           truckage:74,
           tipping:80,
       },
+      distance:ko.observable(-1),
     },
     bid_item_tuijian:{ // 出价项 车型选择非卡车时才有
-          freight:60,
-          truckage:74,
-          tipping:80,
+          freight:ko.observable(0),
+          truckage:ko.observable(0),
+          tipping:ko.observable(0),
     },
     wenCengList :[],
     modelsList: [],
@@ -161,6 +163,14 @@ var app = {
         });
           
       }else{
+        if(app.viewModel.orderInfo.distance() >0)
+        {
+          app.viewModel.bid_item_tuijian.freight((app.viewModel.orderInfo.distance() * 0.005).toFixed(0));
+          app.viewModel.bid_item_tuijian.truckage((app.viewModel.orderInfo.distance() * 0.003).toFixed(0));
+          app.viewModel.bid_item_tuijian.tipping ((app.viewModel.orderInfo.distance() * 0.0005).toFixed(0));
+        }
+
+
         $.mobile.changePage("#offer");
         // alert(app.viewModel.orderInfo.bid_item.freight());
         $("#slider1").val(app.viewModel.orderInfo.bid_item.freight()*1).slider("refresh");
@@ -281,6 +291,10 @@ var app = {
       app.identity =commonJS.getUrlParam("identity");
       //双向绑定可编辑字段
       app.viewModel.orderInfo.send_address.address = ko.observable(app.viewModel.orderInfo.send_address.address);
+      app.viewModel.orderInfo.send_address.longitude = ko.observable(app.viewModel.orderInfo.send_address.longitude);
+      app.viewModel.orderInfo.send_address.latitude = ko.observable(app.viewModel.orderInfo.send_address.latitude);
+
+
       app.viewModel.orderInfo.type = ko.observable(app.viewModel.orderInfo.type);
       app.viewModel.orderInfo.weight = ko.observable(app.viewModel.orderInfo.weight);
       app.viewModel.orderInfo.volume = ko.observable(app.viewModel.orderInfo.volume);
@@ -289,7 +303,22 @@ var app = {
       app.viewModel.orderInfo.arrival_date_ = ko.observable( Date.parse(new Date())/1000);
       app.viewModel.orderInfo.consignee_name = ko.observable(app.viewModel.orderInfo.consignee_name);
       app.viewModel.orderInfo.consignee_phone = ko.observable(app.viewModel.orderInfo.consignee_phone);
+
       app.viewModel.orderInfo.shipping_address.address = ko.observable(app.viewModel.orderInfo.shipping_address.address);
+      app.viewModel.orderInfo.shipping_address.longitude = ko.observable(app.viewModel.orderInfo.shipping_address.longitude);
+      app.viewModel.orderInfo.shipping_address.latitude = ko.observable(app.viewModel.orderInfo.shipping_address.latitude);
+      app.viewModel.orderInfo.distance = ko.observable(-1);
+
+
+    //       bid_item_tuijian:{ // 出价项 车型选择非卡车时才有
+    //       freight:60,
+    //       truckage:74,
+    //       tipping:80,
+    // },
+    // app.viewModel.bid_item_tuijian = {
+    //   freight:ko
+    // }
+
       app.viewModel.orderInfo.delivery_floor = ko.observable(app.viewModel.orderInfo.delivery_floor);
       app.viewModel.orderInfo.additional_information = ko.observable(app.viewModel.orderInfo.additional_information);
       // app.viewModel.orderInfo.selectedModels = ko.observable(app.viewModel.orderInfo.selectedModels);
@@ -357,28 +386,6 @@ var app = {
       app.map = new BMap.Map("abs-map");        
       app.map.centerAndZoom(app.baiduPosition, 11);
 
-      var options = {
-        onSearchComplete: function(results){
-          // 判断状态是否正确
-          if (app.loacalSearch.getStatus() == BMAP_STATUS_SUCCESS){
-            // var s = [];
-            var html = "";
-            for (var i = 0; i < results.getCurrentNumPois(); i ++){
-              // s.push(results.getPoi(i).title + ", " + results.getPoi(i).address);
-               html += "<li><a href='#' onclick='app.bindAdrress(this)' lat="+results.getPoi(i).point.lat+" lng="+results.getPoi(i).point.lng+">" +  results.getPoi(i).title + "</a></li>";
-            }
-             var $ul = $("#send_address");
-
-              $ul.html( html );
-              $ul.listview( "refresh" );
-              $ul.trigger( "updatelayout");
-          }
-        },
-        pageCapacity:10
-
-      };
-      app.loacalSearch = new BMap.LocalSearch(app.map, options);
-
       var jsonStr = '{"Action":"getWenceng"}';
       var url = app.serverUrl +  jsonStr;
       commonJS.get(url,function(text){ 
@@ -410,17 +417,54 @@ var app = {
         app.viewModel.selectedModels(defaultModel);
         $("#modelsList").selectmenu("refresh"); 
       }
+
+      var options = {
+        onSearchComplete: function(results){
+          // 判断状态是否正确
+          if (app.loacalSearch.getStatus() == BMAP_STATUS_SUCCESS){
+            // var s = [];
+            var html = "";
+            for (var i = 0; i < results.getCurrentNumPois(); i ++){
+              // s.push(results.getPoi(i).title + ", " + results.getPoi(i).address);
+               html += "<li><a href='#' onclick='app.bindAdrress(this)' lat="+results.getPoi(i).point.lat+" lng="+results.getPoi(i).point.lng+">" +  results.getPoi(i).title + "</a></li>";
+            }
+            var $ul = app.$addressList;
+            $ul.html( html );
+            $ul.listview( "refresh" );
+            $ul.trigger( "updatelayout");
+          }
+        },
+        pageCapacity:20
+
+      };
+      app.loacalSearch = new BMap.LocalSearch(app.map, options);
+
      $( "#send_address" ).on("filterablebeforefilter", function ( e, data ) {
       var $ul = $( this ),
           $input = $( data.input ),
           value = $input.val(),
           html = "";
-      $ul.html( "" );
-      if ( value && value.length > 2 ) {
-          $ul.html( "<li><div class='ui-loader'><span class='ui-icon ui-icon-loading'></span></div></li>" );
-          $ul.listview( "refresh" );
-          app.loacalSearch.search($input.val());
-      }
+          $ul.html( "" );
+          if ( value && value.length > 2 ) {
+              $ul.html( "<li><div class='ui-loader'><span class='ui-icon ui-icon-loading'></span></div></li>" );
+              $ul.listview( "refresh" );
+              app.$addressList = $ul;
+              app.loacalSearch.search($input.val());
+          }
+     });
+
+     $( "#shipping_address" ).on("filterablebeforefilter", function ( e, data ) {
+      var $ul = $( this ),
+          $input = $( data.input ),
+          value = $input.val(),
+          html = "";
+          $ul.html( "" );
+          if ( value && value.length > 2 ) {
+              $ul.html( "<li><div class='ui-loader'><span class='ui-icon ui-icon-loading'></span></div></li>" );
+              $ul.listview( "refresh" );
+              app.$addressList = $ul;
+              app.loacalSearch.search($input.val());
+          }
      });
     },
 
@@ -478,7 +522,15 @@ var app = {
       
       var order = clone(app.viewModel.orderInfo);
 
-      var cityCounty = $("#send_city_county_hidden").text().split(",");
+      var cityCounty = ["上海","浦东"];//$("#send_city_county_hidden").text().split(",");
+      if (!app.viewModel.orderInfo.send_address.address()
+        ||app.viewModel.orderInfo.send_address.address() !== $("#send_address").prev().find("input").val() ) {
+        app.viewModel.orderInfo.send_address.address($("#send_address").prev().find("input").val());
+        app.viewModel.orderInfo.send_address.longitude("");
+        app.viewModel.orderInfo.send_address.latitude("");
+        app.viewModel.orderInfo.distance(-1);
+      };
+
       if (cityCounty[1]){
         if (app.viewModel.orderInfo.send_address.address()){
           order.send_address.address = cityCounty[1] + app.viewModel.orderInfo.send_address.address();
@@ -486,11 +538,9 @@ var app = {
         }else{
           if (window.notificationClient){
             window.notificationClient.showToast("请输入发货地址");  
-            $("#send_address").focus();
           }
           return null;
         }
-        
       }else{
         if (window.notificationClient){
           window.notificationClient.showToast("请选择发货城市");  
@@ -524,7 +574,14 @@ var app = {
           return null;
       }
 
-      var shipCityCounty = $("#shipping_city_county_hidden").text().split(",");
+      var shipCityCounty = ["上海","浦东"];//$("#shipping_city_county_hidden").text().split(",");
+       if (!app.viewModel.orderInfo.shipping_address.address() 
+        ||app.viewModel.orderInfo.shipping_address.address() !== $("#shipping_address").prev().find("input").val() ) {
+        app.viewModel.orderInfo.shipping_address.address($("#shipping_address").prev().find("input").val());
+        app.viewModel.orderInfo.shipping_address.longitude("");
+        app.viewModel.orderInfo.shipping_address.latitude("");
+        app.viewModel.orderInfo.distance (-1);
+      };
       if (shipCityCounty[1]){
         if (app.viewModel.orderInfo.shipping_address.address()){
           order.shipping_address.address = shipCityCounty[1] + app.viewModel.orderInfo.shipping_address.address();
@@ -585,7 +642,7 @@ var app = {
   bindAdrress:function(btn)
   {
     var $li = $(btn).parent();
-    var $ul = $("#send_address")
+    var $ul = $li.parent();
     $ul.prev().find("input").val($(btn).text());
     $ul.html( "" );
     $ul.listview( "refresh" );
@@ -594,10 +651,31 @@ var app = {
       lng:$(btn).attr("lng"),
       lat:$(btn).attr("lat")
     }
-    app.viewModel.send_address.address = $(btn).text();
-    app.viewModel.send_address.longitude = point.lng;
-    app.viewModel.send_address.latitude = point.lat;
-    app.viewModel.orderInfo.distance = app.getDistance(app.baiduPosition,point).toFixed(0);
+    if ($ul.attr("id") === "send_address") {
+      app.viewModel.orderInfo.send_address.address ($(btn).text());
+      app.viewModel.orderInfo.send_address.longitude(point.lng);
+      app.viewModel.orderInfo.send_address.latitude (point.lat);
+    }
+    else if($ul.attr("id") === "shipping_address")
+    {
+      app.viewModel.orderInfo.shipping_address.address ($(btn).text());
+      app.viewModel.orderInfo.shipping_address.longitude(point.lng);
+      app.viewModel.orderInfo.shipping_address.latitude(point.lat);
+    }
+    if (app.viewModel.orderInfo.send_address.longitude() 
+       && app.viewModel.orderInfo.send_address.latitude() 
+        && app.viewModel.orderInfo.shipping_address.longitude() 
+        && app.viewModel.orderInfo.shipping_address.latitude()) {
+      var start = {
+        lng:app.viewModel.orderInfo.send_address.longitude() ,
+        lat:app.viewModel.orderInfo.send_address.latitude() 
+      };
+      var destination = {
+        lng:app.viewModel.orderInfo.shipping_address.longitude(),
+        lat:app.viewModel.orderInfo.shipping_address.latitude()
+      }
+      app.viewModel.orderInfo.distance(app.getDistance(start,destination).toFixed(0));
+    };
   },
 
   getDistance:function(p1,p2)

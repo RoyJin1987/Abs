@@ -51,6 +51,7 @@
     </script>
 </head>  
 <body onload="app.onLoad()">  
+	<div id="abs-map"></div>
 	<div data-role="page" id="requestDelivery">  
 		<div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="f">
 			<a data-role="button" data-rel="back" id="back-btn" title="Home"><img src="img/left_arrow_w.png"></img><span>返回<span></a>
@@ -76,11 +77,13 @@
 				 	<label > 详细地址:</label>
 				 </div>
 				 <div class="content" style="width:200px">
-				 	<input type="text" name="address" id="send_address" enabled="false" data-bind="value: orderInfo.send_address.address" required="required"/>
+				 	<!-- <input type="text" name="address" id="send_address" enabled="false" data-bind="value: orderInfo.send_address.address" required="required"/> -->
+				 	<ul id="send_address" data-role="listview" data-inset="true" required="required" data-filter="true" data-filter-reveal="true" data-filter-placeholder="请输入地址" data-theme="f">
+						</ul>
 				 </div>
-				 <div class="right">
+<!-- 				 <div class="right">
 				 	<a href="#" data-role="button" data-iconpos="notext" data-icon="flat-location" data-theme="f" ></a>
-				 </div>
+				 </div> -->
 			</div>
 		</div>
 			<hr />
@@ -187,7 +190,9 @@
 				 	<label > 详细地址:</label>
 				 </div>
 				 <div class="content" style="width:200px">
-				 	<input type="text" name="shipping_address" id="address" enabled="false" data-bind="value:orderInfo.shipping_address.address" required="required"/>
+				 	<!-- <input type="text" name="shipping_address" id="address" enabled="false" data-bind="value:orderInfo.shipping_address.address" required="required"/> -->
+			 		<ul id="shipping_address" data-role="listview" data-inset="true" required="required" data-filter="true" data-filter-reveal="true" data-filter-placeholder="请输入地址" data-theme="f">
+					</ul>
 				 </div>
 			</div>
 			<hr />
@@ -270,7 +275,7 @@
 			 	<label > 总计里程数:</label>
 			 </div>
 			 <div class="content">
-			 	<label id="mileage">1500米</label>
+			 	<label id="mileage" data-bind="text:orderInfo.distance()+'米'" ></label>
 			 </div>
 		</div>
 		<hr />
@@ -288,7 +293,7 @@
 			 	<label > 平台推荐运输费用:</label>
 			 </div>
 			 <div class="content">
-			 	<label data-bind="text: bid_item_tuijian.freight"></label>
+			 	<label data-bind="text: bid_item_tuijian.freighte()+'元'"></label>
 			 </div>
 		</div>
 		<div class="form-line-wrapper">
@@ -305,7 +310,7 @@
 			 	<label > 平台推荐搬运费用:</label>
 			 </div>
 			 <div class="content">
-			 	<label data-bind="text: bid_item_tuijian.truckage"></label>
+			 	<label data-bind="text: bid_item_tuijian.truckagee()+'元'"></label>
 			 </div>
 		</div>
 		<div class="form-line-wrapper">
@@ -322,7 +327,7 @@
 			 	<label > 附加小费:</label>
 			 </div>
 			 <div class="content">
-			 	<label data-bind="text: bid_item_tuijian.tipping"></label>
+			 	<label data-bind="text: bid_item_tuijian.tippinge()+'元'"></label>
 			 </div>
 		</div>
 		<div class="form-line-wrapper">
