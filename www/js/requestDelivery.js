@@ -343,7 +343,7 @@ var app = {
       });
       app.viewModel.selectedWenCeng ("3");
       // app.viewModel.orderInfo.bid_item.total = 200;
-      app.viewModel.orderInfo.bid_item.total = ko.pureComputed(function() {
+      app.viewModel.orderInfo.bid_item.total = ko.computed(function() {
           return app.viewModel.orderInfo.bid_item.freight()*1+app.viewModel.orderInfo.bid_item.tipping()*1+app.viewModel.orderInfo.bid_item.truckage()*1;
       });
 
@@ -468,16 +468,17 @@ var app = {
         if (($input.val()*1 + 10)>100000) {
           return;
         }else{
-          $input.val($input.val()*1+10);
+          $input.val($input.val()*1+10).change();
         }
      });
      $("a.minus-expense").on("click", function ( e, data ){
         var $self = $(this);
         var $input = $self.parents(".form-line-wrapper").find("input");
+        $input.focus();
         if (($input.val()*1 - 10)<0) {
           return;
         }else{
-          $input.val($input.val()*1-10);
+          $input.val($input.val()*1-10).change();
         }
      });
     },
