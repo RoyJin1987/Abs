@@ -1,0 +1,88 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1">  
+<title>html app</title>  
+    <link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" />
+	<link href="css/main.css" rel="stylesheet" type="text/css">
+	<link href="css/widget.css" rel="stylesheet" type="text/css">
+	<link href="css/mobiscroll/mobiscroll.widget.css" rel="stylesheet" type="text/css" />
+    <link href="css/mobiscroll/mobiscroll.widget.android.css" rel="stylesheet" type="text/css" />
+    <link href="css/mobiscroll/mobiscroll.widget.android-holo.css" rel="stylesheet" type="text/css" />
+    <link href="css/mobiscroll/mobiscroll.scroller.css" rel="stylesheet" type="text/css" />
+    <link href="css/mobiscroll/mobiscroll.android-holo-light.css" rel="stylesheet" type="text/css" />
+
+	<script type="text/javascript" src="cordova.js"></script>
+	<script src="js/jquery.js"></script>
+	<script src="js/jquery.mobile-1.4.0-rc.1.js"></script> 
+	<script src="js/knockout-3.2.0.js"></script> 
+  	<script src="js/json2.js"></script>
+  	<script src="js/jquery.cookie.js"></script>
+  	
+  	<script src="js/mobiscroll/mobiscroll.core.js"></script>
+    <script src="js/mobiscroll/mobiscroll.widget.js"></script>
+    <script src="js/mobiscroll/mobiscroll.scroller.js"></script>
+    <script src="js/mobiscroll/mobiscroll.util.datetime.js"></script>
+    <script src="js/mobiscroll/mobiscroll.datetimebase.js"></script>
+    <script src="js/mobiscroll/mobiscroll.datetime.js"></script>
+    <script src="js/mobiscroll/mobiscroll.select.js"></script>
+    <script src="js/mobiscroll/mobiscroll.widget.android.js"></script>
+    <script src="js/mobiscroll/mobiscroll.widget.android-holo.js"></script>
+    <script src="js/mobiscroll/mobiscroll.android-holo-light.js"></script>
+    <script src="js/mobiscroll/i18n/mobiscroll.i18n.zh.js"></script>
+
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/alienCitySettings.js"></script>
+	<script type="text/javascript">
+        function show(province,city,county,type){   
+	        document.getElementById('txtCity').innerText=province + " " +city + " " +county;
+        }
+    </script>
+    <style type="text/css">
+    	#personal-info span
+    	{
+    		display: inline;
+    		font-size: .8em;
+    		font-weight: bold;
+    	}
+	</style>
+</head>  
+<body onload="app.onLoad()">  
+	<div data-role="page" id="requestDelivery">  
+		<div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="f">
+			<a data-role="button" data-rel="back" id="back-btn" title="Home"><img src="img/left_arrow_w.png"></img><span>返回<span></a>
+			<h1>预设异地接单状态</h1>
+			<a class="right-nav-btn" data-ajax="false" href="userCenter.html"><img src="img/tah.png"></img></a>
+		</div>
+		<div data-role="content">
+		<div id="settings" data-role="collapsible-set" data-theme="f" data-content-theme="f">
+
+
+      </div>
+      	<div data-role="fieldcontain" >
+      		<a href="#" data-role="button" data-theme="c" data-icon="carat-d" data-iconpos="right" onclick="app.selectCity()"><label id="txtCity" data-bind="text: city"><label></a> 
+			 <div class="form-line-wrapper">
+			 	<div class="left">
+				 	<label > 开始日期:</label>
+				 </div>
+				 <div class="content" style="width:200px">
+				 	<input type="text" id="dateFrom" data-bind="value: dateFrom"/>  
+				 </div>
+			</div>	
+				 <div class="form-line-wrapper">
+			 	<div class="left">
+				 	<label > 结束日期:</label>
+				 </div>
+				 <div class="content" style="width:200px">
+				 	<input type="text" id="dateTo" data-bind="value: dateTo"/>  
+				 </div>
+			</div>	
+			<a class="confirm-btn" href="#" data-role="button" data-theme="f" onclick="app.addSetting()" data-ajax="false">添加</a> 
+			</div>
+			
+	   </div>
+
+	</div><!-- /page -->  
+</body>  
+</html> s

@@ -94,7 +94,7 @@ public class NotificationClient {
 		@Override
 		public void setAddress(String provinceCode, String province,
 				String cityCode, String city, String countyCode, String county) {
-			view.loadUrl("javascript:show('" +city+ "','"+ county + "','"+ NotificationClient.type +"')");
+			view.loadUrl("javascript:show('" +province+ "','" +city+ "','"+ county + "','"+ NotificationClient.type +"')");
 		}
 	};
 	

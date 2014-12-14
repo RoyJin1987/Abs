@@ -63,6 +63,11 @@ var commonJS = {
     jsonDateFormat:function(jsonDate) {//json日期格式转换为正常格式
         return new Date(jsonDate*1000).Format("yyyy-MM-dd hh:mm");
     },
+
+    dateFormat:function(jsonDate) {//json日期格式转换为正常格式
+        return new Date(jsonDate*1000).Format("yyyy/MM/dd");
+    },
+
     goback: function () {
         navigator.app.backHistory();  
     },
