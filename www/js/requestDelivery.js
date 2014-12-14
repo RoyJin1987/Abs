@@ -71,8 +71,8 @@ var app = {
     consignee_phone:ko.observable(""),  
     shipping_address:ko.observable(""),
     send_address:ko.observable(""),  
-    send_city:"请点击选择城市", 
-    shipping_city:"请点击选择城市", 
+    send_city:"请选择城市", 
+    shipping_city:"请选择城市", 
   },
 
   onLoad:function() {
@@ -478,26 +478,26 @@ var app = {
       
       var order = clone(app.viewModel.orderInfo);
 
-      var cityCounty = $("#send_city_county_hidden").text().split(",");
-      if (cityCounty[1]){
-        if (app.viewModel.orderInfo.send_address.address()){
-          order.send_address.address = cityCounty[1] + app.viewModel.orderInfo.send_address.address();
-          order.send_address.city = cityCounty[0];
-        }else{
+      var selectCity = document.getElementById('txt_send_city').innerText;
+      if ( selectCity=="请选择城市"){
           if (window.notificationClient){
-            window.notificationClient.showToast("请输入发货地址");  
-            $("#send_address").focus();
+              window.notificationClient.showToast("请选择城市");  
+              window.notificationClient.selectCity(0);
           }
-          return null;
-        }
-        
+          return;
+      }else{
+        order.send_address.city = selectCity;
+      }
+      if (app.viewModel.orderInfo.send_address.address()){
+          order.send_address.address = app.viewModel.orderInfo.send_address.address();
       }else{
         if (window.notificationClient){
-          window.notificationClient.showToast("请选择发货城市");  
-          window.notificationClient.selectCity(0);
+          window.notificationClient.showToast("请输入发货地址");  
+          $("#send_address").focus();
         }
         return null;
       }
+    
       
       if (app.viewModel.orderInfo.consignee_name()){
           order.consignee_name = app.viewModel.orderInfo.consignee_name();
@@ -524,23 +524,22 @@ var app = {
           return null;
       }
 
-      var shipCityCounty = $("#shipping_city_county_hidden").text().split(",");
-      if (shipCityCounty[1]){
-        if (app.viewModel.orderInfo.shipping_address.address()){
-          order.shipping_address.address = shipCityCounty[1] + app.viewModel.orderInfo.shipping_address.address();
-          order.shipping_address.city = shipCityCounty[0];
-        }else{
+      selectCity = document.getElementById('txt_shipping_city').innerText;
+      if ( selectCity=="请选择城市"){
           if (window.notificationClient){
-            window.notificationClient.showToast("请输入收货地址");  
-            $("#shipping_address").focus();
+              window.notificationClient.showToast("请选择城市");  
+              window.notificationClient.selectCity(1);
           }
-          return null;
-        }
-        
+          return;
+      }else{
+        order.shipping_address.city = selectCity;
+      }
+      if (app.viewModel.orderInfo.shipping_address.address()){
+          order.shipping_address.address = app.viewModel.orderInfo.shipping_address.address();
       }else{
         if (window.notificationClient){
-          window.notificationClient.showToast("请选择收货城市");  
-          window.notificationClient.selectCity(1);
+          window.notificationClient.showToast("请输入发货地址");  
+          $("#shipping_address").focus();
         }
         return null;
       }
