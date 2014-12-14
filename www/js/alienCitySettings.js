@@ -22,7 +22,7 @@ var app = {
     token:"",
     gid:"",
     viewModel: {
-        city:ko.observable("请点击选择城市"),
+        city:ko.observable("请选择城市"),
         dateFrom:"",
         dateTo:"",   
     },
@@ -52,7 +52,7 @@ var app = {
 
     addSetting:function() {
         var selectCity = document.getElementById('txtCity').innerText;
-        if ( selectCity=="请点击选择城市"){
+        if ( selectCity=="请选择城市"){
             if (window.notificationClient){
                 window.notificationClient.showToast("请选择城市");  
                 window.notificationClient.selectCity(1);
