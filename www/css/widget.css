@@ -254,3 +254,7 @@ div.ui-navbar li>a.ui-btn:hover
 	color: #fff;
 }
 
+/*调整费用加减按钮大小*/
+ .ui-controlgroup-controls .ui-mini-padding {
+	padding: .4em .5em;
+}

@@ -168,6 +168,11 @@ var app = {
           app.viewModel.bid_item_tuijian.freight((app.viewModel.orderInfo.distance() * 0.005).toFixed(0));
           app.viewModel.bid_item_tuijian.truckage((app.viewModel.orderInfo.distance() * 0.003).toFixed(0));
           app.viewModel.bid_item_tuijian.tipping ((app.viewModel.orderInfo.distance() * 0.0005).toFixed(0));
+
+
+          app.viewModel.orderInfo.bid_item.freight(app.viewModel.bid_item_tuijian.freight());
+          app.viewModel.orderInfo.bid_item.truckage(app.viewModel.bid_item_tuijian.truckage());
+          app.viewModel.orderInfo.bid_item.tipping(app.viewModel.bid_item_tuijian.tipping());
         }
 
 
@@ -308,16 +313,6 @@ var app = {
       app.viewModel.orderInfo.shipping_address.longitude = ko.observable(app.viewModel.orderInfo.shipping_address.longitude);
       app.viewModel.orderInfo.shipping_address.latitude = ko.observable(app.viewModel.orderInfo.shipping_address.latitude);
       app.viewModel.orderInfo.distance = ko.observable(-1);
-
-
-    //       bid_item_tuijian:{ // 出价项 车型选择非卡车时才有
-    //       freight:60,
-    //       truckage:74,
-    //       tipping:80,
-    // },
-    // app.viewModel.bid_item_tuijian = {
-    //   freight:ko
-    // }
 
       app.viewModel.orderInfo.delivery_floor = ko.observable(app.viewModel.orderInfo.delivery_floor);
       app.viewModel.orderInfo.additional_information = ko.observable(app.viewModel.orderInfo.additional_information);
@@ -466,6 +461,25 @@ var app = {
               app.loacalSearch.search($input.val());
           }
      });
+
+     $("a.plus-expense").on("click", function ( e, data ){
+        var $self = $(this);
+        var $input = $self.parents(".form-line-wrapper").find("input");
+        if (($input.val()*1 + 10)>100000) {
+          return;
+        }else{
+          $input.val($input.val()*1+10);
+        }
+     });
+     $("a.minus-expense").on("click", function ( e, data ){
+        var $self = $(this);
+        var $input = $self.parents(".form-line-wrapper").find("input");
+        if (($input.val()*1 - 10)<0) {
+          return;
+        }else{
+          $input.val($input.val()*1-10);
+        }
+     });
     },
 
       //加载定位
@@ -535,6 +549,9 @@ var app = {
         if (app.viewModel.orderInfo.send_address.address()){
           order.send_address.address = cityCounty[1] + app.viewModel.orderInfo.send_address.address();
           order.send_address.city = cityCounty[0];
+          order.send_address.longitude = app.viewModel.orderInfo.send_address.longitude();
+          order.send_address.latitude = app.viewModel.orderInfo.send_address.latitude();
+
         }else{
           if (window.notificationClient){
             window.notificationClient.showToast("请输入发货地址");  
@@ -586,6 +603,8 @@ var app = {
         if (app.viewModel.orderInfo.shipping_address.address()){
           order.shipping_address.address = shipCityCounty[1] + app.viewModel.orderInfo.shipping_address.address();
           order.shipping_address.city = shipCityCounty[0];
+          order.shipping_address.longitude = app.viewModel.orderInfo.shipping_address.longitude();
+          order.shipping_address.latitude = app.viewModel.orderInfo.shipping_address.latitude();
         }else{
           if (window.notificationClient){
             window.notificationClient.showToast("请输入收货地址");  
@@ -603,8 +622,26 @@ var app = {
       }
 
       order.type = app.viewModel.orderInfo.type();
-      order.weight = app.viewModel.orderInfo.weight();
-      order.volume = app.viewModel.orderInfo.volume();
+      if ( 0<app.viewModel.orderInfo.weight() <= 10000) {
+        order.weight = app.viewModel.orderInfo.weight();
+      }else{
+         if (window.notificationClient){
+            window.notificationClient.showToast("货物重量应在1~10000之间");  
+            $("#weight").focus();
+          }
+          return null;
+      }
+      
+      if ( 0<app.viewModel.orderInfo.volume() <= 1000) {
+         order.volume = app.viewModel.orderInfo.volume();
+      }else{
+         if (window.notificationClient){
+            window.notificationClient.showToast("货物体积应在1~1000");  
+            $("#weight").focus();
+          }
+          return null;
+      }
+     
       order.ship_date = formatDate(app.viewModel.orderInfo.ship_date_());
       order.arrival_date = formatDate(app.viewModel.orderInfo.arrival_date_());
       
@@ -630,8 +667,7 @@ var app = {
           order.consignor = localStorage['usrName'];
       }
       
-      order.send_address.longitude = app.baiduPosition.lng;
-      order.send_address.latitude = app.baiduPosition.lat;
+      
       order.wenceng = app.viewModel.selectedWenCeng();
       order.models = app.viewModel.selectedModels();
       

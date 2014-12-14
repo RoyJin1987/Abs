@@ -284,56 +284,78 @@
 			 </div>
 		</div>
 		<hr />
-		<div class="form-line-wrapper">
-		 	<div class="left">
-			 	<label > 平台推荐运输费用:</label>
-			 </div>
-			 <div class="content">
-			 	<label data-bind="text: bid_item_tuijian.freight()+'元'"></label>
-			 </div>
-		</div>
-		<div class="form-line-wrapper">
-		 	<div class="left">
-			 	<label > 调整运费:</label>
-			 </div>
-			 <div class="content" style="width:200px">
-			 	<input type="range" name="slider1" id="slider1" data-bind="value: orderInfo.bid_item.freight" min="0" max="100"  />
-			 </div>
-		</div>
-		<hr />
-		<div class="form-line-wrapper">
-		 	<div class="left">
-			 	<label > 平台推荐搬运费用:</label>
-			 </div>
-			 <div class="content">
-			 	<label data-bind="text: bid_item_tuijian.truckage()+'元'"></label>
-			 </div>
-		</div>
-		<div class="form-line-wrapper">
-		 	<div class="left">
-			 	<label > 调整搬运费:</label>
-			 </div>
-			 <div class="content" style="width:200px">
-			 	<input type="range" name="slider2" id="slider2" data-bind="value: orderInfo.bid_item.truckage" min="0" max="100"  />
-			 </div>
-		</div>
-		<hr />
-		<div class="form-line-wrapper">
-		 	<div class="left">
-			 	<label > 附加小费:</label>
-			 </div>
-			 <div class="content">
-			 	<label data-bind="text: bid_item_tuijian.tipping()+'元'"></label>
-			 </div>
-		</div>
-		<div class="form-line-wrapper">
-		 	<div class="left">
-			 	<label > 调整小费:</label>
-			 </div>
-			 <div class="content" style="width:200px">
-			 	<input type="range" name="slider3" id="slider3" data-bind="value: orderInfo.bid_item.tipping" min="0" max="100"  />
-			 </div>
-		</div>
+<div class="form-line-wrapper">
+			 	<div class="left">
+				 	<label > 推荐运费:</label>
+				 </div>
+				 <div class="content">
+				 	<label data-bind="text: bid_item_tuijian.freight()+'元'"></label>
+				 </div>
+
+			</div>
+			<div class="form-line-wrapper">
+			 	<div class="left">
+				 	<label > 调整运费:</label>
+				 </div>
+
+				 <div class="content" style="width:70px">
+				 	<input type="number" name="freight" data-bind="value: orderInfo.bid_item.freight" />
+				 </div>
+				 <div class="right">
+				 	<div data-role="controlgroup" data-type="horizontal" >
+					    <a href="#" class="plus-expense ui-btn ui-corner-all ui-icon-plus ui-btn-icon-notext ui-mini-padding" >a</a>
+					    <a href="#" class="minus-expense ui-btn ui-corner-all ui-icon-minus ui-btn-icon-notext ui-mini-padding" >a</a>
+					</div>
+				 </div>
+
+			</div>
+			<hr />
+			<div class="form-line-wrapper">
+			 	<div class="left">
+				 	<label > 推荐搬运费:</label>
+				 </div>
+				 <div class="content">
+				 	<label data-bind="text: bid_item_tuijian.truckage()+'元'"></label>
+				 </div>
+
+			</div>
+			<div class="form-line-wrapper">
+			 	<div class="left">
+				 	<label > 调整搬运费:</label>
+				 </div>
+				 <div class="content" style="width:70px">
+				 	<input type="number" name="truckage" data-bind="value: orderInfo.bid_item.truckage" />
+				 </div>
+				 <div class="right">
+				 	<div data-role="controlgroup" data-type="horizontal" style="margin:0">
+					    <a href="#" class="plus-expense ui-btn ui-corner-all ui-icon-plus ui-btn-icon-notext ui-mini-padding" >a</a>
+					    <a href="#" class="minus-expense ui-btn ui-corner-all ui-icon-minus ui-btn-icon-notext ui-mini-padding" >a</a>
+					</div>
+				 </div>
+			</div>
+			<hr />
+			<div class="form-line-wrapper">
+			 	<div class="left">
+				 	<label > 附加小费:</label>
+				 </div>
+				 <div class="content">
+				 	<label data-bind="text: bid_item_tuijian.tipping()+'元'"></label>
+				 </div>
+			</div>
+			<div class="form-line-wrapper">
+			 	<div class="left">
+				 	<label > 调整小费:</label>
+				 </div>
+				  <div class="content" style="width:70px">
+				 	<input type="number" name="tipping" data-bind="value: orderInfo.bid_item.tipping" />
+				 </div>
+				 <div class="right">
+				 	<div data-role="controlgroup" data-type="horizontal" style="margin:0">
+					    <a href="#" class="plus-expense ui-btn ui-corner-all ui-icon-plus ui-btn-icon-notext ui-mini-padding" >a</a>
+					    <a href="#" class="minus-expense ui-btn ui-corner-all ui-icon-minus ui-btn-icon-notext ui-mini-padding" >a</a>
+					</div>
+				 </div>
+			</div>
 		<hr />
 		<div class="form-line-wrapper">
 		 	<div class="left">

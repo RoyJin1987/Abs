@@ -32,8 +32,6 @@ var app = {
   },
 
   eventBackButton:function() {
-
-      
         app.myAlert('再点击一次退出!');
         document.removeEventListener("backbutton", app.eventBackButton, false); // 注销返回键
         document.addEventListener("backbutton", app.exitApp, false);// 绑定退出事件
