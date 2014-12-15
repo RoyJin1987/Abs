@@ -92,6 +92,16 @@ var app = {
             for(var i in data.items)
             {
                 var waybill = data.items[i];
+                var sendcity = waybill.send_address.city.split(" ");
+                if (sendcity[1]){
+                     waybill.send_address.city = sendcity[1];
+                }
+
+                var shipcity = waybill.shipping_address.city.split(" ");
+                if (shipcity[1]){
+                     waybill.shipping_address.city = shipcity[1];
+                }
+
                 waybill.canGrab = false;
                 // waybill.ship_date =commonJS.jsonDateFormat(data.items[i].ship_date);
                 // waybill.arrival_date =commonJS.jsonDateFormat(data.items[i].arrival_date);

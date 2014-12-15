@@ -212,6 +212,16 @@ var appMyOrder = {
             for(var i in data.items)
             {
                 var order = data.items[i];
+                var sendcity = order.send_address.city.split(" ");
+                if (sendcity[1]){
+                     order.send_address.city = sendcity[1];
+                }
+
+                var shipcity = order.shipping_address.city.split(" ");
+                if (shipcity[1]){
+                     order.shipping_address.city = shipcity[1];
+                }
+               
                 // order.ship_date =commonJS.jsonDateFormat(data.items[i].ship_date);
                 // order.arrival_date =commonJS.jsonDateFormat(data.items[i].arrival_date);
                 // order.orderDate = commonJS.jsonDateFormat(data.items[i].orderDate);
