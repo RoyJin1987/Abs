@@ -52,7 +52,7 @@
         </script>
 </head>  
 <body onload="app.onLoad()">  
-
+	<div id="abs-map"></div>
 	<div data-role="page" id="requestDelivery">  
 		<div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="f">
 			<a data-role="button" data-rel="back" id="back-btn" title="Home"><img src="img/left_arrow_w.png"></img><span>返回<span></a>
@@ -77,10 +77,9 @@
 				 	<label > 详细地址:</label>
 				 </div>
 				 <div class="content" style="width:200px">
-				 	<input type="text" name="address" id="address" enabled="false" data-bind="value: orderInfo.send_address.address" required="required"/>
-				 </div>
-				 <div class="right">
-				 	<a href="#" data-role="button" data-iconpos="notext" data-icon="flat-location" data-theme="f" ></a>
+				 	<!-- <input type="text" name="address" id="address" enabled="false" data-bind="value: orderInfo.send_address.address" required="required"/> -->
+				 	<ul id="send_address" data-role="listview" data-inset="true" required="required" data-filter="true" data-filter-reveal="true" data-filter-placeholder="请输入地址" data-theme="f">
+						</ul>
 				 </div>
 			</div>
 		</div>
@@ -188,7 +187,9 @@
 			 	<label > 详细地址:</label>
 			 </div>
 			 <div class="content" style="width:200px">
-			 	<input type="text" name="address" id="address" enabled="false" data-bind="value:orderInfo.shipping_address.address" required="required"/>
+			 	<!-- <input type="text" name="address" id="address" enabled="false" data-bind="value:orderInfo.shipping_address.address" required="required"/> -->
+			 	<ul id="shipping_address" data-role="listview" data-inset="true" required="required" data-filter="true" data-filter-reveal="true" data-filter-placeholder="请输入地址" data-theme="f">
+						</ul>
 			 </div>
 		</div>
 		<hr />
@@ -261,7 +262,7 @@
 			 	<label > 送货地址:</label>
 			 </div>
 			 <div class="content" style="width:200px">
-			 	<label id="deliveryAddress" data-bind="text:orderInfo.shipping_address.address"></label>
+			 	<label id="mileage" data-bind="text:orderInfo.distance()+'米'" ></label>
 			 </div>
 		</div>
 		<hr />
@@ -283,56 +284,78 @@
 			 </div>
 		</div>
 		<hr />
-		<div class="form-line-wrapper">
-		 	<div class="left">
-			 	<label > 平台推荐运输费用:</label>
-			 </div>
-			 <div class="content">
-			 	<label data-bind="text: bid_item_tuijian.freight"></label>
-			 </div>
-		</div>
-		<div class="form-line-wrapper">
-		 	<div class="left">
-			 	<label > 调整运费:</label>
-			 </div>
-			 <div class="content" style="width:200px">
-			 	<input type="range" name="slider1" id="slider1" data-bind="value: orderInfo.bid_item.freight" min="0" max="100"  />
-			 </div>
-		</div>
-		<hr />
-		<div class="form-line-wrapper">
-		 	<div class="left">
-			 	<label > 平台推荐搬运费用:</label>
-			 </div>
-			 <div class="content">
-			 	<label data-bind="text: bid_item_tuijian.truckage"></label>
-			 </div>
-		</div>
-		<div class="form-line-wrapper">
-		 	<div class="left">
-			 	<label > 调整搬运费:</label>
-			 </div>
-			 <div class="content" style="width:200px">
-			 	<input type="range" name="slider2" id="slider2" data-bind="value: orderInfo.bid_item.truckage" min="0" max="100"  />
-			 </div>
-		</div>
-		<hr />
-		<div class="form-line-wrapper">
-		 	<div class="left">
-			 	<label > 附加小费:</label>
-			 </div>
-			 <div class="content">
-			 	<label data-bind="text: bid_item_tuijian.tipping"></label>
-			 </div>
-		</div>
-		<div class="form-line-wrapper">
-		 	<div class="left">
-			 	<label > 调整小费:</label>
-			 </div>
-			 <div class="content" style="width:200px">
-			 	<input type="range" name="slider3" id="slider3" data-bind="value: orderInfo.bid_item.tipping" min="0" max="100"  />
-			 </div>
-		</div>
+<div class="form-line-wrapper">
+			 	<div class="left">
+				 	<label > 推荐运费:</label>
+				 </div>
+				 <div class="content">
+				 	<label data-bind="text: bid_item_tuijian.freight()+'元'"></label>
+				 </div>
+
+			</div>
+			<div class="form-line-wrapper">
+			 	<div class="left">
+				 	<label > 调整运费:</label>
+				 </div>
+
+				 <div class="content" style="width:70px">
+				 	<input type="number" name="freight" data-bind="value: orderInfo.bid_item.freight" />
+				 </div>
+				 <div class="right">
+				 	<div data-role="controlgroup" data-type="horizontal" >
+					    <a href="#" class="plus-expense ui-btn ui-corner-all ui-icon-plus ui-btn-icon-notext ui-mini-padding" >a</a>
+					    <a href="#" class="minus-expense ui-btn ui-corner-all ui-icon-minus ui-btn-icon-notext ui-mini-padding" >a</a>
+					</div>
+				 </div>
+
+			</div>
+			<hr />
+			<div class="form-line-wrapper">
+			 	<div class="left">
+				 	<label > 推荐搬运费:</label>
+				 </div>
+				 <div class="content">
+				 	<label data-bind="text: bid_item_tuijian.truckage()+'元'"></label>
+				 </div>
+
+			</div>
+			<div class="form-line-wrapper">
+			 	<div class="left">
+				 	<label > 调整搬运费:</label>
+				 </div>
+				 <div class="content" style="width:70px">
+				 	<input type="number" name="truckage" data-bind="value: orderInfo.bid_item.truckage" />
+				 </div>
+				 <div class="right">
+				 	<div data-role="controlgroup" data-type="horizontal" style="margin:0">
+					    <a href="#" class="plus-expense ui-btn ui-corner-all ui-icon-plus ui-btn-icon-notext ui-mini-padding" >a</a>
+					    <a href="#" class="minus-expense ui-btn ui-corner-all ui-icon-minus ui-btn-icon-notext ui-mini-padding" >a</a>
+					</div>
+				 </div>
+			</div>
+			<hr />
+			<div class="form-line-wrapper">
+			 	<div class="left">
+				 	<label > 附加小费:</label>
+				 </div>
+				 <div class="content">
+				 	<label data-bind="text: bid_item_tuijian.tipping()+'元'"></label>
+				 </div>
+			</div>
+			<div class="form-line-wrapper">
+			 	<div class="left">
+				 	<label > 调整小费:</label>
+				 </div>
+				  <div class="content" style="width:70px">
+				 	<input type="number" name="tipping" data-bind="value: orderInfo.bid_item.tipping" />
+				 </div>
+				 <div class="right">
+				 	<div data-role="controlgroup" data-type="horizontal" style="margin:0">
+					    <a href="#" class="plus-expense ui-btn ui-corner-all ui-icon-plus ui-btn-icon-notext ui-mini-padding" >a</a>
+					    <a href="#" class="minus-expense ui-btn ui-corner-all ui-icon-minus ui-btn-icon-notext ui-mini-padding" >a</a>
+					</div>
+				 </div>
+			</div>
 		<hr />
 		<div class="form-line-wrapper">
 		 	<div class="left">
