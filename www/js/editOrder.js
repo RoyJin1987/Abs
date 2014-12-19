@@ -49,8 +49,8 @@ var app = {
     selectedModels:ko.observable(''),
     shipping_address:ko.observable(""),
     send_address:ko.observable(""), 
-    send_city:"请点击选择城市", 
-    shipping_city:"请点击选择城市",
+    send_city:"请选择城市", 
+    shipping_city:"请选择城市",
     bid_item_tuijian:{ // 出价项 车型选择非卡车时才有
           freight:ko.observable(0),
           truckage:ko.observable(0),
@@ -431,7 +431,11 @@ var app = {
           }
           return null;
         }
-
+		
+		var selectCity = document.getElementById('txt_send_city').innerText;
+		order.send_address.city = selectCity;
+		selectCity = document.getElementById('txt_shipping_city').innerText;
+		order.shipping_address.city = selectCity;
         if (!app.viewModel.orderInfo.shipping_address.address() 
           ||app.viewModel.orderInfo.shipping_address.address() !== $("#shipping_address").prev().find("input").val() ) {
           app.viewModel.orderInfo.shipping_address.address($("#shipping_address").prev().find("input").val());

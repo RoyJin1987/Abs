@@ -277,7 +277,6 @@ var app = {
         // });  
         ko.applyBindings(app.viewModel);
         $('body').trigger("create");
-        document.getElementById('txtCity').innerText="df sa d";
         app.receivedEvent('deviceready');
     },
 

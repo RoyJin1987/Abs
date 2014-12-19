@@ -37,15 +37,14 @@
   	<script type="text/javascript" src="http://api.map.baidu.com/api?type=quick&ak=tUoYt61wcnunrkdGksApMwQt&v=1.0"></script>
 	<script type="text/javascript" src="js/common.js"></script>
 	<script type="text/javascript" src="js/requestDelivery.js"></script>
+		<script type="text/javascript" src="js/requestDelivery.js"></script>
 		<script type="text/javascript">
-            function show(city,county,type){   
+            function show(province,city,county,type){   
             	
             if (type =="0"){
-            	$("#send_city_county").text(city+county);
-            	$("#send_city_county_hidden").text(city + "," + county);
+            	document.getElementById('txt_send_city').innerText=province + " " +city + " " +county;
             } else{
-            	$("#shipping_city_county").text(city+county);
-            	$("#shipping_city_county_hidden").text(city + "," + county);
+            	document.getElementById('txt_shipping_city').innerText=province + " " +city + " " +county;
             }
             	
             }
@@ -63,20 +62,19 @@
 		<div>
 			<div class="form-line-wrapper">
 			 	<div class="left">
-				 	<label > 发货城市:</label>
-				 </div>
-				 <div class="content">
-				 	<label type="text" id="send_city_county" data-bind="text: send_city" onclick="app.selectCity(0)"/>
-
-				 </div>
-				 <label type="text" id="send_city_county_hidden" class="ui-hidden-accessible"/>
+					 	<label > 发货城市:</label>
+					 </div>
+					 <div class="content" style="width:220px">
+					 	<!-- <label type="text" id="send_city_county" data-bind="text: send_city" onclick="app.selectCity(0)"/> -->
+						<a href="#" data-role="button" data-theme="c" data-icon="carat-d" data-iconpos="right" onclick="app.selectCity(0)"><label id="txt_send_city" data-bind="text: send_city"><label></a> 
+					 </div> 
 				 
 			</div>
 			<div class="form-line-wrapper">
 			 	<div class="left">
 				 	<label > 详细地址:</label>
 				 </div>
-				 <div class="content" style="width:200px">
+				 <div class="content" style="width:220px">
 				 	<!-- <input type="text" name="address" id="address" enabled="false" data-bind="value: orderInfo.send_address.address" required="required"/> -->
 				 	<ul id="send_address" data-role="listview" data-inset="true" required="required" data-filter="true" data-filter-reveal="true" data-filter-placeholder="请输入地址" data-theme="f">
 						</ul>
@@ -175,18 +173,20 @@
 		<hr/>
 		<div class="form-line-wrapper">
 		 	<div class="left">
-			 	<label > 送货城市:</label>
-			 </div>
-			 <div class="content" style="width:200px">
-			 	<label type="text" id="shipping_city_county" data-bind="text: shipping_city" onclick="app.selectCity(1)"/>
-			 </div>
-			 <label type="text" id="shipping_city_county_hidden" class="ui-hidden-accessible"/>
+				 	<label > 送货城市:</label>
+				</div>
+				<!-- <div class="content" style="width:200px">
+				 	<label type="text" id="shipping_city_county" data-bind="text: shipping_city" onclick="app.selectCity(1)"/>
+				</div> -->
+				<div class="content" style="width:220px">
+					<a href="#" data-role="button" data-theme="c" data-icon="carat-d" data-iconpos="right" onclick="app.selectCity(1)"><label id="txt_shipping_city" data-bind="text: shipping_city"><label></a> 
+				</div> 
 		</div>
 		<div class="form-line-wrapper">
 		 	<div class="left">
 			 	<label > 详细地址:</label>
 			 </div>
-			 <div class="content" style="width:200px">
+			 <div class="content" style="width:220px">
 			 	<!-- <input type="text" name="address" id="address" enabled="false" data-bind="value:orderInfo.shipping_address.address" required="required"/> -->
 			 	<ul id="shipping_address" data-role="listview" data-inset="true" required="required" data-filter="true" data-filter-reveal="true" data-filter-placeholder="请输入地址" data-theme="f">
 						</ul>
