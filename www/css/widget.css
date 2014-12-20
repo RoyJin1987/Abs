@@ -207,7 +207,8 @@ hr{
 /*导航栏*/
 .ui-header
 {
-	height: 44px
+	height: 44px;
+	font-size:1.2em;
 }
 
 #back-btn
