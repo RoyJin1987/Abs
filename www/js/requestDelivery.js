@@ -536,7 +536,7 @@ var app = {
       
       var order = clone(app.viewModel.orderInfo);
 
-      var selectCity = "sh pd option";//document.getElementById('txt_send_city').innerText;
+      var selectCity = document.getElementById('txt_send_city').innerText;
       if ( selectCity=="请选择城市"){
           if (window.notificationClient){
               window.notificationClient.showToast("请选择发货城市");  
@@ -545,7 +545,7 @@ var app = {
           return null;
       }
 
-      var cityCounty = ["上海","浦东"];//$("#send_city_county_hidden").text().split(",");
+      var cityCounty = $("#send_city_county_hidden").text().split(",");
       if (!app.viewModel.orderInfo.send_address.address()
         ||app.viewModel.orderInfo.send_address.address() !== $("#send_address").prev().find("input").val() ) {
         app.viewModel.orderInfo.send_address.address($("#send_address").prev().find("input").val());
@@ -594,7 +594,7 @@ var app = {
           return null;
       }
 
-      //selectCity = document.getElementById('txt_shipping_city').innerText;
+      selectCity = document.getElementById('txt_shipping_city').innerText;
       if ( selectCity=="请选择城市"){
           if (window.notificationClient){
               window.notificationClient.showToast("请选择收货城市");  
@@ -629,7 +629,7 @@ var app = {
         order.weight = app.viewModel.orderInfo.weight();
       }else{
          if (window.notificationClient){
-            window.notificationClient.showToast("货物重量应在1~10000之间");  
+            window.notificationClient.showToast("货物重量应在1~10000千克之间");  
             $("#weight").focus();
           }
           return null;
@@ -639,10 +639,22 @@ var app = {
          order.volume = app.viewModel.orderInfo.volume();
       }else{
          if (window.notificationClient){
-            window.notificationClient.showToast("货物体积应在1~1000");  
+            window.notificationClient.showToast("货物体积应在1~1000立方之间");  
             $("#weight").focus();
           }
           return null;
+      }
+      if (app.viewModel.orderInfo.delivery_floor()) {
+        if(app.viewModel.orderInfo.delivery_floor()>0 && app.viewModel.orderInfo.delivery_floor()<100)
+        {
+           order.volume = app.viewModel.orderInfo.volume();
+        }else{
+           if (window.notificationClient){
+              window.notificationClient.showToast("送货楼层应在1~200层之间");  
+              $("#weight").focus();
+            }
+            return null;
+        }
       }
      
       order.ship_date = formatDate(app.viewModel.orderInfo.ship_date_());
