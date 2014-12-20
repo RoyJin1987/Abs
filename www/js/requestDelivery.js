@@ -54,9 +54,9 @@ var app = {
       consignee_phone:"",  
       stars :"0",
       bid_item:{ // 出价项 车型选择非卡车时才有
-          freight:60,
-          truckage:74,
-          tipping:80,
+          freight:0,
+          truckage:0,
+          tipping:0,
       },
       distance:ko.observable(-1),
     },
@@ -133,7 +133,7 @@ var app = {
         
         commonJS.get(url,function(data_){
           //alert(JSON.stringify(data_));
-          if (data_.status===0) {
+          if (data_.status === 0) {
             //提示用户
             // alert("订单提交成功！");
             if (app.id){
@@ -163,7 +163,7 @@ var app = {
         });
           
       }else{
-        if(app.viewModel.orderInfo.distance() >0)
+        if(app.viewModel.orderInfo.distance() > 0)
         {
           app.viewModel.bid_item_tuijian.freight((app.viewModel.orderInfo.distance() * 0.005).toFixed(0));
           app.viewModel.bid_item_tuijian.truckage((app.viewModel.orderInfo.distance() * 0.003).toFixed(0));
@@ -194,6 +194,17 @@ var app = {
       if(order==null){
         return;
       }
+
+      if (order.bid_item.freight <= 0 ) {
+        if (window.notificationClient){
+          window.notificationClient.showToast("运费必须大于0元");  
+        }
+        else
+        {
+          alert("运费必须大于0元");
+        }
+        return;
+      };
       var request;
       if (app.id){
         request = {
@@ -468,7 +479,7 @@ var app = {
         if (($input.val()*1 + 10)>100000) {
           return;
         }else{
-          $input.val($input.val()*1+10);
+          $input.val($input.val()*1+10).change();
         }
      });
      $("a.minus-expense").on("click", function ( e, data ){
@@ -477,7 +488,7 @@ var app = {
         if (($input.val()*1 - 10)<0) {
           return;
         }else{
-          $input.val($input.val()*1-10);
+          $input.val($input.val()*1-10).change();
         }
      });
     },
@@ -537,6 +548,10 @@ var app = {
       var order = clone(app.viewModel.orderInfo);
 
       var selectCity = document.getElementById('txt_send_city').innerText;
+      if(!selectCity)
+      {
+        selectCity = "上海市 上海市 浦东新区";
+      }
       if ( selectCity=="请选择城市"){
           if (window.notificationClient){
               window.notificationClient.showToast("请选择发货城市");  
@@ -568,7 +583,6 @@ var app = {
         return null;
       }
       
-      
       if (app.viewModel.orderInfo.consignee_name()){
           order.consignee_name = app.viewModel.orderInfo.consignee_name();
       }else{
@@ -595,6 +609,10 @@ var app = {
       }
 
       selectCity = document.getElementById('txt_shipping_city').innerText;
+      if(!selectCity)
+      {
+        selectCity = "上海市 上海市 浦东新区";
+      }
       if ( selectCity=="请选择城市"){
           if (window.notificationClient){
               window.notificationClient.showToast("请选择收货城市");  
@@ -645,7 +663,7 @@ var app = {
           return null;
       }
       if (app.viewModel.orderInfo.delivery_floor()) {
-        if(app.viewModel.orderInfo.delivery_floor()>0 && app.viewModel.orderInfo.delivery_floor()<100)
+        if(app.viewModel.orderInfo.delivery_floor()>0 && app.viewModel.orderInfo.delivery_floor()<=200)
         {
            order.volume = app.viewModel.orderInfo.volume();
         }else{

@@ -123,6 +123,20 @@ var app = {
       //alert(app.viewModel.selectedModels());
 
       var order = app.extractOrder();
+       if(order==null){
+        return;
+      }
+
+      if (order.bid_item.freight <= 0 ) {
+        if (window.notificationClient){
+          window.notificationClient.showToast("运费必须大于0元");  
+        }
+        else
+        {
+          alert("运费必须大于0元");
+        }
+        return;
+      };
 
       var request = {
         Action:"OrderEdit",
@@ -382,7 +396,7 @@ var app = {
                 if (($input.val()*1 + 10)>100000) {
                   return;
                 }else{
-                  $input.val($input.val()*1+10);
+                  $input.val($input.val()*1+10).change();
                 }
              });
              $("a.minus-expense").on("click", function ( e, data ){
@@ -391,7 +405,7 @@ var app = {
                 if (($input.val()*1 - 10)<0) {
                   return;
                 }else{
-                  $input.val($input.val()*1-10);
+                  $input.val($input.val()*1-10).change();
                 }
              });
         }
@@ -412,6 +426,18 @@ var app = {
 
         var order = clone(app.viewModel.orderInfo);
 
+        var selectCity = document.getElementById('txt_send_city').innerText;
+        if(!selectCity)
+        {
+          selectCity = "上海市 上海市 浦东新区";
+        }
+        if ( selectCity=="请选择城市"){
+            if (window.notificationClient){
+                window.notificationClient.showToast("请选择发货城市");  
+                window.notificationClient.selectCity(0);
+            }
+            return null;
+        }
 
         if (!app.viewModel.orderInfo.send_address.address()
           ||app.viewModel.orderInfo.send_address.address() !== $("#send_address").prev().find("input").val() ) {
@@ -432,9 +458,23 @@ var app = {
           return null;
         }
 		
-		var selectCity = document.getElementById('txt_send_city').innerText;
-		order.send_address.city = selectCity;
-		selectCity = document.getElementById('txt_shipping_city').innerText;
+    selectCity = document.getElementById('txt_shipping_city').innerText;
+
+      if(!selectCity)
+      {
+        selectCity = "上海市 上海市 浦东新区";
+      }
+      if ( selectCity=="请选择城市"){
+          if (window.notificationClient){
+              window.notificationClient.showToast("请选择收货城市");  
+              window.notificationClient.selectCity(1);
+          }
+          return null;
+      }
+      // order.send_address.city = selectCity;
+		// var selectCity = document.getElementById('txt_send_city').innerText;
+		// order.send_address.city = selectCity;
+		// selectCity = document.getElementById('txt_shipping_city').innerText;
 		order.shipping_address.city = selectCity;
         if (!app.viewModel.orderInfo.shipping_address.address() 
           ||app.viewModel.orderInfo.shipping_address.address() !== $("#shipping_address").prev().find("input").val() ) {
@@ -503,24 +543,36 @@ var app = {
         order.type = app.viewModel.orderInfo.type();
         // order.weight = app.viewModel.orderInfo.weight();
         // order.volume = app.viewModel.orderInfo.volume();
-        if ( app.viewModel.orderInfo.weight()*1 >= 1 && app.viewModel.orderInfo.weight()*1 <= 10000) {
+        if ( app.viewModel.orderInfo.weight() <= 10000 && app.viewModel.orderInfo.weight()>0) {
           order.weight = app.viewModel.orderInfo.weight();
         }else{
            if (window.notificationClient){
-              window.notificationClient.showToast("货物重量应在1~10000之间");  
+              window.notificationClient.showToast("货物重量应在1~10000千克之间");  
               $("#weight").focus();
             }
             return null;
         }
         
-        if (app.viewModel.orderInfo.volume()*1 >=1 && app.viewModel.orderInfo.volume()*1 <= 1000) {
+        if ( app.viewModel.orderInfo.volume() <= 1000 &&app.viewModel.orderInfo.volume() >0) {
            order.volume = app.viewModel.orderInfo.volume();
         }else{
            if (window.notificationClient){
-              window.notificationClient.showToast("货物体积应在1~1000");  
+              window.notificationClient.showToast("货物体积应在1~1000立方之间");  
               $("#weight").focus();
             }
             return null;
+        }
+        if (app.viewModel.orderInfo.delivery_floor()) {
+          if(app.viewModel.orderInfo.delivery_floor()>0 && app.viewModel.orderInfo.delivery_floor()<=200)
+          {
+             order.volume = app.viewModel.orderInfo.volume();
+          }else{
+             if (window.notificationClient){
+                window.notificationClient.showToast("送货楼层应在1~200层之间");  
+                $("#weight").focus();
+              }
+              return null;
+          }
         }
      
         order.ship_date = app.viewModel.orderInfo.ship_date_();

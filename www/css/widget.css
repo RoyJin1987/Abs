@@ -93,6 +93,13 @@ a > img
 	font-size: 16px;
 }
 
+
+.form-line-item-left
+{
+	float: left;
+	line-height: 0px;
+}
+
 .form-line-wrapper > .left{
 	float: left;
 	width: 75px;
