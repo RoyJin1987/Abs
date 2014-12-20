@@ -536,7 +536,7 @@ var app = {
       
       var order = clone(app.viewModel.orderInfo);
 
-      var selectCity = document.getElementById('txt_send_city').innerText;
+      var selectCity = "sh pd option";//document.getElementById('txt_send_city').innerText;
       if ( selectCity=="请选择城市"){
           if (window.notificationClient){
               window.notificationClient.showToast("请选择发货城市");  
@@ -545,7 +545,7 @@ var app = {
           return null;
       }
 
-      //var cityCounty = ["上海","浦东"];//$("#send_city_county_hidden").text().split(",");
+      var cityCounty = ["上海","浦东"];//$("#send_city_county_hidden").text().split(",");
       if (!app.viewModel.orderInfo.send_address.address()
         ||app.viewModel.orderInfo.send_address.address() !== $("#send_address").prev().find("input").val() ) {
         app.viewModel.orderInfo.send_address.address($("#send_address").prev().find("input").val());
@@ -594,7 +594,7 @@ var app = {
           return null;
       }
 
-      selectCity = document.getElementById('txt_shipping_city').innerText;
+      //selectCity = document.getElementById('txt_shipping_city').innerText;
       if ( selectCity=="请选择城市"){
           if (window.notificationClient){
               window.notificationClient.showToast("请选择收货城市");  
@@ -625,7 +625,7 @@ var app = {
       }
 
       order.type = app.viewModel.orderInfo.type();
-      if ( 0<app.viewModel.orderInfo.weight() <= 10000) {
+      if ( app.viewModel.orderInfo.weight() <= 10000 && app.viewModel.orderInfo.weight()>0) {
         order.weight = app.viewModel.orderInfo.weight();
       }else{
          if (window.notificationClient){
@@ -635,7 +635,7 @@ var app = {
           return null;
       }
       
-      if ( 0<app.viewModel.orderInfo.volume() <= 1000) {
+      if ( app.viewModel.orderInfo.volume() <= 1000 &&app.viewModel.orderInfo.volume() >0) {
          order.volume = app.viewModel.orderInfo.volume();
       }else{
          if (window.notificationClient){
