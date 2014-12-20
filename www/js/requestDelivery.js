@@ -545,7 +545,7 @@ var app = {
           return null;
       }
 
-      var cityCounty = $("#send_city_county_hidden").text().split(",");
+      // var cityCounty = $("#send_city_county_hidden").text().split(",");
       if (!app.viewModel.orderInfo.send_address.address()
         ||app.viewModel.orderInfo.send_address.address() !== $("#send_address").prev().find("input").val() ) {
         app.viewModel.orderInfo.send_address.address($("#send_address").prev().find("input").val());
