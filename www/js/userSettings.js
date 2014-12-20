@@ -132,6 +132,10 @@ var app = {
         window.location.href = "deliveryApply.html?goback=1";
     },
 
+    gotoAlienCitySettings:function(){
+        window.location.href = "alienCitySettings.html";
+    },
+
     edit:function()
     {
     // POST|GET data={Action: "UserInformationEdit", Token:”身份令牌”, switch :{

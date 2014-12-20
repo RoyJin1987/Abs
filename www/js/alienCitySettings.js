@@ -76,13 +76,14 @@ var app = {
         }
 
         var cityExist = false;
+        var cityIndex;
         for(var i in app.settings){
-            if (app.settings[i].city == selectCity){
+            if (app.settings[i].province + " "+app.settings[i].city + " "+app.settings[i].district == selectCity){
                 for(var j in app.settings[i].dates){
-                    var arrTmp = app.settings[i].dates[j].dateFrom.split("/");
+                    var arrTmp = app.settings[i].dates[j].datefrom.split("/");
                     var starttimeTmp = new Date(arrTmp[0], arrTmp[1], arrTmp[2]);
                     var starttimesTmp = starttimeTmp.getTime();
-                    var arrTmp2 = app.settings[i].dates[j].dateTo.split("/");
+                    var arrTmp2 = app.settings[i].dates[j].dateto.split("/");
                     var endtimeTmp = new Date(arrTmp2[0], arrTmp2[1], arrTmp2[2]);
                     var endtimesTmp = endtimeTmp.getTime();
                     if (starttimes >=starttimesTmp && starttimes <= endtimesTmp){
@@ -114,7 +115,8 @@ var app = {
                         return;
                     }
                 }
-                app.settings[i].dates.push({"dateFrom":app.viewModel.dateFrom(),"dateTo":app.viewModel.dateTo()});
+                app.settings[i].dates.push({"datefrom":app.viewModel.dateFrom(),"dateto":app.viewModel.dateTo()});
+                cityIndex = i;
                 cityExist = true;
                 break;
             }
@@ -130,62 +132,44 @@ var app = {
                         dateto:app.viewModel.dateTo(),
                         status:0}
             };
-        // var url = app.serverUrl + JSON.stringify(request);
+         var url = app.serverUrl + JSON.stringify(request);
         // window.location.href = url;
-        // commonJS.get(url,function(data){
-        //      alert(JSON.stringify(data));
-        //    if(data.status !== 0)
-        //     {
-        //         alert(data.message);
-        //         return;
-        //     }else{
-        //         //alert("添加成功");
-        //         if (!cityExist){
-        //             var setting = {"city": selectCity,"dates": [{"dateFrom":app.viewModel.dateFrom(),"dateTo":app.viewModel.dateTo()}]};
-        //             app.settings.push(setting);
-        //         }
+        commonJS.get(url,function(data){
+            if (data.status ==0){
+                if (!cityExist){
+                    var setting = {"province":cityarr[0], "city": cityarr[1],"district":cityarr[2],"dates": [{"datefrom":app.viewModel.dateFrom(),"dateto":app.viewModel.dateTo()}]};
+                    app.settings.push(setting);
+                }
+                var testdiv = document.getElementById("settings");
+                var innerHtml="";
 
-        //         var testdiv = document.getElementById("settings");
-        //         var innerHtml="";
-
-        //         for(var i in app.settings){
-
-        //             innerHtml = innerHtml+"<div data-role='collapsible' data-collapsed-icon='flat-time' data-expanded-icon='flat-time' data-collapsed='false'>";
-        //             innerHtml = innerHtml + "<h3>" +app.settings[i].city + "</h3>";
+                for(var i in app.settings){
+                    if (cityExist && cityIndex==i){
+                        //alert("sdfsdafds");
+                        innerHtml = innerHtml+"<div data-role='collapsible' data-collapsed-icon='flat-time' data-expanded-icon='flat-time' data-collapsed='false'>";
+                    }else if(i == app.settings.length){
+                        innerHtml = innerHtml+"<div data-role='collapsible' data-collapsed-icon='flat-time' data-expanded-icon='flat-time' data-collapsed='false'>";
+                    }else{
+                        innerHtml = innerHtml+"<div data-role='collapsible' data-collapsed-icon='flat-time' data-expanded-icon='flat-time' data-collapsed='true'>";
+                    }
+                    
+                    innerHtml = innerHtml + "<h3>" +app.settings[i].province + " "+app.settings[i].city + " "+app.settings[i].district+ "</h3>";
            
-        //             for (var j in app.settings[i].dates){
-        //                 innerHtml= innerHtml + "<p>" +app.settings[i].dates[j].dateFrom + "-" + app.settings[i].dates[j].dateTo + "</p>";
-                        
-        //             }
-        //             innerHtml = innerHtml + "</div>";
-        //         }
-
-        //         testdiv.innerHTML=innerHtml;
-        //         $('body').trigger("create");
-        //     }
-        // });  
-        if (!cityExist){
-            var setting = {"city": selectCity,"dates": [{"dateFrom":app.viewModel.dateFrom(),"dateTo":app.viewModel.dateTo()}]};
-            app.settings.push(setting);
-        }
-
-        var testdiv = document.getElementById("settings");
-        var innerHtml="";
-
-        for(var i in app.settings){
-
-            innerHtml = innerHtml+"<div data-role='collapsible' data-collapsed-icon='flat-time' data-expanded-icon='flat-time' data-collapsed='false'>";
-            innerHtml = innerHtml + "<h3>" +app.settings[i].city + "</h3>";
-   
-            for (var j in app.settings[i].dates){
-                innerHtml= innerHtml + "<p>" +app.settings[i].dates[j].dateFrom + "-" + app.settings[i].dates[j].dateTo + "</p>";
-                
+                    for (var j in app.settings[i].dates){
+                        innerHtml= innerHtml + "<p>" +app.settings[i].dates[j].datefrom + "-" + app.settings[i].dates[j].dateto + "</p>";
+                    }
+                    innerHtml = innerHtml + "</div>";
+                }
+//$( "#myCollapsibleSet" ).children().trigger( "collapse" );
+                testdiv.innerHTML=innerHtml;
+                $('body').trigger("create");
+            }else{
+                alert(data.message);
             }
-            innerHtml = innerHtml + "</div>";
-        }
+         });  
+        
 
-        testdiv.innerHTML=innerHtml;
-        $('body').trigger("create");
+        
     },
 
     selectCity:function(type){
@@ -237,45 +221,35 @@ var app = {
         app.viewModel.dateFrom = ko.observable( commonJS.dateFormat(Date.parse(date)/1000));
         app.viewModel.dateTo = ko.observable( commonJS.dateFormat(Date.parse(date)/1000));
         
+        var request = {
+                Action:"PlacesOrdersStatusAll",
+                Token:app.token
+            };
 
-//app.viewModel.city="city+county";
-                //$("#txtCity").text("city+county1");
-        // var request = {
-        //         Action:"UserInformation",
-        //         Token:app.token
-        //     };
-        // var url = app.serverUrl + JSON.stringify(request);
-        
-        // commonJS.get(url,function(data){
-        //      //alert(JSON.stringify(data));
-        //    if(data.status !== 0)
-        //     {
-        //         alert(data.message);
-        //         return;
-        //     }
-        //     app.viewModel={
-        //         canBeLocated : data.switch.location_stars,
-        //         canBeCalled : data.switch.phone_stars,
-        //         canGrabOrder :  data.switch.orders_stars,
-        //         personalInfo:data.parameter,
-        //         isGoodsMaster:false,
-        //     };
-        //     //alert(app.gid);
-        //     if (app.gid=="1"){
-        //         app.viewModel.isGoodsMaster=true;
-        //     }
-        //     if (data.switch.location_stars==1) {
-        //         $("#locator-switch").parent().addClass("ui-flipswitch-active");
-        //     };
-        //     if (data.switch.phone_stars==1) {
-        //         $("#calling-switch").parent().addClass("ui-flipswitch-active");
-        //     };
-        //     if (data.switch.orders_stars==1) {
-        //         $("#order-switch").parent().addClass("ui-flipswitch-active");
-        //     };
+        var testdiv = document.getElementById("settings");
+        var innerHtml="";
+        var url = app.serverUrl + JSON.stringify(request);
+         commonJS.get(url,function(data){
+            app.settings = data.items;
 
-        // });  
+            for(var i in app.settings){
+
+                innerHtml = innerHtml+"<div data-role='collapsible' data-collapsed-icon='flat-time' data-expanded-icon='flat-time' data-collapsed='false'>";
+                innerHtml = innerHtml + "<h3>" +app.settings[i].province + " "+app.settings[i].city + " "+app.settings[i].district+ "</h3>";
+       
+                for (var j in app.settings[i].dates){
+                    app.settings[i].dates[j].datefrom = app.settings[i].dates[j].datefrom.replace(/\-/g,"/");
+                    app.settings[i].dates[j].dateto = app.settings[i].dates[j].dateto.replace(/\-/g,"/");
+                    innerHtml= innerHtml + "<p>" +app.settings[i].dates[j].datefrom + "-" + app.settings[i].dates[j].dateto + "</p>";
+                }
+                innerHtml = innerHtml + "</div>";
+            }
+
+            testdiv.innerHTML=innerHtml;
+            //$('body').trigger("create");
+        });  
         ko.applyBindings(app.viewModel);
+        //document.getElementById('txtCity').innerText ="shanghai shanghai pudong"
         $('body').trigger("create");
         app.receivedEvent('deviceready');
     },
